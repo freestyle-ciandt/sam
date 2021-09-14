@@ -15,6 +15,11 @@ O objetivo desse exercício é criar uma Lambda function que seja invocada por m
 - Crie seu template SAM no seguinte caminho: **sam/exercises/template.yaml**
 - Nomeie sua Lambda function **Exercise-01-function**
 
+## Links úteis
+AWS Serverless API: https://github.com/aws/serverless-application-model/blob/master/docs/internals/generated_resources.rst#api
+AWS Serverless Function: https://github.com/aws/serverless-application-model/blob/master/versions/2016-10-31.md#awsserverlessfunction
+AWS Serverless Function API Event Source: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#api
+
 ## Validação do exercício
 
 Crie um arquivo *.env* dentro do diretório atual com o seguinte conteúdo:
