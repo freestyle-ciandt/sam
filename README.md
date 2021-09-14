@@ -1,16 +1,16 @@
 # Introdução
 O objetivo desse repositório é estabelecer alguns exercícios básicos de arquitetura Serverless na AWS os quais devem ser resolvidos com o uso do [Framework AWS SAM](https://aws.amazon.com/serverless/sam/). O repositório possuirá todas as respostas, porém o usuário deste repositório deverá tentar resolver os exercícios listados antes de olhar as soluções.
 
+## Antes de começar
+Garanta que máquina está pronta para você começar os exercícios com [este tutorial](exercises/README.md).
 ## Exercícios
-|Exercício|Link para a solução|Links de referência|
-|-|-|-|
-|Criar uma Lambda Function que possua um evento http|-|[AWS Serverless Function](https://docs.aws.amazon.com/serverless-application-model/latest/developerguide/sam-resource-function.html)<br/>[AWS Serverless Function Event Source](https://docs.aws.amazon.com/serverless-application-model/latest/developerguide/sam-property-function-eventsource.html)|
-|Criar uma Lambda Function que possua um evento http e que retorne (GetItem) algum dado de uma Tabela do DynamoDB|-|[AWS Serverless Function](https://docs.aws.amazon.com/serverless-application-model/latest/developerguide/sam-resource-function.html)<br/>[AWS Serverless Function Event Source](https://docs.aws.amazon.com/serverless-application-model/latest/developerguide/sam-property-function-eventsource.html)<br/>[Tabelas DynamoDB](https://docs.aws.amazon.com/pt_br/AWSCloudFormation/latest/UserGuide/aws-resource-dynamodb-table.html)<br/>[AWS SAM Policy Templates](https://docs.aws.amazon.com/serverless-application-model/latest/developerguide/serverless-policy-templates.html)|
-|Criar uma Lambda Function que seja chamada a cada uma hora (Cloud Watch Event)|-|[AWS Serverless Function](https://docs.aws.amazon.com/serverless-application-model/latest/developerguide/sam-resource-function.html)<br/>[AWS Serverless Function Event Source](https://docs.aws.amazon.com/serverless-application-model/latest/developerguide/sam-property-function-eventsource.html)<br/>[Eventos CloudWatch](https://docs.aws.amazon.com/serverless-application-model/latest/developerguide/sam-property-function-cloudwatchevent.html)<br/>[AWS SAM Policy Templates](https://docs.aws.amazon.com/serverless-application-model/latest/developerguide/serverless-policy-templates.html)|
-|Criar uma Lambda Function que envia dados para uma SQS Queue|-|[AWS Serverless Function](https://docs.aws.amazon.com/serverless-application-model/latest/developerguide/sam-resource-function.html)<br/>[AWS Serverless Function Event Source](https://docs.aws.amazon.com/serverless-application-model/latest/developerguide/sam-property-function-eventsource.html)<br/>[SQS Queue](https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-properties-sqs-queues.html)<br/>[Como enviar mensagens para uma SQS Queue](https://docs.aws.amazon.com/AWSJavaScriptSDK/latest/AWS/SQS.html#sendMessage-property)<br/>[AWS SAM Policy Templates](https://docs.aws.amazon.com/serverless-application-model/latest/developerguide/serverless-policy-templates.html)|
-|Criar uma Lambda Function que colete dados de um SQS Queue|-|[AWS Serverless Function](https://docs.aws.amazon.com/serverless-application-model/latest/developerguide/sam-resource-function.html)<br/>[AWS Serverless Function Event Source](https://docs.aws.amazon.com/serverless-application-model/latest/developerguide/sam-property-function-eventsource.html)<br/>[SQS Queue](https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-properties-sqs-queues.html)<br/>[AWS SAM Policy Templates](https://docs.aws.amazon.com/serverless-application-model/latest/developerguide/serverless-policy-templates.html)|
-|Criar uma Lambda Layer e uma função que a use|-|[AWS Serverless Function](https://docs.aws.amazon.com/serverless-application-model/latest/developerguide/sam-resource-function.html)<br/>[AWS Serverless Lambda Layer](https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-resource-lambda-layerversion.html)<br/>[AWS Lambda Layer](https://docs.aws.amazon.com/lambda/latest/dg/configuration-layers.html)|
-|Usar uma biblioteca para gerenciar o nível de logs de suas Lambda Function e validar seu funcionamento no console do CloudWatch|-|[Cloud Watch Logs](https://docs.aws.amazon.com/AmazonCloudWatch/latest/logs/WhatIsCloudWatchLogs.html)<br/>[Bunyan](https://www.npmjs.com/package/bunyan)|
-
+|Exercícios|Enunciado|
+|-|-|
+|[Exercício 1](exercises/01/README.md)|criar uma Lambda function que seja invocada por meio de uma API HTTP, fazendo uso do [Framework AWS SAM](https://aws.amazon.com/serverless/sam/)|
+|[Exercício 2](exercises/02/README.md)|criar uma Lambda Function que possua um evento http e que retorne (GetItem) algum dado de uma Tabela do DynamoDB|
+|[Exercício 3](exercises/03/README.md)|criar uma Lambda Function que seja chamada a cada uma hora (Cloud Watch Event)|
+|[Exercício 4 - parte 1](exercises/04_01/README.md)|criar uma Lambda Function que envia dados para uma SQS Queue|
+|[Exercício 4 - parte 2](exercises/04_02/README.md)|criar uma Lambda Function que colete dados de um SQS Queue|
+|[Exercício 5](exercises/05/README.md)|criar uma Lambda Layer que crie grupos de log e as aplique nas funções criadas nos exercícios anteriores|
 ## Licença
 [Link da licença deste repositório](./LICENSE)
