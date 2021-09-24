@@ -4,12 +4,40 @@ Transform: 'AWS::Serverless-2016-10-31'
 Description: Template básico para você resolver seus exercícios
 
 Resources:
-  RecursoInutil: # TODO: remover para começar os exercícios
-    Type: AWS::S3::Bucket
+  MyApi:
+    Type: AWS::Serverless::Api
     Properties:
-      BucketName: bucket-s3-de-exemplo
+      StageName: dev
+      Auth:
+        ApiKeyRequired: true
+        UsagePlan:
+          UsagePlanName: marcosoares
+          CreateUsagePlan: PER_API
+          Quota:
+            Limit: 500
+            Period: MONTH
+          Throttle:
+            BurstLimit: 100
+            RateLimit: 50
+
+  MyFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      FunctionName: Exercise-01-function-marcosoares
+      CodeUri: ./01
+      Handler: app.handler
+      Runtime: nodejs12.x
+      Events:
+        ApiKey:
+          Type: Api
+          Properties:
+            RestApiId: !Ref MyApi
+            Path: /exercise-01
+            Method: GET
+            Auth:
+              ApiKeyRequired: true
 
 Outputs:
-  RecursoInutil:
-    Description: Saída criada de exemplo
-    Value: !Ref RecursoInutil
+  MyApiID:
+    Description: ID da nossa API
+    Value: !Ref MyApi
