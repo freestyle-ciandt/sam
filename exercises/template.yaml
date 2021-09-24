@@ -1,15 +1,54 @@
 AWSTemplateFormatVersion: '2010-09-09'
 Transform: 'AWS::Serverless-2016-10-31'
 
-Description: Template básico para você resolver seus exercícios
+Description: Template Dojo Dupla-1
+
+Globals:
+  Function:
+    Runtime: nodejs12.x
 
 Resources:
-  RecursoInutil: # TODO: remover para começar os exercícios
-    Type: AWS::S3::Bucket
+  ApiExercises:
+    Type: AWS::Serverless::Api
     Properties:
-      BucketName: bucket-s3-de-exemplo
+      StageName: Prod
+      Auth:
+        ApiKeyRequired: true # sets for all methods
+        UsagePlan:
+          UsagePlanName: dupla-1-usage-plan-new # dupla-1-usage-plan (old)
+          CreateUsagePlan: PER_API
+          Description: Usage plan for this API
+          Quota:
+            Limit: 500
+            Period: MONTH
+          Throttle:
+            BurstLimit: 100
+            RateLimit: 50
+          Tags:
+            - Key: TagName
+              Value: TagValue
+
+  FunctionExercise01:
+    Type: AWS::Serverless::Function
+    Properties:
+      Runtime: nodejs12.x
+      CodeUri: 01/Exercise-01-function/
+      Handler: app.handler
+      Events:
+        ApiKey:
+          Type: Api
+          Properties:
+            RestApiId: !Ref ApiExercises
+            Path: /exercise-01
+            Method: GET
+#            Auth:
+#              ApiKeyRequired: true
 
 Outputs:
-  RecursoInutil:
-    Description: Saída criada de exemplo
-    Value: !Ref RecursoInutil
+  FunctionExercise01:
+    Description: Exercise-01-function lambda created
+    Value: !Ref FunctionExercise01
+
+  ApiExercises:
+    Description: ApiExercises api created
+    Value: !Ref ApiExercises
