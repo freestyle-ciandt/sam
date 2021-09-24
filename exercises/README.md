@@ -27,6 +27,14 @@ Após configurar seu perfil, você poderá usá-lo com `export AWS_PROFILE=<<NOM
 ### 4. Instalando o SAM CLI
 Use [o guia oficial da AWS](https://docs.aws.amazon.com/serverless-application-model/latest/developerguide/serverless-sam-cli-install.html) para instalar o AWS SAM em sua máquina.
 
+#### 4.1 Validar a instalação do AWS CLI
+1. Adicione as credenciais de seu ambiente (veja [Configurando o AWS CLI em sua máquina](#3-configurando-o-aws-cli-em-sua-máquina)).
+2. Rode o comando `aws s3 ls` e veja se os buckets S3 desta conta aparecem.
+
+#### 4.2 Validar instalação do SAM
+1. Adicione as credenciais de seu ambiente (veja [Configurando o AWS CLI em sua máquina](#3-configurando-o-aws-cli-em-sua-máquina)).
+2. Dentro desta pasta, rode `sam validate`.
+
 ### 5. Crie um Bucket S3 em sua conta AWS para poder rodar a build de sua aplicação SAM
 1. Utilize [este tutorial](https://docs.aws.amazon.com/pt_br/AmazonS3/latest/userguide/creating-bucket.html) para criar seu Bucket S3. Você deverá utilizar este Bucket S3 toda vez que for rodar os passos mencionados em [Rodando este projeto](#rodando-este-projeto).
 
