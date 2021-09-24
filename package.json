@@ -1,0 +1,17 @@
+{
+  "name": "sam-exercises",
+  "version": "1.0.0",
+  "description": "This package contain exercises to start working with AWS SAM",
+  "main": "index.js",
+  "scripts": {
+    "test": "env-cmd -f .env mocha exercises/**/tests/int/*.spec.js",
+    "validate": "env-cmd -f .env mocha exercises/$npm_config_ex/tests/int/*.spec.js"
+  },
+  "license": "GPLv3",
+  "devDependencies": {
+    "chai": "^4.3.4",
+    "chai-http": "^4.3.0",
+    "env-cmd": "^10.1.0",
+    "mocha": "^9.1.1"
+  }
+}
