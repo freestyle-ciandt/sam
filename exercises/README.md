@@ -38,7 +38,7 @@ sam build --template template.yaml --build-dir .aws-sam/build
 
 sam package --template-file .aws-sam/build/template.yaml --output-template-file .aws-sam/build/packaged-template.yaml --s3-bucket <bucket-criado-no-passo-5-de-configurando-minha-maquina> --s3-prefix <seu_nome>
 
-sam deploy --template-file .aws-sam/build/packaged-template.yaml --stack-name sam-dojo-arielly --no-fail-on-empty-changeset --s3-prefix arielly --capabilities CAPABILITY_IAM CAPABILITY_NAMED_IAM
+sam deploy --template-file .aws-sam/build/packaged-template.yaml --stack-name sam-dojo-<seu_nome> --no-fail-on-empty-changeset --s3-prefix <seu_nome> --capabilities CAPABILITY_IAM CAPABILITY_NAMED_IAM
 ```
 
 Você saberá que sua **Stack do CloudFormation** foi executada com sucesso se a saída dos passos acima for:
