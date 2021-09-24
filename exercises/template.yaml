@@ -4,12 +4,31 @@ Transform: 'AWS::Serverless-2016-10-31'
 Description: Template básico para você resolver seus exercícios
 
 Resources:
-  RecursoInutil: # TODO: remover para começar os exercícios
-    Type: AWS::S3::Bucket
+
+  ExercisesApi:
+    Type: AWS::Serverless::Api  
+    Properties:    
+      StageName: Prod
+      Auth:
+        ApiKeyRequired: true
+
+  Exercise01Function:
+    Type: AWS::Serverless::Function
     Properties:
-      BucketName: bucket-s3-de-exemplo
+      Runtime: nodejs12.x
+      Events:
+        Exercise01Api:
+          Type: Api
+          Properties:
+            RestApiId: !Ref ExercisesApi
+            Path: /exercise-01
+            Method: GET
+            Auth:
+              ApiKeyRequired: true
+      CodeUri: ./01
+      Handler: Exercise-01-function.handler
 
 Outputs:
-  RecursoInutil:
-    Description: Saída criada de exemplo
-    Value: !Ref RecursoInutil
+  Exercise01Function:
+    Description: Saída Exercicio 01
+    Value: !Ref Exercise01Function
