@@ -28,7 +28,8 @@ O objetivo desse exercício é o de criar uma Lambda Function que possua um even
     - se o valor não existir, a API deverá retornar o status 403 com a mensagem "Cliente não encontrado".
   - Responder a uma requisição GET no caminho */exercise-02/{cidade}*
     - essa API pegará o valor de {cidade} e realizará uma operação de **query** no índice pela chave secundária **cidade-index**.
-    - a API deverá retornar uma lista de objetos com todos clientes que possuem a cidade informada pela requisição. Por exemplo:
+    - se nenhum valor existir, a API deverá retornar uma lista vazia com o status 200.
+    - se existirem valores, a API deverá retornar uma lista de objetos com todos clientes que possuem a cidade informada pela requisição. Por exemplo:
 
 ```json
 [
@@ -52,7 +53,7 @@ O objetivo desse exercício é o de criar uma Lambda Function que possua um even
     }
 ]
 ```
-    - se nenhum valor existir, a API deverá retornar uma lista vazia com o status 200.
+
   - A API deve ser protegida com uma API KEY e retornar o erro 403 se está for inválida.
 
 ## Links úteis
