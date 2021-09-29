@@ -1,0 +1,9 @@
+{
+    "id": 1,
+    "nome": "Nome do Cliente",
+    "documento": "123456789",
+    "cidade": "Rio de Janeiro",
+    "estado": "RJ",
+    "pais": "Brasil",
+    "id_plano": 10
+}
