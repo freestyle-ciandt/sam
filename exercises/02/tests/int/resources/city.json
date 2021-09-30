@@ -1,0 +1,20 @@
+[
+    {
+        "id": 20,
+        "nome": "Xiang",
+        "documento": "644.417.990-47",
+        "cidade": "Rio de Janeiro",
+        "estado": "RJ",
+        "pais": "Brasil",
+        "id_plano": 1002
+    },
+    {
+        "id": 40,
+        "nome": "Jin",
+        "documento": "644.123.921-47",
+        "cidade": "Rio de Janeiro",
+        "estado": "RJ",
+        "pais": "Brasil",
+        "id_plano": 1020
+    }
+]
