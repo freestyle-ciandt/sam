@@ -57,13 +57,13 @@ O objetivo desse exercício é o de criar uma Lambda Function que possua um even
   - A API deve ser protegida com uma API KEY e retornar o erro 403 se está for inválida.
 
 ## Links úteis
-* AWS Serverless API: https://github.com/aws/serverless-application-model/blob/master/docs/internals/generated_resources.rst#api
-* AWS Serverless Function: https://github.com/aws/serverless-application-model/blob/master/versions/2016-10-31.md#awsserverlessfunction
-* AWS Serverless Function API Event Source: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#api
-* AWS SAM Policy Templates: https://docs.aws.amazon.com/serverless-application-model/latest/developerguide/serverless-policy-templates.html
-* Criando Tabela DynamoDB pelo CloudFormation: https://docs.aws.amazon.com/pt_br/AWSCloudFormation/latest/UserGuide/aws-resource-dynamodb-table.html
-* Criar, ler, ler, atualizar e excluir um item no DynamoDB pelo NodeJS: https://docs.aws.amazon.com/pt_br/amazondynamodb/latest/developerguide/GettingStarted.Js.03.html
-* Consultar e verificar os dados com JavaScript e DynamoDB: https://docs.aws.amazon.com/pt_br/amazondynamodb/latest/developerguide/GettingStarted.Js.04.html
+* **AWS Serverless API**: https://github.com/aws/serverless-application-model/blob/master/docs/internals/generated_resources.rst#api
+* **AWS Serverless Function**: https://github.com/aws/serverless-application-model/blob/master/versions/2016-10-31.md#awsserverlessfunction
+* **AWS Serverless Function API Event Source**: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#api
+* **AWS SAM Policy Templates**: https://docs.aws.amazon.com/serverless-application-model/latest/developerguide/serverless-policy-templates.html
+* **Criando Tabela DynamoDB pelo CloudFormation**: https://docs.aws.amazon.com/pt_br/AWSCloudFormation/latest/UserGuide/aws-resource-dynamodb-table.html
+* **Criar, ler, ler, atualizar e excluir um item no DynamoDB pelo NodeJS**: https://docs.aws.amazon.com/pt_br/amazondynamodb/latest/developerguide/GettingStarted.Js.03.html
+* **Consultar e verificar os dados com JavaScript e DynamoDB**: https://docs.aws.amazon.com/pt_br/amazondynamodb/latest/developerguide/GettingStarted.Js.04.html
 
 ## Validação do exercício
 
