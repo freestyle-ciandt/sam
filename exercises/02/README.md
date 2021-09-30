@@ -62,6 +62,8 @@ AWS Serverless Function: https://github.com/aws/serverless-application-model/blo
 AWS Serverless Function API Event Source: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#api
 AWS SAM Policy Templates: https://docs.aws.amazon.com/serverless-application-model/latest/developerguide/serverless-policy-templates.html
 Criando Tabela DynamoDB pelo CloudFormation: https://docs.aws.amazon.com/pt_br/AWSCloudFormation/latest/UserGuide/aws-resource-dynamodb-table.html
+Criar, ler, ler, atualizar e excluir um item no DynamoDB pelo NodeJS: https://docs.aws.amazon.com/pt_br/amazondynamodb/latest/developerguide/GettingStarted.Js.03.html
+Consultar e verificar os dados com JavaScript e DynamoDB: https://docs.aws.amazon.com/pt_br/amazondynamodb/latest/developerguide/GettingStarted.Js.04.html
 
 ## Validação do exercício
 
