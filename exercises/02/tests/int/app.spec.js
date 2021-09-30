@@ -19,7 +19,7 @@ const {
 const API_PATH = '/exercise-02';
 
 const ID_PAYLOAD = require('./resources/id.json');
-const CITY_PAYLOAD = require('./resources/clients.json');
+const CITY_PAYLOAD = require('./resources/city.json');
 
 let response;
 describe(`Given the API receives a GET request on path: ${API_PATH}/{id}`, () => {
