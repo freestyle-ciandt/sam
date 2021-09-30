@@ -34,7 +34,7 @@ O objetivo desse exercício é o de criar uma Lambda Function que possua um even
 ```json
 [
     {
-        "id": 1,
+        "id": "1",
         "nome": "Cliente 1",
         "documento": "123456789",
         "cidade": "Rio de Janeiro",
@@ -43,7 +43,7 @@ O objetivo desse exercício é o de criar uma Lambda Function que possua um even
         "id_plano": 10
     },
     {
-        "id": 2,
+        "id": "2",
         "nome": "Cliente 2",
         "documento": "987654321",
         "cidade": "Rio de Janeiro",
@@ -69,7 +69,8 @@ Crie um arquivo *.env* dentro do diretório atual com o seguinte conteúdo:
 ```
 API_KEY='Coloque aqui a API Key da sua aplicação'
 API_URL='Coloque aqui a URL da sua API'
-TABELA_CLIENTE='Coloque aqui o nome da tabela criada'
+TABELA_DE_CLIENTES='Coloque aqui o nome da tabela criada'
+AWS_REGION='coloque aqui em que região seu DynamoDB está'
 ```
 
 Em seguida, no diretório raiz do projeto, execute o seguinte script para validar o exercício:
