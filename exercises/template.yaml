@@ -3,13 +3,69 @@ Transform: 'AWS::Serverless-2016-10-31'
 
 Description: Template básico para você resolver seus exercícios
 
-Resources:
-  RecursoInutil: # TODO: remover para começar os exercícios
-    Type: AWS::S3::Bucket
-    Properties:
-      BucketName: bucket-s3-de-exemplo
-
-Outputs:
-  RecursoInutil:
-    Description: Saída criada de exemplo
-    Value: !Ref RecursoInutil
+Resources: 
+  dmaClientes: 
+    Type: AWS::DynamoDB::Table
+    Properties: 
+      AttributeDefinitions:
+        - 
+          AttributeName: "id"
+          AttributeType: "N"
+        - 
+          AttributeName: "nome"
+          AttributeType: "S"
+        - 
+          AttributeName: "documento"
+          AttributeType: "S"
+        - 
+          AttributeName: "cidade"
+          AttributeType: "S"
+        - 
+          AttributeName: "estado"
+          AttributeType: "S"
+        - 
+          AttributeName: "pais"
+          AttributeType: "S"
+        - 
+          AttributeName: "id_plano"
+          AttributeType: "N"
+      KeySchema: 
+        - 
+          AttributeName: "id"
+          KeyType: "HASH"
+      ProvisionedThroughput: 
+        ReadCapacityUnits: "3"
+        WriteCapacityUnits: "3"
+      TableName: "dma-clientes"
+      GlobalSecondaryIndexes: 
+        - 
+          IndexName: "cidade-index"
+          KeySchema:
+            - 
+              AttributeName: "cidade"
+              KeyType: "RANGE"
+          Projection: 
+            NonKeyAttributes: 
+              - "nome"
+              - "documento"
+              - "estado"
+              - "pais"
+              - "id_plano"
+            ProjectionType: "INCLUDE"
+        - 
+          IndexName: "myGSI2"
+          KeySchema: 
+            - 
+              AttributeName: "NumberOfSongs"
+              KeyType: "HASH"
+            - 
+              AttributeName: "Sales"
+              KeyType: "RANGE"
+          Projection: 
+            NonKeyAttributes: 
+              - "nome"
+              - "documento"
+              - "estado"
+              - "pais"
+              - "id_plano"
+            ProjectionType: "INCLUDE"

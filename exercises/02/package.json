@@ -1,0 +1,15 @@
+{
+  "name": "02",
+  "version": "1.0.0",
+  "description": "O objetivo desse exercício é o de criar uma Lambda Function que possua um evento http e que retorne dados do DynamoDB.",
+  "main": "index.js",
+  "directories": {
+    "test": "tests"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC"
+}
