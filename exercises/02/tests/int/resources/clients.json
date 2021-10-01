@@ -1,0 +1,38 @@
+[
+    {
+        "id": 10,
+        "nome": "Adams",
+        "documento": "301.122.340-89",
+        "cidade": "São Paulo",
+        "estado": "SP",
+        "pais": "Brasil",
+        "id_plano": 1001
+    },
+    {
+        "id": 20,
+        "nome": "Xiang",
+        "documento": "644.417.990-47",
+        "cidade": "Rio de Janeiro",
+        "estado": "RJ",
+        "pais": "Brasil",
+        "id_plano": 1002
+    },
+    {
+        "id": 30,
+        "nome": "John",
+        "documento": "437.142.480-56",
+        "cidade": "Belo Horizonte",
+        "estado": "MG",
+        "pais": "Brasil",
+        "id_plano": 1010
+    },
+    {
+        "id": 40,
+        "nome": "Jin",
+        "documento": "644.123.921-47",
+        "cidade": "Rio de Janeiro",
+        "estado": "RJ",
+        "pais": "Brasil",
+        "id_plano": 1020
+    }
+]

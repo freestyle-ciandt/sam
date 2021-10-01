@@ -19,6 +19,8 @@ O objetivo desse exercício é criar uma Lambda function que seja invocada por m
 AWS Serverless API: https://github.com/aws/serverless-application-model/blob/master/docs/internals/generated_resources.rst#api
 AWS Serverless Function: https://github.com/aws/serverless-application-model/blob/master/versions/2016-10-31.md#awsserverlessfunction
 AWS Serverless Function API Event Source: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#api
+AWS Serverless API key example: https://docs.aws.amazon.com/serverless-application-model/latest/developerguide/serverless-controlling-access-to-apis-keys.html
+AWS Serverless API ApiAuth Usage plans: https://docs.aws.amazon.com/serverless-application-model/latest/developerguide/sam-property-api-apiauth.html#sam-api-apiauth-usageplan
 
 ## Validação do exercício
 
