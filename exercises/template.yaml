@@ -1,16 +1,24 @@
-AWSTemplateFormatVersion: '2010-09-09'
-Transform: 'AWS::Serverless-2016-10-31'
+AWSTemplateFormatVersion: "2010-09-09"
+Transform: "AWS::Serverless-2016-10-31"
 
 Description: Template básico para você resolver seus exercícios
 
 Resources:
-
   ExercisesApi:
-    Type: AWS::Serverless::Api  
-    Properties:    
+    Type: AWS::Serverless::Api
+    Properties:
       StageName: Prod
       Auth:
         ApiKeyRequired: true
+        UsagePlan:
+          CreateUsagePlan: PER_API
+          Description: Usage plan para API Mando Rafael e Neviton
+          Quota:
+            Limit: 5000
+            Period: MONTH
+          Tags:
+            - Key: Name
+              Value: Exercise01ApiUsagePlan
 
   Exercise01Function:
     Type: AWS::Serverless::Function
@@ -28,6 +36,36 @@ Resources:
       CodeUri: ./01
       Handler: Exercise-01-function.handler
 
+  Exercise02DynamoDBTable: 
+    Type: AWS::DynamoDB::Table
+    Properties:
+      AttributeDefinitions: 
+        - 
+          AttributeName: "id"
+          AttributeType: "N"
+        - 
+          AttributeName: "cidade"
+          AttributeType: "S"
+      KeySchema: 
+        - 
+          AttributeName: "id"
+          KeyType: "HASH"     
+      ProvisionedThroughput: 
+        ReadCapacityUnits: "3"
+        WriteCapacityUnits: "3"
+      TableName: "mrn-clientes"
+      GlobalSecondaryIndexes: 
+        - 
+          IndexName: "cidade-index"
+          KeySchema: 
+            - 
+              AttributeName: "cidade"
+              KeyType: "HASH"
+          Projection:
+            ProjectionType: "ALL"
+          ProvisionedThroughput: 
+            ReadCapacityUnits: "3"
+            WriteCapacityUnits: "3"            
 Outputs:
   Exercise01Function:
     Description: Saída Exercicio 01
