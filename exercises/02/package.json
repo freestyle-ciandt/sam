@@ -1,0 +1,14 @@
+{
+  "name": "02",
+  "version": "1.0.0",
+  "description": "O objetivo desse exercício é criar uma Lambda function que leia de uma tabela DynamoDB e devolva dados de cliente.",
+  "main": "Exercise-02-function.js",
+  "directories": {
+    "test": "tests"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC"
+}

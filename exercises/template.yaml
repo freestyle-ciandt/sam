@@ -36,6 +36,22 @@ Resources:
       CodeUri: ./01
       Handler: Exercise-01-function.handler
 
+  Exercise02Function:
+    Type: AWS::Serverless::Function
+    Properties:
+      Runtime: nodejs12.x
+      Events:
+        Exercise01Api:
+          Type: Api
+          Properties:
+            RestApiId: !Ref ExercisesApi
+            Path: /exercise-02/{id}
+            Method: GET
+            Auth:
+              ApiKeyRequired: true
+      CodeUri: ./02
+      Handler: Exercise-02-function.handler
+
   Exercise02DynamoDBTable: 
     Type: AWS::DynamoDB::Table
     Properties:
