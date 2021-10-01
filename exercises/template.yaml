@@ -11,24 +11,9 @@ Resources:
         - 
           AttributeName: "id"
           AttributeType: "N"
-        - 
-          AttributeName: "nome"
-          AttributeType: "S"
-        - 
-          AttributeName: "documento"
-          AttributeType: "S"
-        - 
+        -
           AttributeName: "cidade"
           AttributeType: "S"
-        - 
-          AttributeName: "estado"
-          AttributeType: "S"
-        - 
-          AttributeName: "pais"
-          AttributeType: "S"
-        - 
-          AttributeName: "id_plano"
-          AttributeType: "N"
       KeySchema: 
         - 
           AttributeName: "id"
@@ -43,29 +28,9 @@ Resources:
           KeySchema:
             - 
               AttributeName: "cidade"
-              KeyType: "RANGE"
-          Projection: 
-            NonKeyAttributes: 
-              - "nome"
-              - "documento"
-              - "estado"
-              - "pais"
-              - "id_plano"
-            ProjectionType: "INCLUDE"
-        - 
-          IndexName: "myGSI2"
-          KeySchema: 
-            - 
-              AttributeName: "NumberOfSongs"
               KeyType: "HASH"
-            - 
-              AttributeName: "Sales"
-              KeyType: "RANGE"
-          Projection: 
-            NonKeyAttributes: 
-              - "nome"
-              - "documento"
-              - "estado"
-              - "pais"
-              - "id_plano"
-            ProjectionType: "INCLUDE"
+          Projection:
+            ProjectionType: "ALL"
+          ProvisionedThroughput:
+            ReadCapacityUnits: "3"
+            WriteCapacityUnits: "3"
