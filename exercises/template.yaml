@@ -39,6 +39,9 @@ Resources:
   Exercise02Function:
     Type: AWS::Serverless::Function
     Properties:
+      Policies:
+        - DynamoDBReadPolicy:
+            TableName: !Ref Exercise02DynamoDBTable
       Runtime: nodejs12.x
       Events:
         Exercise01Api:
@@ -48,7 +51,7 @@ Resources:
             Path: /exercise-02/{id}
             Method: GET
             Auth:
-              ApiKeyRequired: true
+              ApiKeyRequired: false
       CodeUri: ./02
       Handler: Exercise-02-function.handler
 
@@ -81,7 +84,7 @@ Resources:
             ProjectionType: "ALL"
           ProvisionedThroughput: 
             ReadCapacityUnits: "3"
-            WriteCapacityUnits: "3"            
+            WriteCapacityUnits: "3"
 Outputs:
   Exercise01Function:
     Description: Saída Exercicio 01
