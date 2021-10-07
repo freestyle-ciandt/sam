@@ -6,6 +6,7 @@ Garanta que máquina está pronta para você começar os exercícios com [este t
 ## Exercícios
 |Exercícios|Enunciado|
 |-|-|
+|[Éxercício 0](exercises/00/README.md)|introduzir o estudante a conceitos básicos de YAML, CloudFormation e SAM antes de começar o exercício|
 |[Exercício 1](exercises/01/README.md)|criar uma Lambda function que seja invocada por meio de uma API HTTP, fazendo uso do [Framework AWS SAM](https://aws.amazon.com/serverless/sam/)|
 |[Exercício 2](exercises/02/README.md)|criar uma Lambda Function que possua um evento http e que retorne (GetItem) algum dado de uma Tabela do DynamoDB|
 |[Exercício 3](exercises/03/README.md)|criar uma Lambda Function que seja chamada a cada uma hora (Cloud Watch Event)|
