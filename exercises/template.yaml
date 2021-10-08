@@ -34,3 +34,11 @@ Resources:
           ProvisionedThroughput:
             ReadCapacityUnits: "3"
             WriteCapacityUnits: "3"
+
+  helloworld:
+    Type: 'AWS::Serverless::Function'
+    Properties:
+      Handler: index.handler
+      Runtime: nodejs12.x
+      CodeUri: ./02/src
+      Description: A starter AWS Lambda function.
