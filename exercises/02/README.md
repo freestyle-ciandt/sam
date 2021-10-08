@@ -79,3 +79,8 @@ Em seguida, no diretório raiz do projeto, execute o seguinte script para valida
 ```
 npm run validate -ex=02
 ```
+
+## Deploy Steps
+sam build --template template.yaml --build-dir .aws-sam/build && \
+sam package --template-file .aws-sam/build/template.yaml --output-template-file .aws-sam/build/packaged-template.yaml --s3-bucket sam-ciandt-dojo --s3-prefix mandolesi_e_rafael_e_neviton  && \
+sam deploy --template-file .aws-sam/build/packaged-template.yaml --stack-name sam-dojo-mandolesi-e-rafael-e-neviton --no-fail-on-empty-changeset --s3-prefix mandolesi_e_rafael_e_neviton --capabilities CAPABILITY_IAM CAPABILITY_NAMED_IAM
