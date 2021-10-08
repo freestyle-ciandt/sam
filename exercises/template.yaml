@@ -42,3 +42,12 @@ Resources:
       Runtime: nodejs12.x
       CodeUri: ./02/src
       Description: A starter AWS Lambda function.
+      Events:
+        GetResource:
+          Type: Api
+          Properties:
+            Path: /exercise-02/{id}
+            Method: get
+      Policies:
+      - DynamoDBReadPolicy:
+          TableName: !Ref dmaClientes
