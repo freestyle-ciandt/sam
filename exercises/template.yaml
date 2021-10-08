@@ -44,14 +44,22 @@ Resources:
             TableName: !Ref Exercise02DynamoDBTable
       Runtime: nodejs12.x
       Events:
-        Exercise01Api:
+        Exercise02ApiId:
           Type: Api
           Properties:
             RestApiId: !Ref ExercisesApi
             Path: /exercise-02/{id}
             Method: GET
             Auth:
-              ApiKeyRequired: false
+              ApiKeyRequired: true
+        Exercise02ApiCidade:
+          Type: Api
+          Properties:
+            RestApiId: !Ref ExercisesApi
+            Path: /exercise-02/cidade/{cidade}
+            Method: GET
+            Auth:
+              ApiKeyRequired: true              
       CodeUri: ./02
       Handler: Exercise-02-function.handler
 
