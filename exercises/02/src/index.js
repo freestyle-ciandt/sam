@@ -5,13 +5,19 @@ const handler = async (event) => {
     const { id } = event.pathParameters
     const params = {
         TableName: 'dma-clientes',
-        Key: { id }
+        Key: { id: parseInt(id, 10) }
     };
     const { Item } = await docClient.get(params).promise();
     console.log('Item', Item);
+    if (Item){
+        return {
+            statusCode: 200,
+            body: JSON.stringify(Item)
+        }   
+    }
     return {
-        statusCode: 200,
-        body: JSON.stringify(Item)
+        statusCode: 404,
+        body: JSON.stringify({message: 'Cliente não encontrado'})
     }
 };
 
