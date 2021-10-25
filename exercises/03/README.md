@@ -19,11 +19,15 @@ O objetivo desse exercício é o de criar uma Lambda Function que seja chamada a
 
 ## Links úteis
 **Definições do tipo AWS::S3::Bucket:** https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-properties-s3-bucket.html
-**Definições do tipo AWS::DynamoDB::Table:** https://docs.aws.amazon.com/pt_br/AWSCloudFormation/latest/UserGuide/aws-resource-dynamodb-table.html
-**Definindo DynamoDB como ON_DEMAND:** https://intellipaat.com/community/17613/how-to-set-dynamodb-read-write-capacity-mode-to-on-demand-on-cloudformation
-**Usando o writeBatchItems no NodeJS:** https://docs.aws.amazon.com/sdk-for-javascript/v2/developer-guide/dynamodb-example-table-read-write-batch.html
-**Exemplo de uso do writeBatchItem:** https://gist.github.com/crizant/48de514d9e5f43b252bad10e6a81734b
 
+**Definições do tipo AWS::DynamoDB::Table:** https://docs.aws.amazon.com/pt_br/AWSCloudFormation/latest/UserGuide/aws-resource-dynamodb-table.html
+
+**Definindo DynamoDB como ON_DEMAND:** https://intellipaat.com/community/17613/
+how-to-set-dynamodb-read-write-capacity-mode-to-on-demand-on-cloudformation
+
+**Usando o writeBatchItems no NodeJS:** https://docs.aws.amazon.com/sdk-for-javascript/v2/developer-guide/dynamodb-example-table-read-write-batch.html
+
+**Exemplo de uso do writeBatchItem:** https://gist.github.com/crizant/48de514d9e5f43b252bad10e6a81734b
 
 ## Validação do exercício
 
