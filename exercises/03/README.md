@@ -15,7 +15,9 @@ O objetivo desse exercício é o de criar uma Lambda Function que seja chamada a
   - escreve os itens desse CSV em uma tabela **DynamoDB** `<nome-da-sua-stack-de-cloudformation>-produtos`. Essa tabela deverá possuir o tipo de custo **ON DEMAND**.
   - os itens deverão ser escritos com o uso da operação **batchWriteItem** com **25 items** de cada vez.
   - caso algum item falhe, você deverá tentar escrevê-lo novamente.
-- você deverá colocar o **nome do bucket S3** e o **ARN de sua Lambda** como **Outputs** do seu template de CloudFormation. Eles serão usados pelos testes integrados.
+- você deverá colocar o **nome do bucket S3** e o **ARN de sua Lambda** como **Outputs** do seu template de CloudFormation. Eles serão usados pelos testes integrados. Os outputs deverão ser:
+  - **BucketName** para o nome do Bucket S3.
+  - **LambdaArn** para o ARN da Lambda Function.
 
 ## Links úteis
 **Definições do tipo AWS::S3::Bucket:** https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-properties-s3-bucket.html
