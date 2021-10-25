@@ -4,10 +4,10 @@ O objetivo desse exercício é o de criar uma Lambda Function que seja chamada a
 ## Requisitos
 
 - a infraestrutura deverá processar um arquivo CSV com as seguintes colunas:
- - id
- - product_name
- - description
- - price
+  - id
+  - product_name
+  - description
+  - price
 - esse arquivo será sempre gerado em um Bucket S3. Para esse exercícios, voce deverá chamá-lo de `<nome-da-sua-stack-de-cloudformation>-produtos`.
 - você podoe utilizar o [arquivo auto gerado para esse exercício](produtos.csv) para testar seu código.
 - seu trabalho será criar um evento de **CloudWatch** que executa todo os dias às 6 horas no horário UTC. Esse evento deverá chamar uma **Lambda Function** que:
