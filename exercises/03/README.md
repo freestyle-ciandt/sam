@@ -8,8 +8,8 @@ O objetivo desse exercício é o de criar uma Lambda Function que seja chamada a
   - product_name
   - description
   - price
-- esse arquivo será sempre gerado em um Bucket S3. Para esse exercícios, voce deverá chamá-lo de `<nome-da-sua-stack-de-cloudformation>-produtos`.
-- você podoe utilizar o [arquivo auto gerado para esse exercício](produtos.csv) para testar seu código.
+- esse arquivo será sempre gerado em um Bucket S3. Para esse exercício, voce deverá chamá-lo de `<nome-da-sua-stack-de-cloudformation>-produtos`.
+- você pode utilizar o [arquivo auto gerado para esse exercício](produtos.csv) para testar seu código.
 - seu trabalho será criar um evento de **CloudWatch** que executa todo os dias às 6 horas no horário UTC. Esse evento deverá chamar uma **Lambda Function** que:
   - procura o arquivo **produtos.csv** dentro no Bucket S3 criado anteriormente.
   - escreve os itens desse CSV em uma tabela **DynamoDB** `<nome-da-sua-stack-de-cloudformation>-produtos`. Essa tabela deverá possuir o tipo de custo **ON DEMAND**.
@@ -29,6 +29,8 @@ O objetivo desse exercício é o de criar uma Lambda Function que seja chamada a
 **Exemplo de uso do writeBatchItem:** https://gist.github.com/crizant/48de514d9e5f43b252bad10e6a81734b
 
 **Parser de CSV:** https://csv.js.org/parse/
+
+**CloudFormation Outputs:** https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/outputs-section-structure.html
 
 ## Validação do exercício
 
