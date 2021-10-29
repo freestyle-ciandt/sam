@@ -1,0 +1,14 @@
+{
+  "name": "03",
+  "version": "1.0.0",
+  "description": "O objetivo desse exercício é o de criar uma Lambda Function que seja chamada a cada uma hora (Cloud Watch Event).",
+  "main": "Execise-03-function.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "csv-parse": "^4.16.3"
+  }
+}
