@@ -1,15 +1,12 @@
 const chai = require('chai');
 
-const {
-    getStackOutputs,
-    uploadFileToS3,
-    invokeLambda,
-    convertCSVToObject,
-    getRegisterFromDynamoDB,
-    deleteRegisterFromDynamoDB,
-    findTriggerSourceArn,
-    getCloudWatchEventRuleScheduleExpression,
-} = require('./resources/utils');
+const cloudformation = require('../../../__tests__/resources/services/cloudformation');
+const s3 = require('../../../__tests__/resources/services/s3');
+const lambda = require('../../../__tests__/resources/services/lambda');
+const dynamodb = require('../../../__tests__/resources/services/dynamodb');
+const cloudwatch = require('../../../__tests__/resources/services/cloudwatch');
+
+const csv = require('../../../__tests__/resources/services/csv');
 
 const {
     expect,
@@ -17,7 +14,6 @@ const {
 
 const {
     STACK_NAME,
-    REGION,
 } = process.env;
 
 const PRODUCTS_FILE_NAME = 'produtos.csv';
@@ -33,38 +29,42 @@ describe('Given a S3 bucket', () => {
             BucketName: bucketName,
             LambdaArn: lambdaArn,
             TableName: tableName
-        } = await getStackOutputs(STACK_NAME, REGION));
+        } = await cloudformation.getStackOutputs(STACK_NAME));
     });
 
     describe('When a new version of products.csv is inserted and the lambda event is called', () => {
         let records;
 
         before(async () => {
-            await uploadFileToS3(bucketName, PRODUCTS_FILE_NAME, PRODUCTS_CSV);
-            await invokeLambda(lambdaArn, REGION);
-            records = convertCSVToObject(PRODUCTS_CSV);
+            await s3.uploadFile(bucketName, PRODUCTS_FILE_NAME, PRODUCTS_CSV);
+            await lambda.invoke(lambdaArn);
+            records = csv.toObject(PRODUCTS_CSV);
         });
 
-        it('Then it should contains all registers in the DynamoDB', async () => {
+        it('Then it should contain all records in the DynamoDB', async () => {
             for (const record of records) {
-                const dynamoDBItem = await getRegisterFromDynamoDB(tableName, REGION, record.id);
+                const dynamoDBItem = await dynamodb.get(tableName, {
+                    id: record.id,
+                });
                 expect(dynamoDBItem).to.be.eql(record);
             }
         });
 
         after(async () => {
             for (const record of records) {
-                 await deleteRegisterFromDynamoDB(tableName, REGION, record.id);
+                 await dynamodb.remove(tableName, {
+                     id: record.id,
+                 });
             }
         });
     });
 
-    describe('When the it is 6am in the UTC timezone', () => {
+    describe('When it is 6am in the UTC timezone', () => {
         const LAMBDA_PRINCIPAL_SERVICE = 'events.amazonaws.com';
         const EXPECTED_SCHEDULE_EXPRESSION = 'cron(0 6 * * ? *)';
         it('The Lambda Should be executed', async () => {
-            const lambdaPolicy = await findTriggerSourceArn(lambdaArn, REGION, LAMBDA_PRINCIPAL_SERVICE);
-            const scheduleExpression = await getCloudWatchEventRuleScheduleExpression(lambdaPolicy, REGION);
+            const lambdaPolicy = await lambda.findTriggerByServicePrincipal(lambdaArn, LAMBDA_PRINCIPAL_SERVICE);
+            const scheduleExpression = await cloudwatch.getRuleScheduleExpression(lambdaPolicy);
             expect(scheduleExpression).to.equal(EXPECTED_SCHEDULE_EXPRESSION)
         });
     });
