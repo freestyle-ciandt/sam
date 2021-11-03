@@ -4,10 +4,10 @@ O objetivo desse exercício é o de criar uma Lambda Function que seja chamada a
 ## Requisitos
 
 - a infraestrutura deverá processar um arquivo CSV com as seguintes colunas:
-  - id
-  - product_name
-  - description
-  - price
+  - id: **string**
+  - product_name: **string**
+  - description: **string**
+  - price: **string**
 - esse arquivo será sempre gerado em um Bucket S3. Para esse exercício, voce deverá chamá-lo de `<nome-da-sua-stack-de-cloudformation>-produtos`.
 - você pode utilizar o [arquivo auto gerado para esse exercício](produtos.csv) para testar seu código.
 - seu trabalho será criar um evento de **CloudWatch** que executa todo os dias às 6 horas no horário UTC. Esse evento deverá chamar uma **Lambda Function** que:
@@ -18,6 +18,7 @@ O objetivo desse exercício é o de criar uma Lambda Function que seja chamada a
 - você deverá colocar o **nome do bucket S3** e o **ARN de sua Lambda** como **Outputs** do seu template de CloudFormation. Eles serão usados pelos testes integrados. Os outputs deverão ser:
   - **BucketName** para o nome do Bucket S3.
   - **LambdaArn** para o ARN da Lambda Function.
+  - **TableName** para o nome de sua tabela de DynamoDB.
 
 ## Links úteis
 **Definições do tipo AWS::S3::Bucket:** https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-properties-s3-bucket.html
@@ -39,6 +40,7 @@ O objetivo desse exercício é o de criar uma Lambda Function que seja chamada a
 Crie um arquivo *.env* dentro do diretório atual com o seguinte conteúdo:
 ```
 STACK_NAME=<<nome_da_sua_stack_aqui>>
+REGION=<<região da AWS onde esta sua Stack de CloudFormation>>
 ```
 
 Em seguida, no diretório raiz do projeto, execute o seguinte script para validar o exercício:
