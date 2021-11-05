@@ -6,7 +6,8 @@ const { BUCKET_PRODUTOS } = process.env;
 const getCsv = async () => {
   const s3Instance = new S3();
   const produtosCsv = await s3Instance.getObject({
-    Bucket: BUCKET_PRODUTOS
+    Bucket: BUCKET_PRODUTOS,
+    Key: "produtos.csv"
   }).promise();
 
   return produtosCsv;
@@ -19,8 +20,8 @@ const parseCsv = (csv) => {
   });
 }
 
-exports.handler = () => {
-  const produtosCsv = getCsv();
+exports.handler = async () => {
+  const produtosCsv = await getCsv();
   const produtos = parseCsv(produtosCsv);
 
   console.log(produtos);
