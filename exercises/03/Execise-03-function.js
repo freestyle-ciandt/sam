@@ -1,14 +1,27 @@
 
 const parse = require('csv-parse/lib/sync');
-const { readFileSync } = require('fs');
+const { S3 } = require('aws-sdk');
+const { BUCKET_PRODUTOS } = process.env;
 
-const input = readFileSync('./produtos.csv', { encoding: 'utf-8' } )
+const getCsv = async () => {
+  const s3Instance = new S3();
+  const produtosCsv = await s3Instance.getObject({
+    Bucket: BUCKET_PRODUTOS
+  }).promise();
 
-const records = parse(input, {
-  columns: true,
-  skip_empty_lines: true
-})
+  return produtosCsv;
+}
+
+const parseCsv = (csv) => {
+  return parse(csv, {
+    columns: true,
+    skip_empty_lines: true
+  });
+}
 
 exports.handler = () => {
+  const produtosCsv = getCsv();
+  const produtos = parseCsv(produtosCsv);
 
+  console.log(produtos);
 }
