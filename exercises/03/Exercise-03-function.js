@@ -10,7 +10,7 @@ const getCsv = async () => {
     Key: "produtos.csv"
   }).promise();
 
-  return produtosCsv;
+  return produtosCsv.Body.toString('utf-8');
 }
 
 const parseCsv = (csv) => {
