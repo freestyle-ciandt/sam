@@ -115,6 +115,19 @@ Resources:
     Properties:
       BucketName: !Sub ${AWS::StackName}-produtos
 
+  Exercise03Function:
+    Type: AWS::Serverless::Function
+    Properties:
+      Policies:
+        - S3ReadPolicy:
+            BucketName: !Ref Exercise03S3Bucket
+      Environment:
+        Variables:
+          BUCKET_PRODUTOS: !Ref Exercise03S3Bucket
+      Runtime: nodejs12.x
+      CodeUri: ./03
+      Handler: Exercise-03-function.handler
+
 Outputs:
   Exercise01Function:
     Description: Saída Exercicio 01
