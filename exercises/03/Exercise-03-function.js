@@ -39,7 +39,7 @@ const mapProdutosToDynamoRequest = (produtos) => {
 };
 
 const writeToDynamo = async (requestItems) => {
-  const documentClient = new AWS.DynamoDB.DocumentClient();
+  const documentClient = new DynamoDB.DocumentClient();
   const data = await documentClient.batchWrite(requestItems).promise();
   console.log({ data });
 }
@@ -49,7 +49,7 @@ exports.handler = async () => {
   const produtos = parseCsv(produtosCsv);
   const dynamoRequestItems = mapProdutosToDynamoRequest(produtos);
   console.log({ dynamoRequestItems });
-  writeToDynamo(dynamoRequestItems);
+  await writeToDynamo(dynamoRequestItems);
 
   console.log(produtos);
 }
