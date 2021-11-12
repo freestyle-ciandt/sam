@@ -1,6 +1,7 @@
 
 const parse = require('csv-parse/lib/sync');
-const { S3 } = require('aws-sdk');
+const { S3, DynamoDB } = require('aws-sdk');
+
 const { BUCKET_PRODUTOS } = process.env;
 
 const getCsv = async () => {
@@ -19,6 +20,27 @@ const parseCsv = (csv) => {
     skip_empty_lines: true
   });
 }
+
+var params = {
+  RequestItems: {
+    'sam-dojo-mandolesi-e-rafael-produtos': [
+      {
+        PutRequest: {
+          Item: {
+            id: 'anotherKey',
+            NumAttribute: 1,
+            BoolAttribute: true,
+            ListAttribute: [1, 'two', false],
+            MapAttribute: { foo: 'bar' }
+          }
+        }
+      }
+    ]
+  }
+};
+
+var documentClient = new AWS.DynamoDB.DocumentClient();
+
 
 exports.handler = async () => {
   const produtosCsv = await getCsv();
