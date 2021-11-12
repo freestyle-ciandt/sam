@@ -21,30 +21,35 @@ const parseCsv = (csv) => {
   });
 }
 
-var params = {
-  RequestItems: {
-    'sam-dojo-mandolesi-e-rafael-produtos': [
-      {
-        PutRequest: {
-          Item: {
-            id: 'anotherKey',
-            NumAttribute: 1,
-            BoolAttribute: true,
-            ListAttribute: [1, 'two', false],
-            MapAttribute: { foo: 'bar' }
-          }
+const mapProdutosToDynamoRequest = (produtos) => {
+  const putRequestList = produtos.map(produto => {
+    return {
+      PutRequest: {
+        Item: {
+          ...produto
         }
       }
-    ]
-  }
+    }
+  })
+  return {
+    RequestItems: {
+      'sam-dojo-mandolesi-e-rafael-produtos': putRequestList
+    }
+  };
 };
 
-var documentClient = new AWS.DynamoDB.DocumentClient();
-
+const writeToDynamo = async (requestItems) => {
+  const documentClient = new AWS.DynamoDB.DocumentClient();
+  const data = await documentClient.batchWrite(requestItems).promise();
+  console.log({ data });
+}
 
 exports.handler = async () => {
   const produtosCsv = await getCsv();
   const produtos = parseCsv(produtosCsv);
+  const dynamoRequestItems = mapProdutosToDynamoRequest(produtos);
+  console.log({ dynamoRequestItems });
+  writeToDynamo(dynamoRequestItems);
 
   console.log(produtos);
 }
