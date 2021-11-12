@@ -21,22 +21,19 @@ const parseCsv = (csv) => {
   });
 }
 
-const mapProdutosToDynamoRequest = (produtos) => {
-  const putRequestList = produtos.map(produto => {
-    return {
-      PutRequest: {
-        Item: {
-          ...produto
-        }
-      }
+const getPutRequestList = (produtos) => produtos.map(produto => ({
+  PutRequest: {
+    Item: {
+      ...produto
     }
-  })
-  return {
-    RequestItems: {
-      'sam-dojo-mandolesi-e-rafael-produtos': putRequestList
-    }
-  };
-};
+  }
+}))
+
+const mapProdutosToDynamoRequest = (putRequestList) => ({
+  RequestItems: {
+    'sam-dojo-mandolesi-e-rafael-produtos': putRequestList
+  }
+});
 
 const writeToDynamo = async (requestItems) => {
   const documentClient = new DynamoDB.DocumentClient();
@@ -47,7 +44,18 @@ const writeToDynamo = async (requestItems) => {
 exports.handler = async () => {
   const produtosCsv = await getCsv();
   const produtos = parseCsv(produtosCsv);
-  const dynamoRequestItems = mapProdutosToDynamoRequest(produtos);
+
+  const batchSize = 25;
+  const putRequestList = [];
+  while (produtos.length > 0) {
+    const produtosBatch = produtos.splice(0, batchSize);
+    putRequestList.push(getPutRequestList(produtosBatch));
+  }
+  console.log('putRequestList', putRequestList)
+
+  const dynamoRequestItems = mapProdutosToDynamoRequest(putRequestList);
+  console.log('dynamoRequestItems', dynamoRequestItems)
+
   console.log({ dynamoRequestItems });
   await writeToDynamo(dynamoRequestItems);
 
