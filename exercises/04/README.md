@@ -21,9 +21,29 @@ O objetivo desse exercício é o de criar uma arquitetura Produtor-Consumidor us
 
   - ser protegida por uma API KEY.
   - validar o **body** da requisição:
-    - Se algum campo não for enviado, ela deverá retornar o erro **400 (Bad Request)**.
+    - Se algum campo não for enviado, ela deverá retornar o erro **400 (Bad Request)** com a mensagem:
+
+        ```json
+        {
+            "message": "Invalid Input"
+        }
+        ```
+
     - Se o tipo de algum campo estiver incorreto, retornar o erro **400 (Bad Request)**.
-    - Se a requisição estiver correta, enviar o JSON para uma fila de SQS e retornar o código HTTP **200 (Sucesso)** para o cliente.
+
+        ```json
+        {
+            "message": "Invalid Input"
+        }
+        ```
+
+    - Se a requisição estiver correta, enviar o JSON para uma fila de SQS e retornar o código HTTP **200 (Sucesso)** para o cliente:
+
+        ```json
+        {
+            "message": "Success"
+        }
+        ```
 
 - criar uma Lambda Function que:
   - leia as mensagens da fila de SQS
