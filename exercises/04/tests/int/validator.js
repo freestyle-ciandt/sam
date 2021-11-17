@@ -4,18 +4,20 @@ const removePropertyFromObject = (object, property) => {
     return copy;
 };
 
+const generateEmptyField = (object, property) => {
+    const copy = { ...object };
+    copy[property] = typeof copy[property] === 'string' ? '' : 0;
+    return copy;
+}
+
 const generateInvalidRequest = (object, property) => {
     const copy = { ...object };
-
-    if (typeof object[property] === 'string') {
-        copy[property] = 123;
-    }
-
-    copy[property] = 'Invalid Input';
+    copy[property] = typeof copy[property] === 'string' ? 123 : 'Invalid Input';
     return copy;
 };
 
 module.exports = {
     removePropertyFromObject,
     generateInvalidRequest,
+    generateEmptyField,
 }
