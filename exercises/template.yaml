@@ -122,7 +122,7 @@ Resources:
         - S3ReadPolicy:
             BucketName: !Ref Exercise03S3Bucket
         - DynamoDBWritePolicy:
-            TableName:  !Ref 
+            TableName:  !Ref Exercise03DynamoDBTable
       Environment:
         Variables:
           BUCKET_PRODUTOS: !Ref Exercise03S3Bucket
