@@ -19,6 +19,7 @@ O objetivo desse exercício é o de criar uma arquitetura Produtor-Consumidor us
 }
 ```
   - A API deve:
+    - retornar **o código 403 (Forbidden)** caso a API KEY não seja informada na requisição.
     - validar o body da requisição para:
       - garantir que todos os campos estão sendo enviados no corpo da requisição.
       - garantir que o tipo do campo enviado esteja correto.
@@ -60,9 +61,12 @@ Crie um arquivo *.env* dentro do diretório atual com o seguinte conteúdo:
 ```
 API_KEY='Coloque aqui a API Key da sua aplicação'
 API_URL='Coloque aqui a URL da sua API'
+TABELA_DE_CLIENTES='Coloque aqui o nome da tabela criada'
+AWS_REGION='coloque aqui em que região seu DynamoDB está'
 ```
 
 Em seguida, no diretório raiz do projeto, execute o seguinte script para validar o exercício:
 ```
+npm run validate -ex=02
 npm run validate -ex=04
 ```
