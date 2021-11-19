@@ -46,18 +46,14 @@ exports.handler = async () => {
   const produtos = parseCsv(produtosCsv);
 
   const batchSize = 25;
-  const putRequestList = [];
   while (produtos.length > 0) {
     const produtosBatch = produtos.splice(0, batchSize);
-    putRequestList.push(getPutRequestList(produtosBatch));
+    const dynamoRequestItems = mapProdutosToDynamoRequest(getPutRequestList(produtosBatch));
+    console.log('dynamoRequestItems', dynamoRequestItems)
+    await writeToDynamo(dynamoRequestItems);
   }
-  console.log('putRequestList', putRequestList)
-
-  const dynamoRequestItems = mapProdutosToDynamoRequest(putRequestList);
-  console.log('dynamoRequestItems', dynamoRequestItems)
 
   console.log({ dynamoRequestItems });
-  await writeToDynamo(dynamoRequestItems);
 
   console.log(produtos);
 }
