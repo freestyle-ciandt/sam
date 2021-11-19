@@ -55,7 +55,5 @@ exports.handler = async () => {
     await writeToDynamo(dynamoRequestItems);
   }
 
-  console.log({ dynamoRequestItems });
-
   console.log(produtos);
 }
