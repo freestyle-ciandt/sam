@@ -24,7 +24,8 @@ const parseCsv = (csv) => {
 const getPutRequestList = (produtos) => produtos.map(produto => ({
   PutRequest: {
     Item: {
-      ...produto
+      ...produto, 
+      id: parseInt(produto.id, 10)
     }
   }
 }))
@@ -32,7 +33,7 @@ const getPutRequestList = (produtos) => produtos.map(produto => ({
 const mapProdutosToDynamoRequest = (putRequestList) => ({
   RequestItems: {
 	  //TO-DO: Create environment var fot the table name
-    'sam-dojo-mandolesi-e-rafael-produtos': putRequestList
+    'sam-dojo-mandolesi-e-rafael-e-neviton-produtos': putRequestList
   }
 });
 
