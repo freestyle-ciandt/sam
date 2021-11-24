@@ -16,6 +16,8 @@ Resources:
     Properties:
       StageName: Prod
       Auth:
+        UsagePlan:
+          CreateUsagePlan: PER_API
         ApiKeyRequired: true # sets for all methods
 
   Exercise01Function:
@@ -34,13 +36,14 @@ Resources:
             Auth:
               ApiKeyRequired: true
 
+
 Outputs:
   # ServerlessRestApi is an implicit API created out of Events key under Serverless::Function
   # Find out more about other implicit resources you can reference within SAM
   # https://github.com/awslabs/serverless-application-model/blob/master/docs/internals/generated_resources.rst#api
   Exercise01ApiKey:
     Description: "API Gateway endpoint URL for Prod stage for Exercise01 function"
-    Value: !Sub "https://${ServerlessRestApi}.execute-api.${AWS::Region}.amazonaws.com/Prod/exercise-01/"
+    Value: !Sub "https://${Exercise01Api}.execute-api.${AWS::Region}.amazonaws.com/Prod/exercise-01/"
   Exercise01Function:
     Description: "Hello World Lambda Function ARN"
     Value: !GetAtt Exercise01Function.Arn
