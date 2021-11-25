@@ -9,7 +9,7 @@ Resources:
     Properties: 
       AttributeDefinitions: 
         - AttributeName: "id"
-          AttributeType: "N"         
+          AttributeType: "N"
         - AttributeName: "cidade"
           AttributeType: "S"
         
@@ -18,8 +18,8 @@ Resources:
           KeyType: "HASH"
 
       ProvisionedThroughput: 
-        ReadCapacityUnits: "3"
-        WriteCapacityUnits: "3"
+        ReadCapacityUnits: 3
+        WriteCapacityUnits: 3
       TableName: "Dojo-recuperacao-clientes-02"
       GlobalSecondaryIndexes: 
         - 
@@ -32,5 +32,36 @@ Resources:
           Projection: 
             ProjectionType: "ALL"
           ProvisionedThroughput: 
-            ReadCapacityUnits: "3"
-            WriteCapacityUnits: "3"
+            ReadCapacityUnits: 3
+            WriteCapacityUnits: 3
+
+  DojoClientes02Api:
+    Type: AWS::Serverless::Api
+    Properties:
+      StageName: prod
+      Auth:
+        UsagePlan:
+          UsagePlanName: DojoClientes02Auth
+          CreateUsagePlan: PER_API
+          Quota:
+            Limit: 500
+            Period: MONTH
+          Throttle:
+            BurstLimit: 100
+            RateLimit: 50
+
+  DojoClientes02ApiFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: "./02/"
+      Runtime: nodejs14.x
+      Handler: app.handler
+      Events:
+        DojoClientes02ApiKey:
+          Type: Api
+          Properties:
+            Path: /exercise-02/{id}
+            Method: get
+            RestApiId: !Ref DojoClientes02Api
+            Auth:
+              ApiKeyRequired: true
