@@ -4,12 +4,61 @@ Transform: 'AWS::Serverless-2016-10-31'
 Description: Template básico para você resolver seus exercícios
 
 Resources:
-  RecursoInutil: # TODO: remover para começar os exercícios
-    Type: AWS::S3::Bucket
-    Properties:
-      BucketName: bucket-s3-de-exemplo
-
+  DojoClientes02: 
+    Type: AWS::DynamoDB::Table
+    Properties: 
+      AttributeDefinitions: 
+        - AttributeName: "id"
+          AttributeType: "N"         
+        - AttributeName: "cidade"
+          AttributeType: "S"
+        
+      KeySchema: 
+        - 
+          AttributeName: "id"
+          KeyType: "HASH"
+        - 
+          AttributeName: "Artist"
+          KeyType: "RANGE"
+      ProvisionedThroughput: 
+        ReadCapacityUnits: "5"
+        WriteCapacityUnits: "5"
+      TableName: "Dojo-recuperacao-clientes-02"
+      GlobalSecondaryIndexes: 
+        - 
+          IndexName: "myGSI"
+          KeySchema: 
+            - 
+              AttributeName: "Sales"
+              KeyType: "HASH"
+            - 
+              AttributeName: "Artist"
+              KeyType: "RANGE"
+          Projection: 
+            NonKeyAttributes: 
+              - "Album"
+              - "NumberOfSongs"
+            ProjectionType: "INCLUDE"
+          ProvisionedThroughput: 
+            ReadCapacityUnits: "3"
+            WriteCapacityUnits: "3"
+        - 
+          IndexName: "myGSI2"
+          KeySchema: 
+            - 
+              AttributeName: "NumberOfSongs"
+              KeyType: "HASH"
+            - 
+              AttributeName: "Sales"
+              KeyType: "RANGE"
+          Projection: 
+            NonKeyAttributes: 
+              - "Album"
+              - "Artist"
+            ProjectionType: "INCLUDE"
+          ProvisionedThroughput: 
+            ReadCapacityUnits: "3"
+            WriteCapacityUnits: "3"
+    
 Outputs:
-  RecursoInutil:
-    Description: Saída criada de exemplo
-    Value: !Ref RecursoInutil
+  
