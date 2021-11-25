@@ -14,51 +14,23 @@ Resources:
           AttributeType: "S"
         
       KeySchema: 
-        - 
-          AttributeName: "id"
+        - AttributeName: "id"
           KeyType: "HASH"
-        - 
-          AttributeName: "Artist"
-          KeyType: "RANGE"
+
       ProvisionedThroughput: 
-        ReadCapacityUnits: "5"
-        WriteCapacityUnits: "5"
+        ReadCapacityUnits: "3"
+        WriteCapacityUnits: "3"
       TableName: "Dojo-recuperacao-clientes-02"
       GlobalSecondaryIndexes: 
         - 
-          IndexName: "myGSI"
+          IndexName: "cidade-index"
           KeySchema: 
             - 
-              AttributeName: "Sales"
+              AttributeName: "cidade"
               KeyType: "HASH"
-            - 
-              AttributeName: "Artist"
-              KeyType: "RANGE"
+
           Projection: 
-            NonKeyAttributes: 
-              - "Album"
-              - "NumberOfSongs"
-            ProjectionType: "INCLUDE"
+            ProjectionType: "ALL"
           ProvisionedThroughput: 
             ReadCapacityUnits: "3"
             WriteCapacityUnits: "3"
-        - 
-          IndexName: "myGSI2"
-          KeySchema: 
-            - 
-              AttributeName: "NumberOfSongs"
-              KeyType: "HASH"
-            - 
-              AttributeName: "Sales"
-              KeyType: "RANGE"
-          Projection: 
-            NonKeyAttributes: 
-              - "Album"
-              - "Artist"
-            ProjectionType: "INCLUDE"
-          ProvisionedThroughput: 
-            ReadCapacityUnits: "3"
-            WriteCapacityUnits: "3"
-    
-Outputs:
-  
