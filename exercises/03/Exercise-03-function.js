@@ -4,6 +4,8 @@ const { S3, DynamoDB } = require('aws-sdk');
 
 const { BUCKET_PRODUTOS } = process.env;
 
+const delay = (seconds) => new Promise((resolve) => setTimeout(resolve, seconds * 1000))
+
 const getCsv = async () => {
   const s3Instance = new S3();
   const produtosCsv = await s3Instance.getObject({
@@ -37,7 +39,7 @@ const mapProdutosToDynamoRequest = (putRequestList) => ({
   }
 });
 
-const writeToDynamo = async (requestItems) => {
+const writeToDynamo = async (requestItems, numberOfSecondsRetry) => {
   const dynamoDb = new DynamoDB({
     maxRetries: 1
   })
@@ -45,8 +47,12 @@ const writeToDynamo = async (requestItems) => {
     service: dynamoDb,
     convertEmptyValues: true
   })
-  const data = await documentClient.batchWrite(requestItems).promise();
-  console.log({ data });
+  const { UnprocessedItems } = await documentClient.batchWrite(requestItems).promise();
+  console.log('UnprocessedItems', UnprocessedItems)
+  if (UnprocessedItems.length) {
+    await delay(numberOfSecondsRetry)
+    await writeToDynamo(UnprocessedItems, numberOfSecondsRetry * 2);
+  }
 }
 
 exports.handler = async () => {
@@ -58,7 +64,7 @@ exports.handler = async () => {
     const produtosBatch = produtos.splice(0, batchSize);
     const dynamoRequestItems = mapProdutosToDynamoRequest(getPutRequestList(produtosBatch));
     console.log('dynamoRequestItems', dynamoRequestItems)
-    await writeToDynamo(dynamoRequestItems);
+    await writeToDynamo(dynamoRequestItems, 2);
   }
 
   console.log(produtos);

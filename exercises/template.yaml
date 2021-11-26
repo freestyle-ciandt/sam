@@ -109,9 +109,6 @@ Resources:
   
       BillingMode: PAY_PER_REQUEST
       TableName: !Sub ${AWS::StackName}-produtos
-      ProvisionedThroughput: 
-        ReadCapacityUnits: "1"
-        WriteCapacityUnits: "1"
   
   Exercise03S3Bucket:
     Type: 'AWS::S3::Bucket'
