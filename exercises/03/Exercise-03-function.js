@@ -38,10 +38,10 @@ const mapProdutosToDynamoRequest = (putRequestList) => ({
 });
 
 const writeToDynamo = async (requestItems) => {
-  const dynamoDb = new aws.DynamoDB({
-    maxRetries: 999
+  const dynamoDb = new DynamoDB({
+    maxRetries: 1
   })
-  const documentClient = new aws.DynamoDB.DocumentClient({
+  const documentClient = new DynamoDB.DocumentClient({
     service: dynamoDb,
     convertEmptyValues: true
   })
