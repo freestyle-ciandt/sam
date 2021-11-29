@@ -1,32 +1,33 @@
-let doc = require('dynamodb-doc');
-// const AWS = require('aws-sdk');
-// const docClient = new AWS.DynamoDB.DocumentClinet();
-let dynamo = new doc.DynamoDB();
+const AWS = require('aws-sdk');
+AWS.config.update({ region: process.env.AWS_REGION });
+const docClient = new AWS.DynamoDB.DocumentClient();
+
+
 const tableName = process.env.TableName;
 
 exports.handler = async (event) => {
-    var params = {
-        "TableName": tableName,
-        "Key": {
-            id: event.pathParameters.id
-        }
+  console.log(event.pathParameters)
+  var params = {
+    "TableName": tableName,
+    "Key": {
+      id: event.pathParameters.id
     }
+  }
+  try {
+    const response = await docClient.get(params).promise();
+    console.log(response)
+  } catch (error) {
+    console.log(error)
+  }
 
-    docClient.get(params, function(err, data) {
-        if (err) {
-          console.log("Error", err);
-        } else {
-          console.log("Success", data.Item);
-        }
-      });
 }
 
 
 const createResponse = (statusCode, body) => {
-    return {
-        "statusCode": statusCode,
-        "body": body || ""
-    }
+  return {
+    "statusCode": statusCode,
+    "body": body || ""
+  }
 };
 
 
