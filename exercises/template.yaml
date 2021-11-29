@@ -68,3 +68,6 @@ Resources:
       Environment:
         Variables:
           TableName: !Ref DojoClientes02
+      Policies:
+        - DynamoDBReadPolicy:
+            TableName: !Ref DojoClientes02

@@ -10,23 +10,26 @@ exports.handler = async (event) => {
   var params = {
     "TableName": tableName,
     "Key": {
-      id: event.pathParameters.id
+      id: parseInt(event.pathParameters.id, 10)
     }
   }
   try {
     const response = await docClient.get(params).promise();
     console.log(response)
+    if (response.Item) {
+      return createResponse(200, response.Item)
+    }
+
+    return createResponse(404, {message: 'Client not found'})
   } catch (error) {
     console.log(error)
   }
-
 }
-
 
 const createResponse = (statusCode, body) => {
   return {
     "statusCode": statusCode,
-    "body": body || ""
+    "body": JSON.stringify(body) || ""
   }
 };
 
