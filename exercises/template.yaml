@@ -65,3 +65,6 @@ Resources:
             RestApiId: !Ref DojoClientes02Api
             Auth:
               ApiKeyRequired: true
+      Environment:
+        Variables:
+          TableName: !Ref DojoClientes02
