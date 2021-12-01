@@ -79,3 +79,11 @@ Em seguida, no diretório raiz do projeto, execute o seguinte script para valida
 ```
 npm run validate -ex=02
 ```
+
+## Deploy Commands
+
+``` sh
+sam validate
+sam build
+sam deploy --stack-name recuperacao-dojo-new
+```

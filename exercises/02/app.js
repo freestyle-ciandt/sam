@@ -8,8 +8,8 @@ const tableName = process.env.TableName;
 exports.handler = async (event) => {
   console.log(event.pathParameters)
   var params = {
-    "TableName": tableName,
-    "Key": {
+    TableName: tableName,
+    Key: {
       id: parseInt(event.pathParameters.id, 10)
     }
   }
@@ -30,23 +30,23 @@ exports.handlerCidade = async (event) => {
   console.log(event.pathParameters)
   var params = {
     TableName: tableName,
-    IndexName: "cidade-index",
-    KeyConditionExpression: "#cd = :cidade",
+    IndexName: 'cidade-index',
+    KeyConditionExpression: '#cd = :cidade',
     ExpressionAttributeNames: {
-      "#cd": "cidade"
+      '#cd': 'cidade'
     },
     ExpressionAttributeValues: {
-      ":cidade": event.pathParameters.cidade
+      ':cidade': unescape(event.pathParameters.cidade)
     }
   };
   try {
     const response = await docClient.query(params).promise();
     console.log(response)
-    if (response.Item) {
-      return createResponse(200, response.Item)
+    if (response.Items.length) {
+      return createResponse(200, response.Items)
     }
 
-    return createResponse(404, { message: 'Client not found' })
+    return createResponse(200, [])
   } catch (error) {
     console.log(error)
   }
@@ -54,9 +54,7 @@ exports.handlerCidade = async (event) => {
 
 const createResponse = (statusCode, body) => {
   return {
-    "statusCode": statusCode,
-    "body": JSON.stringify(body) || ""
+    statusCode: statusCode,
+    body: JSON.stringify(body) || ''
   }
 };
-
-y
