@@ -31,12 +31,12 @@ exports.handlerCidade = async (event) => {
   var params = {
     TableName: tableName,
     IndexName: "cidade-index",
-    KeyConditionExpression: "#yr = :yyyy",
+    KeyConditionExpression: "#cd = :cidade",
     ExpressionAttributeNames: {
-      "#yr": "year"
+      "#cd": "cidade"
     },
     ExpressionAttributeValues: {
-      ":yyyy": 1985
+      ":cidade": event.pathParameters.cidade
     }
   };
   try {
@@ -59,4 +59,4 @@ const createResponse = (statusCode, body) => {
   }
 };
 
-
+y
