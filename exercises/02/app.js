@@ -20,7 +20,33 @@ exports.handler = async (event) => {
       return createResponse(200, response.Item)
     }
 
-    return createResponse(404, {message: 'Client not found'})
+    return createResponse(404, { message: 'Client not found' })
+  } catch (error) {
+    console.log(error)
+  }
+}
+
+exports.handlerCidade = async (event) => {
+  console.log(event.pathParameters)
+  var params = {
+    TableName: tableName,
+    IndexName: "cidade-index",
+    KeyConditionExpression: "#yr = :yyyy",
+    ExpressionAttributeNames: {
+      "#yr": "year"
+    },
+    ExpressionAttributeValues: {
+      ":yyyy": 1985
+    }
+  };
+  try {
+    const response = await docClient.query(params).promise();
+    console.log(response)
+    if (response.Item) {
+      return createResponse(200, response.Item)
+    }
+
+    return createResponse(404, { message: 'Client not found' })
   } catch (error) {
     console.log(error)
   }

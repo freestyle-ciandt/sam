@@ -71,3 +71,25 @@ Resources:
       Policies:
         - DynamoDBReadPolicy:
             TableName: !Ref DojoClientes02
+
+  DojoClientes02ApiCidadeFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: "./02/"
+      Runtime: nodejs14.x
+      Handler: app.handlerCidade
+      Events:
+        DojoClientes02ApiKey:
+          Type: Api
+          Properties:
+            Path: /exercise-02/cidade/{cidade}
+            Method: get
+            RestApiId: !Ref DojoClientes02Api
+            Auth:
+              ApiKeyRequired: true
+      Environment:
+        Variables:
+          TableName: !Ref DojoClientes02
+      Policies:
+        - DynamoDBReadPolicy:
+            TableName: !Ref DojoClientes02
