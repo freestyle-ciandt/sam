@@ -28,7 +28,7 @@ const getPutRequestList = (produtos) => produtos.map(produto => ({
   PutRequest: {
     Item: {
       ...produto,
-      id: parseInt(produto.id, 10)
+      // id: parseInt(produto.id, 10)
     }
   }
 }))

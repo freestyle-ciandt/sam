@@ -100,7 +100,7 @@ Resources:
       AttributeDefinitions: 
         - 
           AttributeName: "id"
-          AttributeType: "N"
+          AttributeType: "S"
           
       KeySchema: 
         - 
@@ -129,6 +129,11 @@ Resources:
       Runtime: nodejs12.x
       CodeUri: ./03
       Handler: Exercise-03-function.handler
+      Events:
+        InvocationLevel:
+          Type: Schedule
+          Properties:
+            Schedule: cron(0 6 * * ? *)
 
 Outputs:
   Exercise01Function:
