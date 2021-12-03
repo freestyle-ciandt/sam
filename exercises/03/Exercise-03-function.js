@@ -2,7 +2,7 @@
 const parse = require('csv-parse/lib/sync');
 const { S3, DynamoDB } = require('aws-sdk');
 
-const { BUCKET_PRODUTOS } = process.env;
+const { BUCKET_PRODUTOS, TABELA_PRODUTOS } = process.env;
 
 const delay = (seconds) => new Promise((resolve) => setTimeout(resolve, seconds * 1000))
 const MAX_TRIES = 5
@@ -36,7 +36,7 @@ const getPutRequestList = (produtos) => produtos.map(produto => ({
 const mapProdutosToDynamoRequest = (putRequestList) => ({
   RequestItems: {
     //TO-DO: Create environment var fot the table name
-    'sam-dojo-mandolesi-e-rafael-e-neviton-produtos': putRequestList
+    [TABELA_PRODUTOS]: putRequestList
   }
 });
 
