@@ -138,3 +138,11 @@ Outputs:
   BucketName:
     Description: Bucket para produtos.csv
     Value: !Ref Exercise03S3Bucket
+  
+  LambdaArn:
+    Description: Lambda Function ARN
+    Value: !GetAtt Exercise03Function.Arn
+  
+  TableName:
+    Description: Products table name
+    Value: !Ref Exercise03DynamoDBTable
