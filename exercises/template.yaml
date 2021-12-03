@@ -80,7 +80,7 @@ Resources:
       ProvisionedThroughput: 
         ReadCapacityUnits: "3"
         WriteCapacityUnits: "3"
-      TableName: "mrn-clientes"
+      TableName: !Sub "${AWS::StackName}-clientes"
       GlobalSecondaryIndexes: 
         - 
           IndexName: "cidade-index"
@@ -129,6 +129,22 @@ Resources:
       Runtime: nodejs12.x
       CodeUri: ./03
       Handler: Exercise-03-function.handler
+
+  Exercise04Function:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: ./04
+      Handler: Exercise-04-function.handler
+      Runtime: nodejs12.x
+      Events:
+        Exercise04ApiId:
+          Type: Api
+          Properties:
+            RestApiId: !Ref ExercisesApi
+            Path: /exercise-04
+            Method: POST
+            Auth:
+              ApiKeyRequired: true
 
 Outputs:
   Exercise01Function:
