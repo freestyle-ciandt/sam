@@ -94,6 +94,12 @@ Resources:
             ReadCapacityUnits: "3"
             WriteCapacityUnits: "3"
 
+  Exercise03S3Bucket:
+    Type: AWS::S3::Bucket
+    Properties:
+      AccessControl: PublicRead
+      BucketName: !Sub "${AWS::StackName}-produtos"
+  
 
 Outputs:
   Exercise01Function:
