@@ -80,7 +80,7 @@ Resources:
       ProvisionedThroughput: 
         ReadCapacityUnits: "3"
         WriteCapacityUnits: "3"
-      TableName: "mrn-clientes"
+      TableName: !Sub "${AWS::StackName}-clientes"
       GlobalSecondaryIndexes: 
         - 
           IndexName: "cidade-index"
@@ -97,9 +97,21 @@ Resources:
   Exercise03S3Bucket:
     Type: AWS::S3::Bucket
     Properties:
-      AccessControl: PublicRead
       BucketName: !Sub "${AWS::StackName}-produtos"
-  
+
+  Exercise03Function:
+    Type: AWS::Serverless::Function
+    Properties:
+      Policies:
+        - S3ReadPolicy:
+            BucketName: !Ref Exercise03S3Bucket
+      Runtime: nodejs12.x
+      CodeUri: ./03
+      Handler: Exercise-03-function.handler
+      Environment:
+        Variables:
+          BUCKET_NAME: !Ref Exercise03S3Bucket
+          FILE_NAME: produtos.csv
 
 Outputs:
   Exercise01Function:
