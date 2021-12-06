@@ -102,6 +102,7 @@ Resources:
   DojoProdutos03: 
     Type: AWS::DynamoDB::Table
     Properties: 
+      TableName: "Dojo-recuperacao-produto-03"
       AttributeDefinitions: 
         - AttributeName: "id"
           AttributeType: "S"
@@ -113,18 +114,25 @@ Resources:
 
       ProvisionedThroughput: 
         ReadCapacityUnits: 3
-        WriteCapacityUnits: 3
-      TableName: "Dojo-recuperacao-clientes-02"
-      GlobalSecondaryIndexes: 
-        - 
-          IndexName: "cidade-index"
-          KeySchema: 
-            - 
-              AttributeName: "cidade"
-              KeyType: "HASH"
+        WriteCapacityUnits: 3      
 
-          Projection: 
-            ProjectionType: "ALL"
-          ProvisionedThroughput: 
-            ReadCapacityUnits: 3
-            WriteCapacityUnits: 3
+  DojoProdutos03Function:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: "./03/"
+      Runtime: nodejs14.x
+      Handler: app.handlerProduto
+      Environment:
+        Variables:
+          TableName: !Ref DojoProdutos03
+      Policies:
+        - DynamoDBReadPolicy:
+            TableName: !Ref DojoProdutos03
+
+Outputs:
+  BucketName:
+    Value: !Ref DojoProdutos03Bucket
+  LambdaArn:
+    Value: !GetAtt DojoProdutos03Function.Arn
+  TableName:
+    Value: !Ref DojoProdutos03
