@@ -94,60 +94,8 @@ Resources:
             ReadCapacityUnits: "3"
             WriteCapacityUnits: "3"
 
-  Exercise03DynamoDBTable: 
-    Type: AWS::DynamoDB::Table
-    Properties:
-      AttributeDefinitions: 
-        - 
-          AttributeName: "id"
-          AttributeType: "S"
-          
-      KeySchema: 
-        - 
-          AttributeName: "id"
-          KeyType: "HASH"
-  
-      BillingMode: PAY_PER_REQUEST
-      TableName: !Sub ${AWS::StackName}-produtos
-  
-  Exercise03S3Bucket:
-    Type: 'AWS::S3::Bucket'
-    Properties:
-      BucketName: !Sub ${AWS::StackName}-produtos
-
-  Exercise03Function:
-    Type: AWS::Serverless::Function
-    Properties:
-      Policies:
-        - S3ReadPolicy:
-            BucketName: !Ref Exercise03S3Bucket
-        - DynamoDBWritePolicy:
-            TableName:  !Ref Exercise03DynamoDBTable
-      Environment:
-        Variables:
-          BUCKET_PRODUTOS: !Ref Exercise03S3Bucket
-      Runtime: nodejs12.x
-      CodeUri: ./03
-      Handler: Exercise-03-function.handler
-      Events:
-        InvocationLevel:
-          Type: Schedule
-          Properties:
-            Schedule: cron(0 6 * * ? *)
 
 Outputs:
   Exercise01Function:
     Description: Saída Exercicio 01
     Value: !Ref Exercise01Function
-
-  BucketName:
-    Description: Bucket para produtos.csv
-    Value: !Ref Exercise03S3Bucket
-  
-  LambdaArn:
-    Description: Lambda Function ARN
-    Value: !GetAtt Exercise03Function.Arn
-  
-  TableName:
-    Description: Products table name
-    Value: !Ref Exercise03DynamoDBTable
