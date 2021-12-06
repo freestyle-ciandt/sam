@@ -102,7 +102,7 @@ Resources:
   DojoProdutos03: 
     Type: AWS::DynamoDB::Table
     Properties: 
-      TableName: "Dojo-recuperacao-produto-03"
+      TableName: !Sub ${AWS::StackName}-produtos-03
       AttributeDefinitions: 
         - AttributeName: "id"
           AttributeType: "S"
@@ -111,10 +111,6 @@ Resources:
         - AttributeName: "id"
           KeyType: "HASH"
       BillingMode: PAY_PER_REQUEST
-
-      ProvisionedThroughput: 
-        ReadCapacityUnits: 3
-        WriteCapacityUnits: 3      
 
   DojoProdutos03Function:
     Type: AWS::Serverless::Function
