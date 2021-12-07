@@ -8,22 +8,25 @@ Globals:
     Runtime: nodejs12.x
     Timeout: 30
 
+Mappings:
+  APIG:
+    Stage:
+      default: dojo
+
 Resources:
   ExercisesApi:
     Type: AWS::Serverless::Api
     Properties:
-      StageName: prod
+      StageName: !FindInMap [APIG, Stage, default]
       Auth:
         ApiKeyRequired: true
         UsagePlan:
+          UsagePlanName: !Sub '${AWS::StackName}-apiKey'
           CreateUsagePlan: PER_API
           Description: Usage plan for the Serverless Api
           Quota:
             Limit: 500
             Period: MONTH
-          Tags:
-            - Key: Name
-              Value: Exercise01ApiUsagePlan
 
   Exercise01Function:
     Type: AWS::Serverless::Function
@@ -108,14 +111,61 @@ Resources:
             Auth:
               ApiKeyRequired: true
 
+  Exercise03DynamoDBTable:
+    Type: AWS::DynamoDB::Table
+    Properties:
+      AttributeDefinitions:
+        - AttributeName: "id"
+          AttributeType: "S"
+      KeySchema:
+        - AttributeName: "id"
+          KeyType: "HASH"
+      BillingMode: PAY_PER_REQUEST
+      TableName: !Sub ${AWS::StackName}-produtos
+
+  Exercise03S3Bucket:
+    Type: 'AWS::S3::Bucket'
+    Properties:
+      BucketName: !Sub ${AWS::StackName}-produtos
+
+  Exercise03Function:
+    Type: AWS::Serverless::Function
+    Properties:
+      Policies:
+        - S3ReadPolicy:
+            BucketName: !Ref Exercise03S3Bucket
+        - DynamoDBWritePolicy:
+            TableName:  !Ref Exercise03DynamoDBTable
+      Environment:
+        Variables:
+          BUCKET_PRODUTOS: !Ref Exercise03S3Bucket
+          TABLE_NAME: !Ref Exercise03DynamoDBTable
+      Runtime: nodejs12.x
+      CodeUri: ./03
+      Handler: Exercise-03-function.handler
+      Events:
+        InvocationLevel:
+          Type: Schedule
+          Properties:
+            Schedule: cron(0 6 * * ? *)
+
 Outputs:
   ExercisesApi:
-    Value: !Ref ExercisesApi
+    Value: !Join
+      - '/'
+      - - !Sub 'https://${ExercisesApi}.execute-api.${AWS::Region}.amazonaws.com'
+        - !FindInMap [APIG, Stage, default]
   Exercise01Function:
-    Value: !Ref Exercise01Function
+    Value: !GetAtt Exercise01Function.Arn
   Exercise02DynamoDBTable:
     Value: !Ref Exercise02DynamoDBTable
   Exercise02Function:
-    Value: !Ref Exercise02Function
+    Value: !GetAtt Exercise02Function.Arn
   Exercise02CidadeFunction:
-    Value: !Ref Exercise02CidadeFunction
+    Value: !GetAtt Exercise02CidadeFunction.Arn
+  LambdaArn:
+    Value: !GetAtt Exercise03Function.Arn
+  TableName:
+    Value: !Ref Exercise03DynamoDBTable
+  BucketName:
+    Value: !Ref Exercise03S3Bucket
