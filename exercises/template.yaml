@@ -3,6 +3,11 @@ Transform: 'AWS::Serverless-2016-10-31'
 
 Description: Resolução dos exercícios
 
+Globals:
+  Function:
+    Runtime: nodejs12.x
+    Timeout: 30
+
 Resources:
   ExercisesApi:
     Type: AWS::Serverless::Api
@@ -23,7 +28,6 @@ Resources:
   Exercise01Function:
     Type: AWS::Serverless::Function
     Properties:
-      Runtime: nodejs12.x
       Events:
         Exercise01Api:
           Type: Api
@@ -36,7 +40,82 @@ Resources:
       CodeUri: ./01
       Handler: Exercise-01-function.handler
 
+  Exercise02DynamoDBTable:
+    Type: AWS::DynamoDB::Table
+    Properties:
+      AttributeDefinitions:
+        - AttributeName: "id"
+          AttributeType: "N"
+        - AttributeName: "cidade"
+          AttributeType: "S"
+      KeySchema:
+        - AttributeName: "id"
+          KeyType: "HASH"
+      ProvisionedThroughput:
+        ReadCapacityUnits: "3"
+        WriteCapacityUnits: "3"
+      TableName: !Sub "${AWS::StackName}-clientes"
+      GlobalSecondaryIndexes:
+        - IndexName: "cidade-index"
+          KeySchema:
+            - AttributeName: "cidade"
+              KeyType: "HASH"
+          Projection:
+            ProjectionType: "ALL"
+          ProvisionedThroughput:
+            ReadCapacityUnits: "3"
+            WriteCapacityUnits: "3"
+
+  Exercise02Function:
+    Type: AWS::Serverless::Function
+    Properties:
+      Policies:
+        - DynamoDBReadPolicy:
+            TableName: !Ref Exercise02DynamoDBTable
+      Environment:
+        Variables:
+          TABLE_NAME: !Ref Exercise02DynamoDBTable
+      CodeUri: ./02
+      Handler: Exercise-02-function.get
+      Events:
+        Exercise02ApiId:
+          Type: Api
+          Properties:
+            RestApiId: !Ref ExercisesApi
+            Path: /exercise-02/{id}
+            Method: GET
+            Auth:
+              ApiKeyRequired: true
+
+  Exercise02CidadeFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      Policies:
+        - DynamoDBReadPolicy:
+            TableName: !Ref Exercise02DynamoDBTable
+      Environment:
+        Variables:
+          TABLE_NAME: !Ref Exercise02DynamoDBTable
+      CodeUri: ./02
+      Handler: Exercise-02-function.query
+      Events:
+        Exercise02ApiCidade:
+          Type: Api
+          Properties:
+            RestApiId: !Ref ExercisesApi
+            Path: /exercise-02/cidade/{cidade}
+            Method: GET
+            Auth:
+              ApiKeyRequired: true
 
 Outputs:
+  ExercisesApi:
+    Value: !Ref ExercisesApi
   Exercise01Function:
     Value: !Ref Exercise01Function
+  Exercise02DynamoDBTable:
+    Value: !Ref Exercise02DynamoDBTable
+  Exercise02Function:
+    Value: !Ref Exercise02Function
+  Exercise02CidadeFunction:
+    Value: !Ref Exercise02CidadeFunction
