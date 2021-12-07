@@ -1,0 +1,6 @@
+{
+  "name": "01",
+  "version": "1.0.0",
+  "description": "O objetivo desse exercício é criar uma Lambda function que seja invocada por meio de uma API HTTP, fazendo uso do [Framework AWS SAM](https://aws.amazon.com/serverless/sam/).",
+  "main": "Exercise-01-function.js"
+}
