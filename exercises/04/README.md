@@ -57,7 +57,8 @@ O objetivo desse exercício é o de criar uma arquitetura Produtor-Consumidor us
 
 ## Validação do exercício
 
-Crie um arquivo *.env* dentro do diretório atual com o seguinte conteúdo:
+Crie um arquivo *.env* dentro da raíz do projeto com o seguinte conteúdo:
+
 ```
 API_KEY='Coloque aqui a API Key da sua aplicação'
 API_URL='Coloque aqui a URL da sua API'
@@ -65,8 +66,4 @@ TABELA_DE_CLIENTES='Coloque aqui o nome da tabela criada'
 AWS_REGION='coloque aqui em que região seu DynamoDB está'
 ```
 
-Em seguida, no diretório raiz do projeto, execute o seguinte script para validar o exercício:
-```
-npm run validate -ex=02
-npm run validate -ex=04
-```
+E execute o seguinte comando: `npm run validate -ex=04`.

@@ -1,8 +1,7 @@
 # Introdução
-O objetivo desse exercício é o de criar uma Lambda Function que seja chamada a cada uma hora (Cloud Watch Event).
+O objetivo desse exercício é o de criar uma Lambda Function que seja chamada pelo Cloud Watch Event.
 
 ## Requisitos
-
 - a infraestrutura deverá processar um arquivo CSV com as seguintes colunas:
   - id: **string**
   - product_name: **string**
@@ -37,13 +36,11 @@ O objetivo desse exercício é o de criar uma Lambda Function que seja chamada a
 
 ## Validação do exercício
 
-Crie um arquivo *.env* dentro do diretório atual com o seguinte conteúdo:
+Crie um arquivo *.env* dentro da raíz do projeto com o seguinte conteúdo:
+
 ```
 STACK_NAME=<<nome_da_sua_stack_aqui>>
 REGION=<<região da AWS onde esta sua Stack de CloudFormation>>
 ```
 
-Em seguida, no diretório raiz do projeto, execute o seguinte script para validar o exercício:
-```
-npm run validate -ex=03
-```
+E execute o seguinte comando: `npm run validate -ex=03`.

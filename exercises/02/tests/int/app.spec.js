@@ -23,7 +23,7 @@ const CITY_PAYLOAD = require('./resources/city.json');
 
 let response;
 describe(`Given the API receives a GET request on path: ${API_PATH}/{id}`, () => {
-    const id = 1;
+    const id = 30;
 
     before(async () => {
         await populateTable();
@@ -82,7 +82,7 @@ describe(`Given the API receives a GET request on path: ${API_PATH}/cidade/{cida
         });
 
         it('And it should respond with the expected payload', () => {
-            expect(response.body).to.eql(CITY_PAYLOAD);
+            expect(response.body).to.have.deep.members(CITY_PAYLOAD);
         });
     });
 
