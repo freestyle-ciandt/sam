@@ -3,7 +3,7 @@ O objetivo desse exercício é o de criar uma Lambda Function que possua um even
 
 ## Requisitos
 - criar uma tabela DynamoDB com as seguintes especificações:
-  - O nome da tabela deverá ser "<<seu_nome>>-clientes".
+  - O nome da tabela deverá ser "<< nome da stack >>-clientes".
   - a tabela deverá possuir a capacidade de ler e de escrever 3 vezes por segundo.
   - a tabela deverá ter uma partition key **id**.
   - a tabela deverá ter um global secondary index **cidade-index** com o atributo **cidade** como chave de partição.
@@ -25,7 +25,6 @@ O objetivo desse exercício é o de criar uma Lambda Function que possua um even
   - Responder a uma requisição GET no caminho */exercise-02/{id}*.
     - essa API pegará o valor de {id} e realizará uma operação de **getItem** na tabela de clientes.
     - se o valor existir, a API deverá retornar o status 200 e os dados do cliente encontrado.
-    - se o valor não existir, a API deverá retornar o status 403 com a mensagem "Cliente não encontrado".
   - Responder a uma requisição GET no caminho */exercise-02/cidade/{cidade}*
     - essa API pegará o valor de {cidade} e realizará uma operação de **query** no índice pela chave secundária **cidade-index**.
     - se nenhum valor existir, a API deverá retornar uma lista vazia com o status 200.
@@ -67,15 +66,12 @@ O objetivo desse exercício é o de criar uma Lambda Function que possua um even
 * **Exemplo de use de path parameter:** https://aws.amazon.com/blogs/compute/introducing-simplified-serverless-application-deplyoment-and-management/
 ## Validação do exercício
 
-Crie um arquivo *.env* dentro do diretório atual com o seguinte conteúdo:
+Crie um arquivo *.env* dentro da raíz do projeto com o seguinte conteúdo:
 ```
 API_KEY='Coloque aqui a API Key da sua aplicação'
 API_URL='Coloque aqui a URL da sua API'
 TABELA_DE_CLIENTES='Coloque aqui o nome da tabela criada'
 AWS_REGION='coloque aqui em que região seu DynamoDB está'
-```
+``
 
-Em seguida, no diretório raiz do projeto, execute o seguinte script para validar o exercício:
-```
-npm run validate -ex=02
-```
+E execute o seguinte comando: `npm run validate -ex=02.
