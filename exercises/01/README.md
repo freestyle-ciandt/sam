@@ -1,7 +1,7 @@
 # Introdução
-O objetivo desse exercício é criar uma Lambda function que seja invocada por meio de uma API HTTP, fazendo uso do [Framework AWS SAM](https://aws.amazon.com/serverless/sam/). 
+O objetivo desse exercício é criar uma Lambda function que seja invocada por meio de uma API HTTP, fazendo uso do [Framework AWS SAM](https://aws.amazon.com/serverless/sam/).
 
-## Requisitos 
+## Requisitos
 
 - A API deve:
   - Responder a uma requisição GET no caminho */exercise-01* com status 200
@@ -24,13 +24,11 @@ AWS Serverless API ApiAuth Usage plans: https://docs.aws.amazon.com/serverless-a
 
 ## Validação do exercício
 
-Crie um arquivo *.env* dentro do diretório atual com o seguinte conteúdo:
+Crie um arquivo *.env* dentro da raíz do projeto com o seguinte conteúdo:
+
 ```
 API_KEY='Coloque aqui a API Key da sua aplicação'
 API_URL='Coloque aqui a URL da sua API'
 ```
 
-Em seguida, no diretório raiz do projeto, execute o seguinte script para validar o exercício:
-```
-npm run validate -ex=01
-```
+E execute o seguinte comando: `npm run validate -ex=01`.

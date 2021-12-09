@@ -65,6 +65,3 @@ Você pode ver o resultado de sua stack do CloudFormation no console da AWS.
 
 ## Começando os exercícios
 Na [estrutura inicial do projeto](../README.md) temos os exercícios planejados para esse treinamento. **Todos os exercícios devem ser resolvidos no [template](./template.yaml) desta pasta e aplicados na nuvem da AWS utilizando os comando mencionados no passo [rodando este projeto](#rodando-este-projeto)**. No final de cada exercício você deverá rodar o [teste](#validando-sua-solução) referente a esse exercício para garantir que sua solução funcionou. Se ele passar, você poderá prosseguir para o próximo exercício.
-
-## Validando sua solução
-(TODO)
