@@ -99,6 +99,20 @@ Resources:
     Properties:
       BucketName: !Sub "${AWS::StackName}-produtos"
 
+  Exercise03DynamoDBTable: 
+    Type: AWS::DynamoDB::Table
+    Properties:
+      AttributeDefinitions: 
+        - 
+          AttributeName: "id"
+          AttributeType: "N"
+      BillingMode: "PAY_PER_REQUEST"
+      KeySchema: 
+        - 
+          AttributeName: "id"
+          KeyType: "HASH"
+      TableName: !Sub "${AWS::StackName}-produtos"
+
   Exercise03Function:
     Type: AWS::Serverless::Function
     Properties:
@@ -112,6 +126,7 @@ Resources:
         Variables:
           BUCKET_NAME: !Ref Exercise03S3Bucket
           FILE_NAME: produtos.csv
+          TABLE_NAME: !Ref Exercise03DynamoDBTable
 
 Outputs:
   Exercise01Function:
