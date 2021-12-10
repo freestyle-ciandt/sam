@@ -121,9 +121,12 @@ Resources:
       Environment:
         Variables:
           TableName: !Ref DojoProdutos03
+          BucketName: !Ref DojoProdutos03Bucket
       Policies:
         - DynamoDBReadPolicy:
             TableName: !Ref DojoProdutos03
+        - S3ReadPolicy:
+            BucketName: !Ref DojoProdutos03Bucket
 
 Outputs:
   BucketName:
