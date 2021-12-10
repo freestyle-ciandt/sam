@@ -148,6 +148,10 @@ Resources:
             Method: POST
             Auth:
               ApiKeyRequired: true
+        Exercise04Queue:
+          Type: SQS
+          Properties:
+            Queue: !GetAtt Exercise04Queue.Arn
       Policies:
         - SQSSendMessagePolicy:
             QueueName: !GetAtt Exercise04Queue.QueueName
