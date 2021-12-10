@@ -133,6 +133,9 @@ Resources:
   Exercise04Function:
     Type: AWS::Serverless::Function
     Properties:
+      Environment:
+        Variables:
+          QueueUrl: !Ref Exercise04Queue
       CodeUri: ./04
       Handler: Exercise-04-function.handler
       Runtime: nodejs12.x
@@ -145,6 +148,14 @@ Resources:
             Method: POST
             Auth:
               ApiKeyRequired: true
+      Policies:
+        - SQSSendMessagePolicy:
+            QueueName: !GetAtt Exercise04Queue.QueueName
+
+  Exercise04Queue: 
+    Type: AWS::SQS::Queue
+    Properties: 
+      QueueName: !Sub ${AWS::StackName}-clientes
 
 Outputs:
   Exercise01Function:
@@ -162,3 +173,4 @@ Outputs:
   TableName:
     Description: Products table name
     Value: !Ref Exercise03DynamoDBTable
+
