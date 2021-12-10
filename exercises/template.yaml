@@ -19,6 +19,32 @@ Resources:
           Tags:
             - Key: Name
               Value: Exercise01ApiUsagePlan
+      Models:
+        Cliente:
+          type: object
+          required:
+            - id
+            - nome
+            - documento
+            - cidade
+            - estado
+            - pais
+            - id_plano
+          properties:
+            id:
+              type: integer
+            nome:
+              type: string
+            documento:
+              type: string
+            cidade:
+              type: string
+            estado:
+              type: string
+            pais:
+              type: string
+            id_plano:
+              type: integer
 
   Exercise01Function:
     Type: AWS::Serverless::Function
@@ -76,6 +102,8 @@ Resources:
             Method: POST
             Auth:
               ApiKeyRequired: true
+            RequestModel: # TODO
+              
       CodeUri: ./04
       Handler: Exercise-04-function.handler
 
