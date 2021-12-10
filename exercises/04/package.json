@@ -1,0 +1,15 @@
+{
+  "name": "04",
+  "version": "1.0.0",
+  "description": "O objetivo desse exercício é o de criar uma arquitetura Produtor-Consumidor usando o SQS Queue e Lambda Functions.",
+  "main": "Exercise-04-function.js",
+  "directories": {
+    "test": "tests"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC"
+}
