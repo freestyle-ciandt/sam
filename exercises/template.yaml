@@ -152,6 +152,24 @@ Resources:
         - SQSSendMessagePolicy:
             QueueName: !GetAtt Exercise04Queue.QueueName
 
+    Exercise04SQSEventFunction:
+      Type: AWS::Serverless::Function
+      Properties:
+        Environment:
+          Variables:
+            QueueUrl: !Ref Exercise04Queue
+        CodeUri: ./04
+        Handler: Exercise-04-SQS-function.handler
+        Runtime: nodejs12.x
+        Events:
+          SQSEvent:
+            Type: SQS
+            Properties:
+              Queue: !GetAtt Exercise04Queue.Arn
+        Policies:
+          - SQSSendMessagePolicy:
+              QueueName: !GetAtt Exercise04Queue.QueueName
+
   Exercise04Queue: 
     Type: AWS::SQS::Queue
     Properties: 

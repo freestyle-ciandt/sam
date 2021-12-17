@@ -70,3 +70,4 @@ Em seguida, no diretório raiz do projeto, execute o seguinte script para valida
 npm run validate -ex=02
 npm run validate -ex=04
 ```
+sam deploy --stack-name sam-recuperados-new
