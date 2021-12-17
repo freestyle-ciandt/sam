@@ -19,6 +19,10 @@ exports.handler = async function (event, context) {
     const jsonArray = await csv().fromString(objectData);
     console.log(jsonArray);
 
+    jsonArray.map((e) => {
+      e['id'] = parseInt(e['id'])
+    });
+
     const batches = [];
     const currentBatch = [];
     for(const item_id in jsonArray){
@@ -36,13 +40,13 @@ exports.handler = async function (event, context) {
     for(const batch_id in batches){
       const params = {
         RequestItems: {
-          PRODUTOS_TABLE_NAME: batches[batch_id]
+          [PRODUTOS_TABLE_NAME]: batches[batch_id]
          }
       };
       // TODO (Unprocessed items): caso algum item falhe, você deverá tentar escrevê-lo novamente.
       // TODO (Unprocessed items): caso algum item falhe, você deverá tentar escrevê-lo novamente.
       // TODO (Unprocessed items): caso algum item falhe, você deverá tentar escrevê-lo novamente.
-      await docClient.batchWriteItem(params).promise();
+      await docClient.batchWrite(params).promise();
     }
 
     

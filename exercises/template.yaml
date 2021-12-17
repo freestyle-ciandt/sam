@@ -117,6 +117,12 @@ Resources:
     Type: AWS::Serverless::Function
     Properties:
       Policies:
+        - Statement:
+          - Effect: "Allow"
+            Action:
+              - "dynamodb:BatchWriteItem"
+            Resource:
+              - !GetAtt Exercise03DynamoDBTable.Arn
         - S3ReadPolicy:
             BucketName: !Ref Exercise03S3Bucket
       Runtime: nodejs12.x
@@ -126,7 +132,7 @@ Resources:
         Variables:
           BUCKET_NAME: !Ref Exercise03S3Bucket
           FILE_NAME: produtos.csv
-          TABLE_NAME: !Ref Exercise03DynamoDBTable
+          PRODUTOS_TABLE_NAME: !Ref Exercise03DynamoDBTable
 
 Outputs:
   Exercise01Function:
