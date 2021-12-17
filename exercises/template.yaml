@@ -94,25 +94,7 @@ Resources:
       CodeUri: ./02
       Handler: Exercise-02-function.handler
 
-  Exercise04Function:
-    Type: AWS::Serverless::Function
-    Properties:
-      Runtime: nodejs12.x
-      Events:
-        Exercise04ApiId:
-          Type: Api
-          Properties:
-            RestApiId: !Ref ExercisesApi
-            Path: /exercise-04/
-            Method: POST
-            Auth:
-              ApiKeyRequired: true
-            RequestModel:
-              Model: Cliente
-              Required: true
-              ValidateBody: true
-      CodeUri: ./04
-      Handler: Exercise-04-function.handler
+  
 
   Exercise02DynamoDBTable: 
     Type: AWS::DynamoDB::Table
@@ -186,6 +168,37 @@ Resources:
           Type: Schedule
           Properties:
             Schedule: cron(0 6 * * ? *)
+
+  Exercise04Function:
+    Type: AWS::Serverless::Function
+    Properties:
+      Policies:
+        - SQSSendMessagePolicy: 
+            QueueName: !GetAtt Exercise04SQSQueue.QueueName
+      Environment:
+        Variables:
+          QUEUE_URL: !Ref Exercise04SQSQueue
+      Runtime: nodejs12.x
+      Events:
+        Exercise04ApiId:
+          Type: Api
+          Properties:
+            RestApiId: !Ref ExercisesApi
+            Path: /exercise-04/
+            Method: POST
+            Auth:
+              ApiKeyRequired: true
+            RequestModel:
+              Model: Cliente
+              Required: true
+              ValidateBody: true
+      CodeUri: ./04
+      Handler: Exercise-04-function.handler
+
+  Exercise04SQSQueue:
+    Type: AWS::SQS::Queue
+    Properties:
+      QueueName: !Sub ${AWS::StackName}-Queue
 
 Outputs:
   Exercise01Function:
