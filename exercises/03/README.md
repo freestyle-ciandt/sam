@@ -47,3 +47,6 @@ Em seguida, no diretório raiz do projeto, execute o seguinte script para valida
 ```
 npm run validate -ex=03
 ```
+
+TO-DO FOR THE FUTURE
+- Fix issue when inserting itens on DynamoDB.
