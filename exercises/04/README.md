@@ -70,10 +70,10 @@ Em seguida, no diretório raiz do projeto, execute o seguinte script para valida
 npm run validate -ex=02
 npm run validate -ex=04
 ```
-sam deploy --stack-name sam-recuperados-new
+sam deploy --stack-name sam-recuperados
 
 
-curl -X POST 'https://c61f047fa2.execute-api.us-east-1.amazonaws.com/Prod/exercise-04' --data '{
+curl -X POST 'https://u4ngpd0o5i.execute-api.us-east-1.amazonaws.com/Prod/exercise-04' --data '{
     "id": 1,
     "nome": "Nome do Clientlse",
     "documento": "123456789",
@@ -81,4 +81,4 @@ curl -X POST 'https://c61f047fa2.execute-api.us-east-1.amazonaws.com/Prod/exerci
     "estado": "RJ",
     "pais": "Brasil",
     "id_plano": 10
-}' -H 'x-api-key: 2PL6X1bqqs5wxdJDDgbGZ6RLrRELVgw47anKbrXd'
+}' -H 'x-api-key: xAaS4YvWUu3xDkiwL30Me7fXQgLpF7LLa0NMnvyo'

@@ -7,7 +7,7 @@ exports.handler = async event => {
 
     const data = event.Records;
 
-    data.forEach(dataRecords => {
+    await data.forEach( async dataRecords => {
         const json = JSON.parse(dataRecords.body)
 
         var params = {
@@ -17,7 +17,7 @@ exports.handler = async event => {
 
         try {
             const response = await docClient.put(params).promise()
-            console.log(response)
+            console.log('docClient put', response)
         } catch (error) {
             console.log(error)
 
