@@ -169,7 +169,7 @@ Resources:
           Properties:
             Schedule: cron(0 6 * * ? *)
 
-  Exercise04Function:
+  Exercise04ProducerFunction:
     Type: AWS::Serverless::Function
     Properties:
       Policies:
@@ -193,12 +193,31 @@ Resources:
               Required: true
               ValidateBody: true
       CodeUri: ./04
-      Handler: Exercise-04-function.handler
+      Handler: Exercise-04-Producer-function.handler
 
   Exercise04SQSQueue:
     Type: AWS::SQS::Queue
     Properties:
       QueueName: !Sub ${AWS::StackName}-Queue
+
+  Exercise04ConsumerFunction:
+    Type: AWS::Serverless::Function # More info about Function Resource: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#awsserverlessfunction
+    Properties:
+      CodeUri: ./04
+      Handler: Exercise-04-Consumer-function.handler
+      Runtime: nodejs12.x
+      Policies:
+        - DynamoDBWritePolicy:
+            TableName: !Ref Exercise02DynamoDBTable
+      Environment:
+        Variables:
+          CLIENTES_TABLE: !Ref Exercise02DynamoDBTable
+      Events:
+        ConsumerQueue:
+          Type: SQS
+          Properties:
+            Queue: !GetAtt Exercise04SQSQueue.Arn
+            BatchSize: 1
 
 Outputs:
   Exercise01Function:
