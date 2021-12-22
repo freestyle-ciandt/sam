@@ -7,24 +7,21 @@ exports.handler = async event => {
 
     const data = event.Records;
 
-    await data.forEach( async dataRecords => {
-        const json = JSON.parse(dataRecords.body)
-
-        var params = {
-            TableName: TableName,
-            Item: json
-        };
-
-        try {
-            const response = await docClient.put(params).promise()
-            console.log('docClient put', response)
-        } catch (error) {
-            console.log(error)
-
-        }
-
-    });
-
-
-
+    await Promise.all(
+        data.map(dataRecords => {
+            console.log('dataRecords:', dataRecords.body)
+            const json = JSON.parse(dataRecords.body)
+    
+            var params = {
+                TableName: TableName,
+                Item: json
+            };
+    
+            try {
+                return docClient.put(params).promise()
+            } catch (error) {
+                console.log(error)
+            }
+        })
+    );
 }

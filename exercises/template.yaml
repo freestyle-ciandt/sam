@@ -170,6 +170,8 @@ Resources:
       Policies:
         - SQSSendMessagePolicy:
             QueueName: !GetAtt Exercise04Queue.QueueName
+        - DynamoDBWritePolicy:
+            TableName:  !Ref Exercise02DynamoDBTable
 
   Exercise04Queue: 
     Type: AWS::SQS::Queue
