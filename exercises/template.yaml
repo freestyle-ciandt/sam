@@ -199,6 +199,7 @@ Resources:
     Type: AWS::SQS::Queue
     Properties:
       QueueName: !Sub ${AWS::StackName}-Queue
+      DelaySeconds: 60
 
   Exercise04ConsumerFunction:
     Type: AWS::Serverless::Function # More info about Function Resource: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#awsserverlessfunction
@@ -217,7 +218,7 @@ Resources:
           Type: SQS
           Properties:
             Queue: !GetAtt Exercise04SQSQueue.Arn
-            BatchSize: 1
+            BatchSize: 3
 
 Outputs:
   Exercise01Function:
