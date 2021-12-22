@@ -71,3 +71,14 @@ npm run validate -ex=02
 npm run validate -ex=04
 ```
 sam deploy --stack-name sam-recuperados-new
+
+
+curl -X POST 'https://c61f047fa2.execute-api.us-east-1.amazonaws.com/Prod/exercise-04' --data '{
+    "id": 1,
+    "nome": "Nome do Clientlse",
+    "documento": "123456789",
+    "cidade": "Rio de Janeiro",
+    "estado": "RJ",
+    "pais": "Brasil",
+    "id_plano": 10
+}' -H 'x-api-key: 2PL6X1bqqs5wxdJDDgbGZ6RLrRELVgw47anKbrXd'

@@ -158,6 +158,7 @@ Resources:
       Environment:
         Variables:
           QueueUrl: !Ref Exercise04Queue
+          TableName: !Ref Exercise02DynamoDBTable
       CodeUri: ./04
       Handler: Exercise-04-SQS-function.handler
       Runtime: nodejs12.x
