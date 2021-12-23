@@ -10,9 +10,11 @@ const BATCH_SIZE = 25;
 const MAX_RETRIES = 3;
 
 const batchWrite = async (items, retries = 0) => {
+  console.log(`batchWrite - retry #${retries}`);
   if (retries >= MAX_RETRIES) return;
   const batches = [];
   const currentBatch = [];
+  console.log(`Building batches for ${items.length} items`);
   for (const item_id in items) {
     currentBatch.push({
       PutRequest: {
@@ -25,7 +27,13 @@ const batchWrite = async (items, retries = 0) => {
     }
   }
 
+  if (currentBatch.length != 0) {
+    batches.push(currentBatch);
+  }
+
+  console.log(`batches.length: ${batches.length}`);
   for (const batch_id in batches) {
+    console.log(`batch_id: ${batch_id}`);
     const params = {
       RequestItems: {
         [PRODUTOS_TABLE_NAME]: batches[batch_id],
@@ -56,11 +64,7 @@ exports.handler = async function (event, context) {
     const jsonArray = await csv().fromString(objectData);
     console.log(jsonArray);
 
-    // jsonArray.map((e) => {
-    //   e["id"] = parseInt(e["id"]);
-    // });
-
-    await batchWrite(jsonArray);
+    await batchWrite(jsonArray, 0);
   } catch (err) {
     console.log(err);
   }

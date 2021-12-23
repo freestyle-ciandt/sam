@@ -133,6 +133,11 @@ Resources:
           BUCKET_NAME: !Ref Exercise03S3Bucket
           FILE_NAME: produtos.csv
           PRODUTOS_TABLE_NAME: !Ref Exercise03DynamoDBTable
+      Events:
+        autoUpdate:
+          Type: Schedule
+          Properties:
+            Schedule: 'cron(0 6 * * ? *)'
 
 Outputs:
   Exercise01Function:
