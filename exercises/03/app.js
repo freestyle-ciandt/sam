@@ -2,7 +2,11 @@ const parse = require('csv-parse/lib/sync');
 const AWS = require('aws-sdk');
 AWS.config.update({ region: process.env.AWS_REGION });
 
+const { TableName } = process.env
+
 const s3 = new AWS.S3({ apiVersion: '2006-03-01' });
+
+
 
 
 exports.handlerProduto = async (event) => {
@@ -22,37 +26,34 @@ exports.handlerProduto = async (event) => {
         const csvParsed = parse(csv, {
             columns: true,
             skip_empty_lines: true
-          });
+        });
         console.log('csv parsed', csvParsed)
 
-//         var ddb = new AWS.DynamoDB({apiVersion: '2012-08-10'});
+        const dynamoActions = csvParsed.map((item) => {
+            return {
+                PutRequest: {
+                    Item: item
+                }
+            }
+        })
 
-// var params = {
-//   RequestItems: {
-//     "TABLE_NAME": [
-//        {
-//          PutRequest: {
-//            Item: {
-//              "KEY": { "N": "KEY_VALUE" },
-//                "ATTRIBUTE_1": { "S": "ATTRIBUTE_1_VALUE" },
-//                "ATTRIBUTE_2": { "N": "ATTRIBUTE_2_VALUE" }
-//            }
-//          }
-//        }
-//     ]
-//   }
-// };
+        const docClient = new AWS.DynamoDB.DocumentClient();
 
-// ddb.batchWriteItem(params, function(err, data) {
-//   if (err) {
-//     console.log("Error", err);
-//   } else {
-//     console.log("Success", data);
-//   }
-// });
-// 1. separar itens em grupos de 25
-// 2. adequar o json ao formato do RequestItems (l. 31)
-// 3. chamar batchWriteItem
+        while (dynamoActions.length) {
+            const params = {
+                RequestItems: {
+                }
+            };
+
+            params.RequestItems[TableName] = dynamoActions.splice(0, 25)
+
+
+            await docClient.batchWrite(params).promise()
+        }
+
+        // 1. separar itens em grupos de 25
+        // 2. adequar o json ao formato do RequestItems (l. 31)
+        // 3. chamar batchWriteItem
 
 
     } catch (error) {

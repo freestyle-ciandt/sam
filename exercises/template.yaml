@@ -123,7 +123,7 @@ Resources:
           TableName: !Ref DojoProdutos03
           BucketName: !Ref DojoProdutos03Bucket
       Policies:
-        - DynamoDBReadPolicy:
+        - DynamoDBWritePolicy:
             TableName: !Ref DojoProdutos03
         - S3ReadPolicy:
             BucketName: !Ref DojoProdutos03Bucket
