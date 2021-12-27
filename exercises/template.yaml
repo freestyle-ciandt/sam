@@ -12,160 +12,284 @@ Mappings:
   APIG:
     Stage:
       default: dojo
+  Bitly:
+    APIG:
+      stage: prod
 
 Resources:
-  ExercisesApi:
+  # ExercisesApi:
+  #   Type: AWS::Serverless::Api
+  #   Properties:
+  #     StageName: !FindInMap [APIG, Stage, default]
+  #     Auth:
+  #       ApiKeyRequired: true
+  #       UsagePlan:
+  #         UsagePlanName: !Sub '${AWS::StackName}-apiKey'
+  #         CreateUsagePlan: PER_API
+  #         Description: Usage plan for the Serverless Api
+  #         Quota:
+  #           Limit: 500
+  #           Period: MONTH
+
+  # Exercise01Function:
+  #   Type: AWS::Serverless::Function
+  #   Properties:
+  #     Events:
+  #       Exercise01Api:
+  #         Type: Api
+  #         Properties:
+  #           RestApiId: !Ref ExercisesApi
+  #           Path: /exercise-01
+  #           Method: GET
+  #           Auth:
+  #             ApiKeyRequired: true
+  #     CodeUri: ./01
+  #     Handler: Exercise-01-function.handler
+
+  # Exercise02DynamoDBTable:
+  #   Type: AWS::DynamoDB::Table
+  #   Properties:
+  #     AttributeDefinitions:
+  #       - AttributeName: "id"
+  #         AttributeType: "N"
+  #       - AttributeName: "cidade"
+  #         AttributeType: "S"
+  #     KeySchema:
+  #       - AttributeName: "id"
+  #         KeyType: "HASH"
+  #     ProvisionedThroughput:
+  #       ReadCapacityUnits: "3"
+  #       WriteCapacityUnits: "3"
+  #     TableName: !Sub "${AWS::StackName}-clientes"
+  #     GlobalSecondaryIndexes:
+  #       - IndexName: "cidade-index"
+  #         KeySchema:
+  #           - AttributeName: "cidade"
+  #             KeyType: "HASH"
+  #         Projection:
+  #           ProjectionType: "ALL"
+  #         ProvisionedThroughput:
+  #           ReadCapacityUnits: "3"
+  #           WriteCapacityUnits: "3"
+
+  # Exercise02Function:
+  #   Type: AWS::Serverless::Function
+  #   Properties:
+  #     Policies:
+  #       - DynamoDBReadPolicy:
+  #           TableName: !Ref Exercise02DynamoDBTable
+  #     Environment:
+  #       Variables:
+  #         TABLE_NAME: !Ref Exercise02DynamoDBTable
+  #     CodeUri: ./02
+  #     Handler: Exercise-02-function.get
+  #     Events:
+  #       Exercise02ApiId:
+  #         Type: Api
+  #         Properties:
+  #           RestApiId: !Ref ExercisesApi
+  #           Path: /exercise-02/{id}
+  #           Method: GET
+  #           Auth:
+  #             ApiKeyRequired: true
+
+  # Exercise02CidadeFunction:
+  #   Type: AWS::Serverless::Function
+  #   Properties:
+  #     Policies:
+  #       - DynamoDBReadPolicy:
+  #           TableName: !Ref Exercise02DynamoDBTable
+  #     Environment:
+  #       Variables:
+  #         TABLE_NAME: !Ref Exercise02DynamoDBTable
+  #     CodeUri: ./02
+  #     Handler: Exercise-02-function.query
+  #     Events:
+  #       Exercise02ApiCidade:
+  #         Type: Api
+  #         Properties:
+  #           RestApiId: !Ref ExercisesApi
+  #           Path: /exercise-02/cidade/{cidade}
+  #           Method: GET
+  #           Auth:
+  #             ApiKeyRequired: true
+
+  # Exercise03DynamoDBTable:
+  #   Type: AWS::DynamoDB::Table
+  #   Properties:
+  #     AttributeDefinitions:
+  #       - AttributeName: "id"
+  #         AttributeType: "S"
+  #     KeySchema:
+  #       - AttributeName: "id"
+  #         KeyType: "HASH"
+  #     BillingMode: PAY_PER_REQUEST
+  #     TableName: !Sub ${AWS::StackName}-produtos
+
+  # Exercise03S3Bucket:
+  #   Type: 'AWS::S3::Bucket'
+  #   Properties:
+  #     BucketName: !Sub ${AWS::StackName}-produtos
+
+  # Exercise03Function:
+  #   Type: AWS::Serverless::Function
+  #   Properties:
+  #     Policies:
+  #       - S3ReadPolicy:
+  #           BucketName: !Ref Exercise03S3Bucket
+  #       - DynamoDBWritePolicy:
+  #           TableName:  !Ref Exercise03DynamoDBTable
+  #     Environment:
+  #       Variables:
+  #         BUCKET_PRODUTOS: !Ref Exercise03S3Bucket
+  #         TABLE_NAME: !Ref Exercise03DynamoDBTable
+  #     Runtime: nodejs12.x
+  #     CodeUri: ./03
+  #     Handler: Exercise-03-function.handler
+  #     Events:
+  #       InvocationLevel:
+  #         Type: Schedule
+  #         Properties:
+  #           Schedule: cron(0 6 * * ? *)
+
+  BitlyUserPool:
+    Type: AWS::Cognito::UserPool
+    Properties:
+      UserPoolName: !Sub '${AWS::StackName}-userPool'
+      AdminCreateUserConfig:
+        AllowAdminCreateUserOnly: false
+      AutoVerifiedAttributes:
+        - email
+      EmailConfiguration:
+        EmailSendingAccount: COGNITO_DEFAULT
+      UsernameConfiguration:
+        CaseSensitive: false
+      AccountRecoverySetting:
+        RecoveryMechanisms:
+          - Name: verified_email
+            Priority: 1
+      Policies:
+        PasswordPolicy:
+          MinimumLength: 12
+          RequireLowercase: true
+          RequireNumbers: true
+          RequireSymbols: true
+          RequireUppercase: true
+          TemporaryPasswordValidityDays: 1
+      Schema:
+        - Name: name
+          AttributeDataType: String
+          Mutable: true
+          Required: true
+        - Name: 'family_name'
+          AttributeDataType: String
+          Mutable: true
+          Required: true
+        - Name: 'birthdate'
+          AttributeDataType: String
+          Required: true
+          Mutable: true
+        - Name: email
+          AttributeDataType: String
+          Mutable: false
+          Required: true
+
+  BitlyFreeUserGroup:
+    Type: AWS::Cognito::UserPoolGroup
+    Properties:
+      GroupName: free_account
+      Precedence: 1
+      UserPoolId: !Ref BitlyUserPool
+
+  BitlyPremiumUserGroup:
+    Type: AWS::Cognito::UserPoolGroup
+    Properties:
+      GroupName: premium_account
+      Precedence: 2
+      UserPoolId: !Ref BitlyUserPool
+
+  BitlyUserPoolClient:
+    Type: AWS::Cognito::UserPoolClient
+    Properties:
+      ClientName: !Sub '${AWS::StackName}-userPoolClient'
+      GenerateSecret: false
+      UserPoolId: !Ref BitlyUserPool
+      AllowedOAuthFlowsUserPoolClient: true
+      CallbackURLs: [http://localhost:3000]
+      AllowedOAuthFlows: [implicit, code]
+      AllowedOAuthScopes: [email, openid]
+      SupportedIdentityProviders: [COGNITO]
+
+  BitlyUserPoolDomain:
+    Type: AWS::Cognito::UserPoolDomain
+    Properties:
+      UserPoolId: !Ref BitlyUserPool
+      Domain: !Ref AWS::StackName
+
+  BitlyApi:
     Type: AWS::Serverless::Api
     Properties:
-      StageName: !FindInMap [APIG, Stage, default]
+      StageName: !FindInMap [Bitly, APIG, stage]
       Auth:
-        ApiKeyRequired: true
+        DefaultAuthorizer: CognitoAuthorizer
+        Authorizers:
+          CognitoAuthorizer:
+            UserPoolArn: !GetAtt BitlyUserPool.Arn
         UsagePlan:
-          UsagePlanName: !Sub '${AWS::StackName}-apiKey'
+          UsagePlanName: !Sub '${AWS::StackName}-bitly-apiKey'
           CreateUsagePlan: PER_API
           Description: Usage plan for the Serverless Api
           Quota:
             Limit: 500
             Period: MONTH
 
-  Exercise01Function:
+  BitlyCreateAliasFunction:
     Type: AWS::Serverless::Function
     Properties:
       Events:
-        Exercise01Api:
+        BitlyApiEvent:
           Type: Api
           Properties:
-            RestApiId: !Ref ExercisesApi
-            Path: /exercise-01
-            Method: GET
-            Auth:
-              ApiKeyRequired: true
-      CodeUri: ./01
-      Handler: Exercise-01-function.handler
+            RestApiId: !Ref BitlyApi
+            Path: /alias
+            Method: POST
+      CodeUri: ./05
+      Handler: bitly.create
 
-  Exercise02DynamoDBTable:
-    Type: AWS::DynamoDB::Table
-    Properties:
-      AttributeDefinitions:
-        - AttributeName: "id"
-          AttributeType: "N"
-        - AttributeName: "cidade"
-          AttributeType: "S"
-      KeySchema:
-        - AttributeName: "id"
-          KeyType: "HASH"
-      ProvisionedThroughput:
-        ReadCapacityUnits: "3"
-        WriteCapacityUnits: "3"
-      TableName: !Sub "${AWS::StackName}-clientes"
-      GlobalSecondaryIndexes:
-        - IndexName: "cidade-index"
-          KeySchema:
-            - AttributeName: "cidade"
-              KeyType: "HASH"
-          Projection:
-            ProjectionType: "ALL"
-          ProvisionedThroughput:
-            ReadCapacityUnits: "3"
-            WriteCapacityUnits: "3"
-
-  Exercise02Function:
+  BitlyCreateRedirectFunction:
     Type: AWS::Serverless::Function
     Properties:
-      Policies:
-        - DynamoDBReadPolicy:
-            TableName: !Ref Exercise02DynamoDBTable
-      Environment:
-        Variables:
-          TABLE_NAME: !Ref Exercise02DynamoDBTable
-      CodeUri: ./02
-      Handler: Exercise-02-function.get
       Events:
-        Exercise02ApiId:
+        BitlyApiEvent:
           Type: Api
           Properties:
-            RestApiId: !Ref ExercisesApi
-            Path: /exercise-02/{id}
+            RestApiId: !Ref BitlyApi
+            Path: /{alias}
             Method: GET
             Auth:
-              ApiKeyRequired: true
-
-  Exercise02CidadeFunction:
-    Type: AWS::Serverless::Function
-    Properties:
-      Policies:
-        - DynamoDBReadPolicy:
-            TableName: !Ref Exercise02DynamoDBTable
-      Environment:
-        Variables:
-          TABLE_NAME: !Ref Exercise02DynamoDBTable
-      CodeUri: ./02
-      Handler: Exercise-02-function.query
-      Events:
-        Exercise02ApiCidade:
-          Type: Api
-          Properties:
-            RestApiId: !Ref ExercisesApi
-            Path: /exercise-02/cidade/{cidade}
-            Method: GET
-            Auth:
-              ApiKeyRequired: true
-
-  Exercise03DynamoDBTable:
-    Type: AWS::DynamoDB::Table
-    Properties:
-      AttributeDefinitions:
-        - AttributeName: "id"
-          AttributeType: "S"
-      KeySchema:
-        - AttributeName: "id"
-          KeyType: "HASH"
-      BillingMode: PAY_PER_REQUEST
-      TableName: !Sub ${AWS::StackName}-produtos
-
-  Exercise03S3Bucket:
-    Type: 'AWS::S3::Bucket'
-    Properties:
-      BucketName: !Sub ${AWS::StackName}-produtos
-
-  Exercise03Function:
-    Type: AWS::Serverless::Function
-    Properties:
-      Policies:
-        - S3ReadPolicy:
-            BucketName: !Ref Exercise03S3Bucket
-        - DynamoDBWritePolicy:
-            TableName:  !Ref Exercise03DynamoDBTable
-      Environment:
-        Variables:
-          BUCKET_PRODUTOS: !Ref Exercise03S3Bucket
-          TABLE_NAME: !Ref Exercise03DynamoDBTable
-      Runtime: nodejs12.x
-      CodeUri: ./03
-      Handler: Exercise-03-function.handler
-      Events:
-        InvocationLevel:
-          Type: Schedule
-          Properties:
-            Schedule: cron(0 6 * * ? *)
+              Authorizer: NONE
+      CodeUri: ./05
+      Handler: bitly.redirect
 
 Outputs:
-  ExercisesApi:
-    Value: !Join
-      - '/'
-      - - !Sub 'https://${ExercisesApi}.execute-api.${AWS::Region}.amazonaws.com'
-        - !FindInMap [APIG, Stage, default]
-  Exercise01Function:
-    Value: !GetAtt Exercise01Function.Arn
-  Exercise02DynamoDBTable:
-    Value: !Ref Exercise02DynamoDBTable
-  Exercise02Function:
-    Value: !GetAtt Exercise02Function.Arn
-  Exercise02CidadeFunction:
-    Value: !GetAtt Exercise02CidadeFunction.Arn
-  LambdaArn:
-    Value: !GetAtt Exercise03Function.Arn
-  TableName:
-    Value: !Ref Exercise03DynamoDBTable
-  BucketName:
-    Value: !Ref Exercise03S3Bucket
+  BitlyAuthURL:
+    Value: !Sub 'https://${BitlyUserPoolDomain}.auth.${AWS::Region}.amazoncognito.com/login?client_id=${BitlyUserPoolClient}&response_type=token&redirect_uri=http://localhost:3000'
+#   ExercisesApi:
+#     Value: !Join
+#       - '/'
+#       - - !Sub 'https://${ExercisesApi}.execute-api.${AWS::Region}.amazonaws.com'
+#         - !FindInMap [APIG, Stage, default]
+#   Exercise01Function:
+#     Value: !GetAtt Exercise01Function.Arn
+#   Exercise02DynamoDBTable:
+#     Value: !Ref Exercise02DynamoDBTable
+#   Exercise02Function:
+#     Value: !GetAtt Exercise02Function.Arn
+#   Exercise02CidadeFunction:
+#     Value: !GetAtt Exercise02CidadeFunction.Arn
+#   LambdaArn:
+#     Value: !GetAtt Exercise03Function.Arn
+#   TableName:
+#     Value: !Ref Exercise03DynamoDBTable
+#   BucketName:
+#     Value: !Ref Exercise03S3Bucket
