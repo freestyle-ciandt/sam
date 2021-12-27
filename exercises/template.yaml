@@ -118,10 +118,17 @@ Resources:
       CodeUri: "./03/"
       Runtime: nodejs14.x
       Handler: app.handlerProduto
+      Timeout: 120
+      MemorySize: 1024
       Environment:
         Variables:
           TableName: !Ref DojoProdutos03
           BucketName: !Ref DojoProdutos03Bucket
+      Events:
+        DojoProdutos03Cron:
+          Type: Schedule
+          Properties:
+            Schedule: cron(0 6 * * ? *)
       Policies:
         - DynamoDBWritePolicy:
             TableName: !Ref DojoProdutos03

@@ -6,8 +6,22 @@ const { TableName } = process.env
 
 const s3 = new AWS.S3({ apiVersion: '2006-03-01' });
 
+// const writeItems = (batchSize, items) => {
+//     const docClient = new AWS.DynamoDB.DocumentClient();
 
+//     while (dynamoActions.length) {
+//         const params = {
+//             RequestItems: {
+//             }
+//         };
 
+//         params.RequestItems[TableName] = dynamoActions.splice(0, batchSize)
+
+//         const writeResponse = await docClient.batchWrite(params).promise()
+
+//         console.log('writeResponse.UnprocessedItems: ', writeResponse.UnprocessedItems)
+//     }
+// }
 
 exports.handlerProduto = async (event) => {
     console.log('process.env.BucketName= ', process.env.BucketName)
@@ -16,8 +30,6 @@ exports.handlerProduto = async (event) => {
         Bucket: process.env.BucketName,
         Key: 'produtos.csv'
     };
-
-
 
     try {
         const products = await s3.getObject(bucketParams).promise()
@@ -38,6 +50,8 @@ exports.handlerProduto = async (event) => {
         })
 
         const docClient = new AWS.DynamoDB.DocumentClient();
+        
+        let itensToWrite = []
 
         while (dynamoActions.length) {
             const params = {
@@ -47,15 +61,24 @@ exports.handlerProduto = async (event) => {
 
             params.RequestItems[TableName] = dynamoActions.splice(0, 25)
 
-
-            await docClient.batchWrite(params).promise()
+            itensToWrite.push(docClient.batchWrite(params).promise())
         }
 
-        // 1. separar itens em grupos de 25
-        // 2. adequar o json ao formato do RequestItems (l. 31)
-        // 3. chamar batchWriteItem
+        const itensProcessed = await Promise.all(itensToWrite)
+        console.log('itensProcessed(last 10): ', itensProcessed.splice(-10, 10))
 
+        itensToWrite = []
 
+        itensProcessed.forEach(item => {
+            if (item.UnprocessedItems[TableName]) {
+                const params = {}
+                params.RequestItems = item.UnprocessedItems
+                itensToWrite.push(docClient.batchWrite(params).promise())
+            }
+        })
+        
+        const itensReProcessed = await Promise.all(itensToWrite)
+        console.log('itens RE-Processed: ', itensReProcessed)
     } catch (error) {
         console.log("Error", error);
     }
