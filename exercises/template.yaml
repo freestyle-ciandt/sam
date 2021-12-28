@@ -20,7 +20,7 @@ Resources:
       ProvisionedThroughput: 
         ReadCapacityUnits: 3
         WriteCapacityUnits: 3
-      TableName: "Dojo-recuperacao-clientes-02"
+      TableName: !Sub ${AWS::StackName}-clientes-02
       GlobalSecondaryIndexes: 
         - 
           IndexName: "cidade-index"

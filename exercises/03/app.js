@@ -6,30 +6,47 @@ const { TableName } = process.env
 
 const s3 = new AWS.S3({ apiVersion: '2006-03-01' });
 
-// const writeItems = (batchSize, items) => {
-//     const docClient = new AWS.DynamoDB.DocumentClient();
+const docClient = new AWS.DynamoDB.DocumentClient();
 
-//     while (dynamoActions.length) {
-//         const params = {
-//             RequestItems: {
-//             }
-//         };
+const writeItems = (items, batchSize) => {
+    let writeRequests = []
 
-//         params.RequestItems[TableName] = dynamoActions.splice(0, batchSize)
+    console.log('Total Rows: ', items.length)
+    while (items.length) {
+        const params = {
+            RequestItems: {}
+        };
 
-//         const writeResponse = await docClient.batchWrite(params).promise()
+        
+        params.RequestItems[TableName] = items.splice(0, batchSize)
+        
+        console.log('Batch:', params.RequestItems[TableName])
 
-//         console.log('writeResponse.UnprocessedItems: ', writeResponse.UnprocessedItems)
-//     }
-// }
+        writeRequests.push(docClient.batchWrite(params).promise())
+    }
+
+    return Promise.all(writeRequests)
+}
+
+const unprocessedItemsReducer = (previousBatch, currentBatch) => {
+    const unprocessedItems = currentBatch.UnprocessedItems[TableName]
+    if(unprocessedItems) {
+        previousBatch = previousBatch.concat(unprocessedItems)
+    }
+    
+    return previousBatch
+}
 
 exports.handlerProduto = async (event) => {
     console.log('process.env.BucketName= ', process.env.BucketName)
 
-    var bucketParams = {
+    let bucketParams = {
         Bucket: process.env.BucketName,
-        Key: 'produtos.csv'
-    };
+        Key: event.bucketFileKey || 'produtos.csv'
+    }
+    
+    console.log('event', event)
+    console.log('bucketParams', bucketParams)
 
     try {
         const products = await s3.getObject(bucketParams).promise()
@@ -49,52 +66,32 @@ exports.handlerProduto = async (event) => {
             }
         })
 
-        const docClient = new AWS.DynamoDB.DocumentClient();
-        
-        let itensToWrite = []
+        const batchWriteStatus = await writeItems(dynamoActions, 25)
+        console.log('last 10 items: ', batchWriteStatus.slice(-10))
+        const unprocessedItems = batchWriteStatus.reduce(unprocessedItemsReducer, [])
+        console.log('All unprocessedItems from First batch write attempt: ', unprocessedItems)
 
-        while (dynamoActions.length) {
-            const params = {
-                RequestItems: {
-                }
-            };
+        const batchWriteRetryStatus = await writeItems(unprocessedItems, 25)
+        console.log('last 10 items: ', batchWriteStatus.slice(-10))
+        const unprocessedItemsRetry = batchWriteRetryStatus.reduce(unprocessedItemsReducer, [])
+        console.log('All unprocessedItems from Second batch write attempt: ', unprocessedItemsRetry)
 
-            params.RequestItems[TableName] = dynamoActions.splice(0, 25)
+        /*
 
-            itensToWrite.push(docClient.batchWrite(params).promise())
+        UnprocessedItems: {
+            RequestItems: {
+                <TableName>: [
+                    {
+                        PutRequest: {
+                            Item: <row>
+                        }
+                    }
+                ]
+            }
         }
 
-        const itensProcessed = await Promise.all(itensToWrite)
-        console.log('itensProcessed(last 10): ', itensProcessed.splice(-10, 10))
-
-        itensToWrite = []
-
-        itensProcessed.forEach(item => {
-            if (item.UnprocessedItems[TableName]) {
-                const params = {}
-                params.RequestItems = item.UnprocessedItems
-                itensToWrite.push(docClient.batchWrite(params).promise())
-            }
-        })
-        
-        const itensReProcessed = await Promise.all(itensToWrite)
-        console.log('itens RE-Processed: ', itensReProcessed)
+        */
     } catch (error) {
         console.log("Error", error);
     }
-
-
-    try {
-        response = {
-            'statusCode': 200,
-            'body': JSON.stringify({
-                message: 'TOP',
-            })
-        }
-    } catch (err) {
-        console.log(err);
-        return err;
-    }
-
-    return response
 }
