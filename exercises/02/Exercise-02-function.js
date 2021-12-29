@@ -1,5 +1,6 @@
 const { DynamoDB } = require('aws-sdk');
 const docClient = new DynamoDB.DocumentClient();
+const { TableName } = process.env;
 
 exports.handler = async function (event, context) {
 	console.log("EVENT: \n" + JSON.stringify(event, null, 2))
@@ -16,7 +17,7 @@ const queryById = async (event) => {
 	console.log('Query by id')
 	const id = parseInt(event.pathParameters.id, 10)
 	const params = {
-		TableName : 'mrn-clientes',
+		TableName : TableName,
 		Key: {
 			id
 		}

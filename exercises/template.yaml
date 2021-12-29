@@ -39,6 +39,9 @@ Resources:
   Exercise02Function:
     Type: AWS::Serverless::Function
     Properties:
+      Environment:
+        Variables:
+          TableName: !Ref Exercise02DynamoDBTable
       Policies:
         - DynamoDBReadPolicy:
             TableName: !Ref Exercise02DynamoDBTable
