@@ -47,12 +47,6 @@ exports.handler = async function (event) {
     console.log(putRequestData);
 
     putRequestDataList.push(putRequestData);
-
-
-    // TODO NEXT
-    // Insert Records into DB
-
-    // If possible, check batch receive functionality
   });
 
   const dynamoRequestItems = {

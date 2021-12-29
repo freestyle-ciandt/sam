@@ -175,12 +175,9 @@ Resources:
       Policies:
         - SQSSendMessagePolicy: 
             QueueName: !GetAtt Exercise04SQSQueue.QueueName
-        - DynamoDBWritePolicy:
-            TableName: !Ref Exercise02DynamoDBTable
       Environment:
         Variables:
           QUEUE_URL: !Ref Exercise04SQSQueue
-          TABELA_MRN_CLIENTES: !Ref Exercise02DynamoDBTable
       Runtime: nodejs12.x
       Events:
         Exercise04ApiId:
@@ -211,11 +208,16 @@ Resources:
       Handler: Exercise-04-Consumer-function.handler
       Runtime: nodejs12.x
       Policies:
-        - DynamoDBWritePolicy:
-            TableName: !Ref Exercise02DynamoDBTable
+        - Statement:
+          - Effect: "Allow"
+            Action:
+              - "dynamodb:BatchWriteItem"
+            Resource:
+              - !GetAtt Exercise02DynamoDBTable.Arn
       Environment:
         Variables:
           CLIENTES_TABLE: !Ref Exercise02DynamoDBTable
+          TABELA_MRN_CLIENTES: !Ref Exercise02DynamoDBTable          
       Events:
         ConsumerQueue:
           Type: SQS

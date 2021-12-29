@@ -70,3 +70,8 @@ Em seguida, no diretório raiz do projeto, execute o seguinte script para valida
 npm run validate -ex=02
 npm run validate -ex=04
 ```
+
+NEXT WEEK
+- Tests are failing. Need to fix them.
+  - "ValidationException: The provided key element does not match the schema"
+  - "{\n    \"id\": 5,\n    \"nome\": \"Nome do Cliente\",\n    \"documento\": \"123456789\",\n    \"cidade\": \"Rio de Janeiro\",\n    \"estado\": \"RJ\",\n    \"pais\": \"Brasil\",\n    \"id_plano\": 10\n}"
