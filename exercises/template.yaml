@@ -175,9 +175,12 @@ Resources:
       Policies:
         - SQSSendMessagePolicy: 
             QueueName: !GetAtt Exercise04SQSQueue.QueueName
+        - DynamoDBWritePolicy:
+            TableName: !Ref Exercise02DynamoDBTable
       Environment:
         Variables:
           QUEUE_URL: !Ref Exercise04SQSQueue
+          TABELA_MRN_CLIENTES: !Ref Exercise02DynamoDBTable
       Runtime: nodejs12.x
       Events:
         Exercise04ApiId:
