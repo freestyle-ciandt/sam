@@ -57,7 +57,8 @@ O objetivo desse exercício é o de criar uma arquitetura Produtor-Consumidor us
 
 ## Validação do exercício
 
-Crie um arquivo *.env* dentro do diretório atual com o seguinte conteúdo:
+Crie um arquivo *.env* dentro da raíz do projeto com o seguinte conteúdo:
+
 ```
 API_KEY='Coloque aqui a API Key da sua aplicação'
 API_URL='Coloque aqui a URL da sua API'
