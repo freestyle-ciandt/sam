@@ -11,6 +11,6 @@ Garanta que máquina está pronta para você começar os exercícios com [este t
 |[Exercício 2](exercises/02/README.md)|criar uma Lambda Function que possua um evento http e que retorne (GetItem) algum dado de uma Tabela do DynamoDB|
 |[Exercício 3](exercises/03/README.md)|criar uma Lambda Function que seja chamada a cada uma hora (Cloud Watch Event)|
 |[Exercício 4](exercises/04/README.md)|criar uma integração entre Lambda Functions e o SQS Queue|
-|[Exercício 5](exercises/05/README.md)|criar uma Lambda Layer que crie grupos de log e as aplique nas funções criadas nos exercícios anteriores|
+|[Exercício 5](exercises/05/README.md)|exercício final|
 ## Licença
 [Link da licença deste repositório](./LICENSE)
