@@ -1,15 +1,93 @@
-AWSTemplateFormatVersion: '2010-09-09'
-Transform: 'AWS::Serverless-2016-10-31'
+AWSTemplateFormatVersion: "2010-09-09"
+Transform: "AWS::Serverless-2016-10-31"
 
 Description: Template básico para você resolver seus exercícios
 
 Resources:
-  RecursoInutil: # TODO: remover para começar os exercícios
-    Type: AWS::S3::Bucket
+  BitlyUserPool:
+    Type: AWS::Cognito::UserPool
     Properties:
-      BucketName: bucket-s3-de-exemplo
+      UserPoolName: !Sub "${AWS::StackName}-userPool"
+      AdminCreateUserConfig:
+        AllowAdminCreateUserOnly: false
+      AutoVerifiedAttributes:
+        - email
+      EmailConfiguration:
+        EmailSendingAccount: COGNITO_DEFAULT
+      UsernameConfiguration:
+        CaseSensitive: false
+      AccountRecoverySetting:
+        RecoveryMechanisms:
+          - Name: verified_email
+            Priority: 1
+      Policies:
+        PasswordPolicy:
+          MinimumLength: 12
+          RequireLowercase: true
+          RequireNumbers: true
+          RequireSymbols: true
+          RequireUppercase: true
+          TemporaryPasswordValidityDays: 1
+      Schema:
+        - Name: name
+          AttributeDataType: String
+          Mutable: true
+          Required: true
+        - Name: "family_name"
+          AttributeDataType: String
+          Mutable: true
+          Required: true
+        - Name: "birthdate"
+          AttributeDataType: String
+          Required: true
+          Mutable: true
+        - Name: email
+          AttributeDataType: String
+          Mutable: false
+          Required: true
 
+  BitlyFreeUserGroup:
+    Type: AWS::Cognito::UserPoolGroup
+    Properties:
+      GroupName: free_account
+      Precedence: 1
+      UserPoolId: !Ref BitlyUserPool
+
+  BitlyPremiumUserGroup:
+    Type: AWS::Cognito::UserPoolGroup
+    Properties:
+      GroupName: premium_account
+      Precedence: 2
+      UserPoolId: !Ref BitlyUserPool
+
+  BitlyUserPoolClient:
+    Type: AWS::Cognito::UserPoolClient
+    Properties:
+      ClientName: !Sub "${AWS::StackName}-userPoolClient"
+      GenerateSecret: false
+      UserPoolId: !Ref BitlyUserPool
+      AllowedOAuthFlowsUserPoolClient: true
+      CallbackURLs: [http://localhost:3000]
+      AllowedOAuthFlows: [implicit, code]
+      AllowedOAuthScopes: [email, openid]
+      SupportedIdentityProviders: [COGNITO]
+
+  BitlyUserPoolDomain:
+    Type: AWS::Cognito::UserPoolDomain
+    Properties:
+      UserPoolId: !Ref BitlyUserPool
+      Domain: !Ref AWS::StackName
+
+
+  # BitlyApi:
+  #   Type: AWS::Serverless::Api
+  #   Properties:
+  #     StageName: prod
+  #     Auth:
+  #       DefaultAuthorizer: CognitoAuthorizer
+  #       Authorizers:
+  #         CognitoAuthorizer:
+  #           UserPoolArn: !GetAtt BitlyUserPool.Arn
 Outputs:
-  RecursoInutil:
-    Description: Saída criada de exemplo
-    Value: !Ref RecursoInutils
+  BitlyAuthURL:
+    Value: !Sub 'https://${BitlyUserPoolDomain}.auth.${AWS::Region}.amazoncognito.com/login?client_id=${BitlyUserPoolClient}&response_type=token&redirect_uri=http://localhost:3000'
