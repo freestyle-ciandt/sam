@@ -223,6 +223,33 @@ Resources:
             Queue: !GetAtt Exercise04SQSQueue.Arn
             BatchSize: 3
 
+  Exercise05AliasesDynamoDBTable: 
+    Type: AWS::DynamoDB::Table
+    Properties:
+      BillingMode: PAY_PER_REQUEST
+      TableName: !Sub ${AWS::StackName}-aliases
+      AttributeDefinitions: 
+        - 
+          AttributeName: "id"
+          AttributeType: "S"
+        - 
+          AttributeName: "tipo"
+          AttributeType: "S"
+      KeySchema: 
+        - 
+          AttributeName: "id"
+          KeyType: "HASH"
+      GlobalSecondaryIndexes: 
+        - 
+          IndexName: "tipo-index"
+          KeySchema: 
+            - 
+              AttributeName: "tipo"
+              KeyType: "HASH"
+          Projection:
+            ProjectionType: "ALL"
+          
+
   BitlyUserPool:
     Type: AWS::Cognito::UserPool
     Properties:
@@ -306,15 +333,23 @@ Resources:
         Authorizers:
           CognitoAuthorizer:
             UserPoolArn: !GetAtt BitlyUserPool.Arn
-
-  FailureReportingDeployment:
-    Type: AWS::ApiGateway::Deployment
-    DependsOn:
-      - ApiGatewayMethodHealthGet
+  
+  BitlyFunction:
+    Type: AWS::Serverless::Function
     Properties:
-      Description: "Production environment supporting version-1 of the interface."
-      RestApiId: !Ref BitlyApi
-      StageName: "v1"
+      Events:
+        ApiEvent:
+          Type: Api
+          Properties:
+            Path: /
+            Method: get
+            RestApiId: !Ref BitlyApi
+      Runtime: python3.7
+      Handler: index.handler
+      InlineCode: |
+        def handler(event, context):
+            return {'body': 'Hello World!', 'statusCode': 200}
+
 
 Outputs:
   Exercise01Function:
