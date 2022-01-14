@@ -4,6 +4,29 @@ Transform: "AWS::Serverless-2016-10-31"
 Description: Template básico para você resolver seus exercícios
 
 Resources:
+
+  AliasesTable: 
+    Type: AWS::DynamoDB::Table
+    Properties: 
+      TableName: !Sub ${AWS::StackName}-aliases
+      AttributeDefinitions: 
+        - AttributeName: "id"
+          AttributeType: "S"
+        - AttributeName: "tipo"
+          AttributeType: "S"
+      KeySchema: 
+        - AttributeName: "id"
+          KeyType: "HASH"
+      GlobalSecondaryIndexes: 
+        - 
+          IndexName: "tipo_index"
+          KeySchema: 
+            - AttributeName: "tipo" 
+              KeyType: "HASH"
+          Projection: 
+            ProjectionType: "ALL"
+      BillingMode: PAY_PER_REQUEST
+
   BitlyUserPool:
     Type: AWS::Cognito::UserPool
     Properties:
@@ -78,16 +101,32 @@ Resources:
       UserPoolId: !Ref BitlyUserPool
       Domain: !Ref AWS::StackName
 
+  BitlyApi:
+    Type: AWS::Serverless::Api
+    Properties:
+      StageName: prod
+      Auth:
+        DefaultAuthorizer: CognitoAuthorizer
+        Authorizers:
+          CognitoAuthorizer:
+            UserPoolArn: !GetAtt BitlyUserPool.Arn
 
-  # BitlyApi:
-  #   Type: AWS::Serverless::Api
-  #   Properties:
-  #     StageName: prod
-  #     Auth:
-  #       DefaultAuthorizer: CognitoAuthorizer
-  #       Authorizers:
-  #         CognitoAuthorizer:
-  #           UserPoolArn: !GetAtt BitlyUserPool.Arn
+  CreateAliasFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      Runtime: nodejs12.x
+      Events:
+        BitlyApi:
+          Type: Api
+          Properties:
+            RestApiId: !Ref ExercisesApi
+            Path: /shortenurl
+            Method: POST
+            Auth:
+              ApiKeyRequired: true
+      CodeUri: ./05
+      Handler: Exercise-05-function.handler
+
 Outputs:
   BitlyAuthURL:
     Value: !Sub 'https://${BitlyUserPoolDomain}.auth.${AWS::Region}.amazoncognito.com/login?client_id=${BitlyUserPoolClient}&response_type=token&redirect_uri=http://localhost:3000'

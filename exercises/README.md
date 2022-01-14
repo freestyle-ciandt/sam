@@ -65,3 +65,21 @@ Você pode ver o resultado de sua stack do CloudFormation no console da AWS.
 
 ## Começando os exercícios
 Na [estrutura inicial do projeto](../README.md) temos os exercícios planejados para esse treinamento. **Todos os exercícios devem ser resolvidos no [template](./template.yaml) desta pasta e aplicados na nuvem da AWS utilizando os comando mencionados no passo [rodando este projeto](#rodando-este-projeto)**. No final de cada exercício você deverá rodar o [teste](#validando-sua-solução) referente a esse exercício para garantir que sua solução funcionou. Se ele passar, você poderá prosseguir para o próximo exercício.
+
+##Anotações Agatha e Mandolesi
+
+Stack Name
+mando-agatha-ex5
+
+Senha dos Usuários
+MandoAgatha-ex5
+
+Deploy
+sam build --template template.yaml --build-dir .aws-sam/build
+sam package --template-file .aws-sam/build/template.yaml --output-template-file .aws-sam/build/packaged-template.yaml
+sam deploy mando-agatha-ex5
+
+Ponto onde paramos em 14/01
+- Criamos a tabela DynamoDB e estamos criando a Lambda.
+- Precisamos configurar a autenticação da Lambda através do Cognito
+- https://docs.aws.amazon.com/serverless-application-model/latest/developerguide/serverless-controlling-access-to-apis-cognito-user-pool.html
