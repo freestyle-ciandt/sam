@@ -96,13 +96,36 @@ Resources:
           Type: Api
           Properties:
             Path: /
-            Method: get
+            Method: POST
             RestApiId: !Ref BitlyApi
-      Runtime: python3.7
-      Handler: index.handler
-      InlineCode: |
-        def handler(event, context):
-            return {'body': 'Hello World!', 'statusCode': 200}
+      Runtime: nodejs12.x
+      Handler: app.handler
+
+  BitlyDynamoDBTable: 
+    Type: AWS::DynamoDB::Table
+    Properties:
+      AttributeDefinitions: 
+      - 
+        AttributeName: "id"
+        AttributeType: "S"
+      - 
+        AttributeName: "tipo"
+        AttributeType: "S"
+      KeySchema: 
+      - 
+        AttributeName: "id"
+        KeyType: "HASH"  
+      TableName: !Sub "${AWS::StackName}-aliases"
+      GlobalSecondaryIndexes: 
+      - 
+        IndexName: "tipo-index"
+        KeySchema: 
+          - 
+            AttributeName: "tipo"
+            KeyType: "HASH"
+        Projection:
+          ProjectionType: "ALL"
+      BillingMode: "PAY_PER_REQUEST"
 
 Outputs:
   BitlyAuthURL:
