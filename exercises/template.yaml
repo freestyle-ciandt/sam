@@ -119,13 +119,11 @@ Resources:
         BitlyApi:
           Type: Api
           Properties:
-            RestApiId: !Ref ExercisesApi
+            RestApiId: !Ref BitlyApi
             Path: /shortenurl
             Method: POST
-            Auth:
-              ApiKeyRequired: true
       CodeUri: ./05
-      Handler: Exercise-05-function.handler
+      Handler: Exercise05function.handler
 
 Outputs:
   BitlyAuthURL:
