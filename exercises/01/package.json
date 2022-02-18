@@ -1,0 +1,14 @@
+{
+  "name": "exercise-01-function",
+  "version": "1.0.0",
+  "description": "exercise01-dojo",
+  "main": "app.js",
+  "directories": {
+    "test": "tests"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "dupla-romulo-henrique",
+  "license": "ISC"
+}
