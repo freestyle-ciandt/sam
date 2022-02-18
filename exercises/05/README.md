@@ -204,3 +204,14 @@ No final desta implementação você deverá possuir um domínio customizado par
 4. Crie uma distribuição de CloudFront que use seu Bucket S3 como origin.
 5. **opcional:** crie um certificado público da AWS e um domínio usando o Route53 para sua aplicação.
 6. Ao finalizar esses passos, mude a propriedade **CallbackURLs** de **BitlyUserPoolClient** para redirecionar para sua aplicação após o login de um usuário.
+
+------------------
+
+18/02
+-----
+- Paramos aqui
+  A Lambda deverá:
+  Validar se o usuário Cognito está verificado.
+  Validar se o usuário Cognito está em algum grupo.
+  Gerar um valor aleatório com números e letras de 8 caracteres.
+- Descobrimos que devemos usar o id_token (não o access_token) sem bearer.
