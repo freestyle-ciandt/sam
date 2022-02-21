@@ -88,7 +88,7 @@ Resources:
           CognitoAuthorizer:
             UserPoolArn: !GetAtt BitlyUserPool.Arn
 
-  BitlyFunction:
+  createAliasFunction:
     Type: AWS::Serverless::Function
     Properties:
       Events:
@@ -99,7 +99,14 @@ Resources:
             Method: POST
             RestApiId: !Ref BitlyApi
       Runtime: nodejs12.x
+      CodeUri: ./05
       Handler: app.handler
+      Environment:
+        Variables:
+          AliasesTableName: !Ref BitlyDynamoDBTable
+      Policies:
+        - DynamoDBWritePolicy:
+            TableName: !Ref BitlyDynamoDBTable
 
   BitlyDynamoDBTable: 
     Type: AWS::DynamoDB::Table
