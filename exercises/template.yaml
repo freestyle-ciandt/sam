@@ -1,5 +1,5 @@
-AWSTemplateFormatVersion: '2010-09-09'
-Transform: 'AWS::Serverless-2016-10-31'
+AWSTemplateFormatVersion: "2010-09-09"
+Transform: "AWS::Serverless-2016-10-31"
 
 Description: Template dojo dupla Romulo e Henrique
 
@@ -69,8 +69,7 @@ Resources:
       Handler: app.query
       Runtime: nodejs12.x
       Policies:
-        -
-          DynamoDBReadPolicy:
+        - DynamoDBReadPolicy:
             TableName: !Ref Exercise02Table
       Events:
         Exercise02Api:
@@ -86,39 +85,35 @@ Resources:
     Type: AWS::DynamoDB::Table
     Properties:
       AttributeDefinitions:
-        -
-          AttributeName: "id"
+        - AttributeName: "id"
           AttributeType: "N"
-        -
-          AttributeName: "cidade"
+        - AttributeName: "cidade"
           AttributeType: "S"
       KeySchema:
-        -
-          AttributeName: "id"
+        - AttributeName: "id"
           KeyType: "HASH"
-      ProvisionedThroughput: 
+      ProvisionedThroughput:
         ReadCapacityUnits: "3"
         WriteCapacityUnits: "3"
-    TableName: "${AWS::StackName}-clientes"
+      TableName: !Sub "${AWS::StackName}-clientes"
+      GlobalSecondaryIndexes:
     GlobalSecondaryIndexes: 
-      - 
-        IndexName: "cidade-index"
+      GlobalSecondaryIndexes:
+        - IndexName: "cidade-index"
+          KeySchema:
         KeySchema: 
-          - 
-            AttributeName: "cidade"
-            KeyType: "HASH"
-        Projection:
-          ProjectionType: "ALL"
-        ProvisionedThroughput:
-          ReadCapacityUnits: "3"
-          WriteCapacityUnits: "3"
-
+          KeySchema:
+            - AttributeName: "cidade"
+              KeyType: "HASH"
+          Projection:
+            ProjectionType: "ALL"
+          ProvisionedThroughput:
+            ReadCapacityUnits: "3"
+            WriteCapacityUnits: "3"
 
 Outputs:
   Exercise01Function:
     Value: !Ref Exercise01Function
-  Exercise02ClientFunction:
-    Value: !Ref Exercise02ClientFunction
   Exercise02CidadeFunction:
     Value: !Ref Exercise02CidadeFunction
   Exercise02Table:
