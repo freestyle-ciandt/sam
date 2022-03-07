@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "test": "env-cmd -f .env mocha exercises/**/tests/int/*.spec.js",
-    "validate": "env-cmd -f .env mocha exercises/$npm_config_ex/tests/int/*.spec.js"
+    "validate": "env-cmd -f .env mocha exercises/01/tests/int/*.spec.js"
   },
   "license": "GPLv3",
   "devDependencies": {

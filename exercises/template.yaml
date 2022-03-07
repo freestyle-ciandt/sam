@@ -37,8 +37,89 @@ Resources:
             Auth:
               ApiKeyRequired: true
 
+  Exercise02ClientFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      FunctionName: Exercise-02-client-function
+      CodeUri: ./02
+      Handler: app.get
+      Runtime: nodejs12.x
+      Policies:
+        -
+          DynamoDBReadPolicy:
+            TableName: !Ref Exercise02Table
+      Environment:
+        Variables:
+          TABLE_NAME: !Ref Exercise02Table
+      Events:
+        Exercise01Api:
+          Type: Api
+          Properties:
+            RestApiId: !Ref ExercisesApi
+            Path: /exercise-02/{id}
+            Method: GET
+            Auth:
+              ApiKeyRequired: true
+
+  Exercise02CidadeFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      FunctionName: Exercise-02-cidade-function
+      CodeUri: ./02
+      Handler: app.query
+      Runtime: nodejs12.x
+      Policies:
+        -
+          DynamoDBReadPolicy:
+            TableName: !Ref Exercise02Table
+      Events:
+        Exercise02Api:
+          Type: Api
+          Properties:
+            RestApiId: !Ref ExercisesApi
+            Path: /exercise-01/cidade/{cidade}
+            Method: GET
+            Auth:
+              ApiKeyRequired: true
+
+  Exercise02Table:
+    Type: AWS::DynamoDB::Table
+    Properties:
+      AttributeDefinitions:
+        -
+          AttributeName: "id"
+          AttributeType: "N"
+        -
+          AttributeName: "cidade"
+          AttributeType: "S"
+      KeySchema:
+        -
+          AttributeName: "id"
+          KeyType: "HASH"
+      ProvisionedThroughput: 
+        ReadCapacityUnits: "3"
+        WriteCapacityUnits: "3"
+    TableName: "${AWS::StackName}-clientes"
+    GlobalSecondaryIndexes: 
+      - 
+        IndexName: "cidade-index"
+        KeySchema: 
+          - 
+            AttributeName: "cidade"
+            KeyType: "HASH"
+        Projection:
+          ProjectionType: "ALL"
+        ProvisionedThroughput:
+          ReadCapacityUnits: "3"
+          WriteCapacityUnits: "3"
 
 
 Outputs:
   Exercise01Function:
     Value: !Ref Exercise01Function
+  Exercise02ClientFunction:
+    Value: !Ref Exercise02ClientFunction
+  Exercise02CidadeFunction:
+    Value: !Ref Exercise02CidadeFunction
+  Exercise02Table:
+    Value: !Ref Exercise02Table

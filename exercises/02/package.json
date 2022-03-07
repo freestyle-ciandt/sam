@@ -1,0 +1,17 @@
+{
+  "name": "exercise-02-function",
+  "version": "1.0.0",
+  "description": "exercise02-dojo",
+  "main": "app.js",
+  "directories": {
+    "test": "tests"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "dupla-romulo-henrique",
+  "license": "ISC",
+  "dependencies": {
+    "aws-sdk": "^2.1079.0"
+  }
+}
