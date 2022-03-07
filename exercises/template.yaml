@@ -97,11 +97,15 @@ Resources:
         WriteCapacityUnits: "3"
       TableName: !Sub "${AWS::StackName}-clientes"
       GlobalSecondaryIndexes:
+    GlobalSecondaryIndexes:
+      GlobalSecondaryIndexes:
     GlobalSecondaryIndexes: 
       GlobalSecondaryIndexes:
         - IndexName: "cidade-index"
           KeySchema:
-        KeySchema: 
+        KeySchema:
+          KeySchema:
+        KeySchema:
           KeySchema:
             - AttributeName: "cidade"
               KeyType: "HASH"
@@ -114,6 +118,8 @@ Resources:
 Outputs:
   Exercise01Function:
     Value: !Ref Exercise01Function
+  Exercise02ClientFunction:
+    Value: !Ref Exercise02ClientFunction
   Exercise02CidadeFunction:
     Value: !Ref Exercise02CidadeFunction
   Exercise02Table:
