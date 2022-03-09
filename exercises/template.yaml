@@ -97,17 +97,11 @@ Resources:
         WriteCapacityUnits: "3"
       TableName: !Sub "${AWS::StackName}-clientes"
       GlobalSecondaryIndexes:
-    GlobalSecondaryIndexes:
-      GlobalSecondaryIndexes:
-    GlobalSecondaryIndexes: 
-      GlobalSecondaryIndexes:
-        - IndexName: "cidade-index"
+        - 
+          IndexName: "cidade-index"
           KeySchema:
-        KeySchema:
-          KeySchema:
-        KeySchema:
-          KeySchema:
-            - AttributeName: "cidade"
+            -
+              AttributeName: "cidade"
               KeyType: "HASH"
           Projection:
             ProjectionType: "ALL"
