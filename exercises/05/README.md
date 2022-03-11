@@ -215,3 +215,12 @@ No final desta implementação você deverá possuir um domínio customizado par
   Validar se o usuário Cognito está em algum grupo.
   Gerar um valor aleatório com números e letras de 8 caracteres.
 - Descobrimos que devemos usar o id_token (não o access_token) sem bearer.
+
+11/03
+-----
+- Request para triggar Lambda
+  curl -X POST https://q7gxn5h2sa.execute-api.us-east-1.amazonaws.com/prod/shortenurl -H "Authorization: <id_token>" -d '{"data": {"url": "http://abc.com.br"}}'   
+
+- Paramos no item 6, na parte que insere no DynamoDB. Precisamos criar a condition.
+- Validar o grupo do usuario.
+

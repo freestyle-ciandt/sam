@@ -124,6 +124,9 @@ Resources:
             Method: POST
       CodeUri: ./05
       Handler: Exercise05function.handler
+      Environment:
+        Variables:
+          TABLE_NAME: !Ref AliasesTable
 
 Outputs:
   BitlyAuthURL:
