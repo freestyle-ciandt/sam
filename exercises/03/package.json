@@ -1,0 +1,19 @@
+{
+  "name": "exercise-03-funciton",
+  "version": "1.0.0",
+  "description": "Exercise 03 Dojo",
+  "main": "app.js",
+  "directories": {
+    "test": "tests"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Dupla Romulo e Henrique",
+  "license": "ISC",
+  "dependencies": {
+    "aws-sdk": "^2.1091.0",
+    "csv": "^6.0.5",
+    "uuid": "^8.3.2"
+  }
+}
