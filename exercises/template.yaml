@@ -108,6 +108,48 @@ Resources:
           ProvisionedThroughput:
             ReadCapacityUnits: "3"
             WriteCapacityUnits: "3"
+  
+  Exercise03ProductFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      FunctionName: Exercise-03-product-function
+      CodeUri: ./03
+      Handler: app.lambdaHandler
+      Runtime: nodejs12.x
+      Policies:
+        -
+          DynamoDBReadPolicy:
+            TableName: !Ref Exercise03Table
+      Environment:
+        Variables:
+          TABLE_NAME: !Ref Exercise03Table
+          BUCKET_NAME: !Ref Exercise03Bucket
+      Events:
+        Exercise01Api:
+          Type: Api
+          Properties:
+            RestApiId: !Ref ExercisesApi
+            Path: /exercise-02/{id}
+            Method: GET
+            Auth:
+              ApiKeyRequired: true
+
+  Exercise03Bucket:
+    Type: 'AWS::S3::Bucket'
+    Properties:
+      BucketName: !Sub "${AWS::StackName}-produtos"
+
+  Exercise03Table:
+    Type: AWS::DynamoDB::Table
+    Properties:
+      BillingMode: PAY_PER_REQUEST 
+      AttributeDefinitions:
+        - AttributeName: "id"
+          AttributeType: "S"
+      KeySchema:
+        - AttributeName: "id"
+          KeyType: "HASH"
+      TableName: !Sub "${AWS::StackName}-produtos"
 
 Outputs:
   Exercise01Function:
@@ -118,3 +160,8 @@ Outputs:
     Value: !Ref Exercise02CidadeFunction
   Exercise02Table:
     Value: !Ref Exercise02Table
+  BucketName:
+    Value: !Ref Exercise03Bucket
+  LambdaArn:
+  TableName:
+    Value: !Ref Exercise03Table
