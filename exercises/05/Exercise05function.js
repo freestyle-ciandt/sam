@@ -2,6 +2,9 @@ const { TABLE_NAME } = process.env;
 
 const alphaChars = [..."ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789"];
 
+const aws = require('aws-sdk');
+const docClient = new aws.DynamoDB.DocumentClient();
+
 const generator = (len) => {
    return [...Array(len)]
      .map(i => alphaChars[Math.random()*alphaChars.length|0])
@@ -26,14 +29,19 @@ exports.handler = async (event) => {
 
     const params = {
       TableName: TABLE_NAME,
+      Key:{ 
+        "id": id
+        },
       Item: {
         id,
         url,
         uuid,
         tipo
       },
-      ConditionExpression: 'ALGUMA CONDICAO AQUI',
+      // ConditionExpression: 'ALGUMA CONDICAO AQUI',
     };
+
+    await docClient.update(params).promise();
 
     return {
         statusCode: 200,

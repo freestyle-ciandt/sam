@@ -122,6 +122,13 @@ Resources:
             RestApiId: !Ref BitlyApi
             Path: /shortenurl
             Method: POST
+      Policies:
+        - Statement:
+          - Effect: 'Allow'
+            Action:
+              - 'dynamodb:UpdateItem'
+            Resource:
+              - !GetAtt AliasesTable.Arn
       CodeUri: ./05
       Handler: Exercise05function.handler
       Environment:
