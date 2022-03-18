@@ -104,6 +104,31 @@ Resources:
         def handler(event, context):
             return {'body': 'Hello World!', 'statusCode': 200}
 
+  AliasesTable: 
+    Type: AWS::DynamoDB::Table
+    Properties: 
+      AttributeDefinitions: 
+        - AttributeName: "id"
+          AttributeType: "S"
+        - AttributeName: "url"
+          AttributeType: "S"
+        - AttributeName: "uuid"
+          AttributeType: "S"
+        - AttributeName: "tipo"
+          AttributeType: "S"
+      KeySchema: 
+        - AttributeName: "id"
+          KeyType: "HASH"
+      TableName: !Sub '${AWS::StackName}-aliases'
+      BillingMode: "PAY_PER_REQUEST"
+      GlobalSecondaryIndexes: 
+        - IndexName: "tipo-index"
+          KeySchema: 
+            - AttributeName: "tipo"
+              KeyType: "RANGE"
+          Projection: 
+            ProjectionType: "ALL"
+
 Outputs:
   BitlyAuthURL:
     Value: !Sub 'https://${BitlyUserPoolDomain}.auth.${AWS::Region}.amazoncognito.com/login?client_id=${BitlyUserPoolClient}&response_type=token&redirect_uri=http://localhost:3000'
