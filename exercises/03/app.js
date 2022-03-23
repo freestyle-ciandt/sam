@@ -1,6 +1,5 @@
+const {parse} = require('csv-parse/dist/cjs/sync.cjs');
 const { DynamoDB, S3 } = require("aws-sdk");
-import { S3 } from "aws-sdk";
-import { parse } from "csv-parse/sync";
 
 const { TABLE_NAME, BUCKET_NAME } = process.env;
 const docClient = new DynamoDB.DocumentClient({ region: "us-east-1" });
@@ -14,14 +13,21 @@ const params = {
 
 const getCSV = async () => {
   const produtos = await s3.getObject(params).promise();
-  return produtos;
+  return produtos.Body.toString('utf-8');
 };
-const parser = (csv) => {
+const parseCsv = (csv) => {
   return parse(csv, {
     columns: true,
     skip_empty_lines: true
   })
 };
+
+const mountDynamoDBRequest = (produtos) => {
+  const putRequests = produtos.map((produto) => ({ PutRequest: { Item: { ...produto } } }));
+  const dynamoRequest = { RequestItems: {} };
+  dynamoRequest.RequestItems[TABLE_NAME] = putRequests;
+  return dynamoRequest
+}
 
 exports.lambdaHandler = async () => {
   parse()

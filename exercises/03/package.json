@@ -13,8 +13,8 @@
   "license": "ISC",
   "dependencies": {
     "aws-sdk": "^2.1091.0",
-    "csv": "^6.0.5",
-    "csv-parser": "^3.0.0",
+    "csv-parse": "^5.0.4",
+    "ramda": "^0.28.0",
     "uuid": "^8.3.2"
   }
 }
