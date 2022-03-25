@@ -2,9 +2,9 @@ version = 0.1
 [default]
 [default.deploy]
 [default.deploy.parameters]
-stack_name = "Exercise-02"
+stack_name = "exercise-03"
 s3_bucket = "aws-sam-cli-managed-default-samclisourcebucket-x0sm4hei2ieg"
-s3_prefix = "Exercise-02"
+s3_prefix = "exercise-03"
 region = "us-east-1"
 confirm_changeset = true
 capabilities = "CAPABILITY_IAM"

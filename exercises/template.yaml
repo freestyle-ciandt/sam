@@ -125,14 +125,10 @@ Resources:
           TABLE_NAME: !Ref Exercise03Table
           BUCKET_NAME: !Ref Exercise03Bucket
       Events:
-        Exercise01Api:
-          Type: Api
+        StartScheduleEvent:
+          Type: Schedule
           Properties:
-            RestApiId: !Ref ExercisesApi
-            Path: /exercise-02/{id}
-            Method: GET
-            Auth:
-              ApiKeyRequired: true
+            Schedule: cron(0 6 * * ? *)
 
   Exercise03Bucket:
     Type: 'AWS::S3::Bucket'
@@ -153,15 +149,16 @@ Resources:
 
 Outputs:
   Exercise01Function:
-    Value: !Ref Exercise01Function
+    Value: !GetAtt Exercise01Function.Arn
   Exercise02ClientFunction:
-    Value: !Ref Exercise02ClientFunction
+    Value: !GetAtt Exercise02ClientFunction.Arn
   Exercise02CidadeFunction:
-    Value: !Ref Exercise02CidadeFunction
+    Value: !GetAtt Exercise02CidadeFunction.Arn
   Exercise02Table:
     Value: !Ref Exercise02Table
   BucketName:
     Value: !Ref Exercise03Bucket
   LambdaArn:
+    Value: !GetAtt Exercise03ProductFunction.Arn
   TableName:
     Value: !Ref Exercise03Table
