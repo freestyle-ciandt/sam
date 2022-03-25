@@ -42,9 +42,12 @@ const writeToDatabase = async (value) => {
 
 exports.lambdaHandler = async () => {
   const produtoResponse = await getCSV();
+  console.log('produtoResponse:', produtoResponse);
   const S3Response = parseCsv(produtoResponse);
+  console.log('S3Response', S3Response);
   while(S3Response.length) {
     const dynamoRequestItem = mountDynamoDBRequest(S3Response.splice(0,25));
-    writeToDatabase(dynamoRequestItem);
+    console.log('dynamoRequestItem', dynamoRequestItem);
+    await writeToDatabase(dynamoRequestItem);
   }
 };

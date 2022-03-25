@@ -117,9 +117,12 @@ Resources:
       Handler: app.lambdaHandler
       Runtime: nodejs12.x
       Policies:
-        -
-          DynamoDBReadPolicy:
+        - DynamoDBReadPolicy:
             TableName: !Ref Exercise03Table
+        - DynamoDBWritePolicy:
+            TableName: !Ref Exercise03Table
+        - S3ReadPolicy:
+            BucketName: !Ref Exercise03Bucket
       Environment:
         Variables:
           TABLE_NAME: !Ref Exercise03Table
