@@ -106,13 +106,9 @@ Resources:
 
   AliasesTable: 
     Type: AWS::DynamoDB::Table
-    Properties: 
-      AttributeDefinitions: 
+    Properties:      
+      AttributeDefinitions:
         - AttributeName: "id"
-          AttributeType: "S"
-        - AttributeName: "url"
-          AttributeType: "S"
-        - AttributeName: "uuid"
           AttributeType: "S"
         - AttributeName: "tipo"
           AttributeType: "S"
@@ -125,10 +121,22 @@ Resources:
         - IndexName: "tipo-index"
           KeySchema: 
             - AttributeName: "tipo"
-              KeyType: "RANGE"
+              KeyType: "HASH"
           Projection: 
             ProjectionType: "ALL"
-
+  LambdaFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      Handler: index.handler
+      Runtime: nodejs14.x
+      CodeUri: ./05
+      Events:
+        ApiEvent:
+          Type: Api
+          Properties:
+            Path: /
+            Method: post
+            RestApiId: !Ref BitlyApi
 Outputs:
   BitlyAuthURL:
     Value: !Sub 'https://${BitlyUserPoolDomain}.auth.${AWS::Region}.amazoncognito.com/login?client_id=${BitlyUserPoolClient}&response_type=token&redirect_uri=http://localhost:3000'

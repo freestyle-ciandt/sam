@@ -1,0 +1,11 @@
+{
+  "name": "package.json",
+  "version": "1.0.0",
+  "description": "O objetivo este exercício é o de criar uma aplicação real na AWS. Este exercício será quebrado em objetivos menores e você só deverá ir para o próximo exercício quando terminar e testar o exercício anterior.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC"
+}
