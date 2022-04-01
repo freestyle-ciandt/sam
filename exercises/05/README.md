@@ -223,17 +223,19 @@ No final desta implementação você deverá possuir um domínio customizado par
   Add condition.
   Validar grupo.
 - Request para triggar Lambda
-  curl -X POST https://q7gxn5h2sa.execute-api.us-east-1.amazonaws.com/prod/shortenurl -H "Authorization: <id_token>" -d '{"data": {"url": "http://abc.com.br"}}'  
+  curl -X POST https://l7lefqtz30.execute-api.us-east-1.amazonaws.com/prod/shortenurl -H "Authorization: <id_token>" -d '{"data": {"url": "http://abc.com.br"}}'  
 
 - URL Cognito
   user: agatha
   senha: MandoAgatha-ex5
 
-  user: mando
+  user: mandolesi
   senha: MandoAgatha-ex5
 
-  url: https://mando-agatha-ex5.auth.us-east-1.amazoncognito.com/login?client_id=1a14ljotfc9q8k8ro1cb4tg2dv&response_type=token&redirect_uri=http://localhost:3000  
+  url: https://mando-agatha-ex5.auth.us-east-1.amazoncognito.com/login?client_id=6sm4fhla12ed5hi4sbvojda9uh&response_type=token&redirect_uri=http://localhost:3000  
 
 - Paramos no item 6, na parte que insere no DynamoDB. Precisamos criar a condition.
 - Validar o grupo do usuario.
+
+
 
