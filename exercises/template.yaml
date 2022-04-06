@@ -46,7 +46,8 @@ Resources:
             id_plano:
               type: integer
       GatewayResponses:
-        DEFAULT_400:
+        DEFAULT_4xx:
+          StatusCode: 400
           ResponseTemplates:
             "application/json": '{ "message": "Invalid Input" }'
 

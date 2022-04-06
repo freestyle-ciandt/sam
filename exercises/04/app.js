@@ -40,12 +40,12 @@ exports.get = async(event) => {
 exports.post = async(event) => {
     const { body } = event;
 
-    // if(Object.values(body).some(item => !item)){
-    //     return {
-    //         'statusCode': 400,
-    //         'message': 'Invalid Input'
-    //     }
-    // }
+    if(Object.values(body).some(item => !item)){
+        return {
+            'statusCode': 400,
+            'message': 'Invalid Input'
+        }
+    }
 
     const params = {
         MessageBody: JSON.stringify(body),
