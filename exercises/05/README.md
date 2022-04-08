@@ -237,5 +237,11 @@ No final desta implementação você deverá possuir um domínio customizado par
 - Paramos no item 6, na parte que insere no DynamoDB. Precisamos criar a condition.
 - Validar o grupo do usuario.
 
-
+08/04
+-----
+- Conseguimos consertar os erros de index;
+- COnseguimos fazer a condicional funcionar;
+- Criamos a rotina de tentar uma segunda vez;
+- Paramos no item 7:
+  - 7. Crie a Lambda getAliasFunction
 
