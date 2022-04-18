@@ -14,7 +14,7 @@ Resources:
           CreateUsagePlan: PER_API
           Description: Usage plan for the Serverless Api
           Quota:
-            Limit: 50
+            Limit: 5000
             Period: MONTH
           Tags:
             - Key: Name
@@ -118,12 +118,11 @@ Resources:
     Properties:
       FunctionName: Exercise-04-producer-function
       CodeUri: ./04
-      Handler: app.post
+      Handler: producer.post
       Runtime: nodejs12.x
       Policies:
         - SQSSendMessagePolicy:
-            QueueName:
-              !GetAtt Exercise04SQSQueue.QueueName
+            QueueName: !GetAtt Exercise04SQSQueue.QueueName
       Environment:
         Variables:
           SQS_URL: !Ref Exercise04SQSQueue
@@ -146,11 +145,14 @@ Resources:
     Properties:
       FunctionName: Exercise-04-consumer-function
       CodeUri: ./04
-      Handler: app.get
+      Handler: consumer.get
       Runtime: nodejs12.x
       Policies:
         - DynamoDBWritePolicy:
             TableName: !Ref Exercise02Table
+      Environment:
+        Variables:
+          TABLE_NAME: !Ref Exercise02Table
       Events:
         SQSEvent:
           Type: SQS
