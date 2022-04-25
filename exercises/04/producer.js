@@ -6,12 +6,13 @@ exports.post = async (event) => {
   const { body } = event;
   console.log("producer - body:", body);
 
-  // if(Object.values(body).some(item => !item)){
-  //     return {
-  //         statusCode: 400,
-  //         body: 'Invalid Input'
-  //     }
-  // }
+  console.log('>> TESTE: ', Object.values(body).some(item => !item))
+  if(Object.values(body).some(item => !item)){
+      return {
+          statusCode: 400,
+          body: 'Invalid Input'
+      }
+  }
 
   const params = {
     MessageBody: body,

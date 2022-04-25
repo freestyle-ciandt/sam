@@ -49,7 +49,7 @@ Resources:
         DEFAULT_4xx:
           StatusCode: 400
           ResponseTemplates:
-            "application/json": '{ "message": "Invalid Input" }'
+            "application/json": '{"message": "Invalid Input"}'
 
 
   Exercise01Function:
