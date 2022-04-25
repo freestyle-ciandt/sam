@@ -50,7 +50,7 @@ describe(`Given the API receives a POST request on path: ${API_POST_PATH}`, () =
       });
 
       it("Then it should respond with 400 status code", () => {
-        expect(response.statusCode).to.eql(400); 
+        expect(response.statusCode).to.eql(400);
       });
 
       it("And it should respond with the expected payload", () => {
@@ -58,21 +58,12 @@ describe(`Given the API receives a POST request on path: ${API_POST_PATH}`, () =
       });
     });
 
-    describe.only(`When ${propertyName} is empty`, () => {
+    describe(`When ${propertyName} is empty`, () => {
       before(async () => {
-        console.log("API_URL", API_URL);
-        console.log("SUCCESS_REQUEST", SUCCESS_REQUEST);
-        console.log("propertyName", propertyName);
-        console.log("API_KEY", API_KEY);
-        try {
-          response = await request(API_URL)
-            .post(API_POST_PATH)
-            .set("x-api-key", API_KEY)
-            .send(generateEmptyField(SUCCESS_REQUEST, propertyName))
-            // console.log("response", response); 
-        } catch (err) {
-          console.log("error", err);
-        }
+        response = await request(API_URL)
+          .post(API_POST_PATH)
+          .send(generateEmptyField(SUCCESS_REQUEST, propertyName))
+          .set("x-api-key", API_KEY);
       });
 
       it("Then it should respond with 400 status code", () => {

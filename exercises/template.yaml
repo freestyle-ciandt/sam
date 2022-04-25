@@ -46,11 +46,10 @@ Resources:
             id_plano:
               type: integer
       GatewayResponses:
-        DEFAULT_4xx:
+        BAD_REQUEST_BODY:
           StatusCode: 400
           ResponseTemplates:
             "application/json": '{"message": "Invalid Input"}'
-
 
   Exercise01Function:
     Type: AWS::Serverless::Function

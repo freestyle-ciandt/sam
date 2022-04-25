@@ -6,13 +6,16 @@ exports.post = async (event) => {
   const { body } = event;
   console.log("producer - body:", body);
 
-  console.log('>> TESTE: ', Object.values(body).some(item => !item))
-  if(Object.values(body).some(item => !item)){
-      return {
-          statusCode: 400,
-          body: 'Invalid Input'
-      }
-  }
+  // console.log(
+  //   ">> TESTE: ",
+  //   Object.values(body).some((item) => !item)
+  // );
+  // if (!body?.id_plano && !body?.id) {
+  //   return {
+  //     statusCode: 400,
+  //     body: "Invalid Input",
+  //   };
+  // }
 
   const params = {
     MessageBody: body,
@@ -22,7 +25,7 @@ exports.post = async (event) => {
 
   try {
     const success = await sqsClient.sendMessage(params).promise();
-    console.log('producer - success:', success);
+    console.log("producer - success:", success);
 
     return {
       statusCode: 200,
