@@ -134,6 +134,29 @@ Resources:
       Environment:
         Variables:
           TABLE_NAME: !Ref AliasesTable
+  GetAliasFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      Runtime: nodejs12.x
+      Events:
+        BitlyApi:
+          Type: Api
+          Properties:
+            RestApiId: !Ref BitlyApi
+            Path: /get-alias/{alias}
+            Method: GET
+      Policies:
+        - Statement:
+          - Effect: 'Allow'
+            Action:
+              - 'dynamodb:UpdateItem'
+            Resource:
+              - !GetAtt AliasesTable.Arn
+      CodeUri: ./05
+      Handler: getAliasFunction.handler
+      Environment:
+        Variables:
+          TABLE_NAME: !Ref AliasesTable
 
 Outputs:
   BitlyAuthURL:
