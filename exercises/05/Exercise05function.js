@@ -19,7 +19,7 @@ exports.handler = async (event) => {
   const { url } = body.data;
 
   // Generate id
-  let id = generator(8);
+  let id_alias = generator(8);
 
   // Get user sub
   const { sub: uuid } = event.requestContext.authorizer.claims;
@@ -27,14 +27,14 @@ exports.handler = async (event) => {
   // Get user group
   const tipo = event.requestContext.authorizer.claims["cognito:groups"];
 
-  let params = createParams(id, url, uuid, tipo);
+  let params = createParams(id_alias, url, uuid, tipo);
 
   try {
     await docClient.update(params).promise();
   } catch (err) {
     if (err.code === "ConditionalCheckFailedException") {
-      id = generator(8);
-      params = createParams(id, url, uuid, tipo);
+      id_alias = generator(8);
+      params = createParams(id_alias, url, uuid, tipo);
       await docClient.update(params).promise();
     } else {
       throw err;
@@ -44,16 +44,16 @@ exports.handler = async (event) => {
   return {
     statusCode: 200,
     body: JSON.stringify({
-      message: `This is the text: ${id}`,
+      message: `This is the text: ${id_alias}`,
     }),
   };
 };
 
-function createParams(id, url, uuid, tipo) {
+function createParams(id_alias, url, uuid, tipo) {
   const params = {
     TableName: TABLE_NAME,
     Key: {
-      id: id,
+      id_alias: id_alias,
     },
     UpdateExpression: "set urlx = :url, uuidx = :uuid, tipo = :tipo",
     ExpressionAttributeValues: {

@@ -10,12 +10,12 @@ Resources:
     Properties: 
       TableName: !Sub ${AWS::StackName}-aliases
       AttributeDefinitions: 
-        - AttributeName: "id"
+        - AttributeName: "id_alias"
           AttributeType: "S"
         - AttributeName: "tipo"
           AttributeType: "S"
       KeySchema: 
-        - AttributeName: "id"
+        - AttributeName: "id_alias"
           KeyType: "HASH"
       GlobalSecondaryIndexes: 
         - 
@@ -142,6 +142,8 @@ Resources:
         BitlyApi:
           Type: Api
           Properties:
+            Auth:
+              Authorizer: NONE
             RestApiId: !Ref BitlyApi
             Path: /get-alias/{alias}
             Method: GET

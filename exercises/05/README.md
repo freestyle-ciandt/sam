@@ -222,8 +222,12 @@ No final desta implementação você deverá possuir um domínio customizado par
   O item está indo só com id para o dynamo. Colocar "id"=id no params. 
   Add condition.
   Validar grupo.
-- Request para triggar Lambda
-  curl -X POST https://l7lefqtz30.execute-api.us-east-1.amazonaws.com/prod/shortenurl -H "Authorization: <id_token>" -d '{"data": {"url": "http://abc.com.br"}}'  
+
+- Request para triggar Lambda CreateAlias
+  curl -X POST https://mufkahm0y7.execute-api.us-east-1.amazonaws.com/prod/shortenurl -H "Authorization: <id_token>" -d '{"data": {"url": "http://abc.com.br"}}'  
+
+- Request para triggar Lambda GetAlias
+  curl -X POST https://mufkahm0y7.execute-api.us-east-1.amazonaws.com/prod/get-alias/{alias} -H "Authorization: <id_token>"  
 
 - URL Cognito
   user: agatha
@@ -232,7 +236,7 @@ No final desta implementação você deverá possuir um domínio customizado par
   user: mandolesi
   senha: MandoAgatha-ex5
 
-  url: https://mando-agatha-ex5.auth.us-east-1.amazoncognito.com/login?client_id=6sm4fhla12ed5hi4sbvojda9uh&response_type=token&redirect_uri=http://localhost:3000  
+  url: https://mando-agatha-ex5.auth.us-east-1.amazoncognito.com/login?client_id=5g9q8scbpjvo3543csp9ttktqb&response_type=token&redirect_uri=http://localhost:3000  
 
 - Paramos no item 6, na parte que insere no DynamoDB. Precisamos criar a condition.
 - Validar o grupo do usuario.
@@ -242,4 +246,10 @@ No final desta implementação você deverá possuir um domínio customizado par
 - Criamos a Lambda getAliasFunction
 - Precisamos descorir como 'cancelar' a autenticação do cognito
 
+06/05
+-----
+- Deletamos a stack e criamos novamente por termos mudado o nome do index do DynamoDB. NÃO FAÇA ISSO NOVAMENTE! Da próxima vez, apague apenas o BD.
+- A requisição GET feita através de curl está dando {"message":"Forbidden"}
+- Fizemos a requisição pelo painel AWS (API Gateway) e obtivemos o erro abaixo:
 
+"errorMessage":"User: arn:aws:sts::193490403882:assumed-role/mando-agatha-ex5-GetAliasFunctionRole-1L388DA1GVRYG/mando-agatha-ex5-GetAliasFunction-eVLOt7mHxD1Y is not authorized to perform: dynamodb:Query on resource: arn:aws:dynamodb:us-east-1:193490403882:table/mando-agatha-ex5-aliases/index/id_alias"
