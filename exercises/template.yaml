@@ -73,7 +73,7 @@ Resources:
     Properties:
       FunctionName: Exercise-02-client-function
       CodeUri: ./02
-      Handler: app.get
+      Handler: app.queryById
       Runtime: nodejs12.x
       Policies:
         -
@@ -97,17 +97,20 @@ Resources:
     Properties:
       FunctionName: Exercise-02-cidade-function
       CodeUri: ./02
-      Handler: app.query
+      Handler: app.queryByCity
       Runtime: nodejs12.x
       Policies:
         - DynamoDBReadPolicy:
             TableName: !Ref Exercise02Table
+      Environment:
+        Variables:
+          TABLE_NAME: !Ref Exercise02Table
       Events:
         Exercise02Api:
           Type: Api
           Properties:
             RestApiId: !Ref ExercisesApi
-            Path: /exercise-01/cidade/{cidade}
+            Path: /exercise-02/cidade/{cidade}
             Method: GET
             Auth:
               ApiKeyRequired: true

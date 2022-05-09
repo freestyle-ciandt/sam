@@ -2,24 +2,27 @@ const { DynamoDB } = require('aws-sdk');
 const { TABLE_NAME } = process.env;
 const docClient = new DynamoDB.DocumentClient({ region: 'us-east-1' });
 
-exports.get = async(event) => {
+exports.queryById = async(event) => {
+    console.log("Event: \n", JSON.stringify(event, null, 2))
     const { id } = event.pathParameters;
 
     const params = {
         TableName: TABLE_NAME,
         Key:{
-            id: id
+            id: parseInt(id, 10)
         }}
 
-    const client = docClient.get({params}).promise();
+    const { Item: cliente } = await docClient.get(params).promise();
+    console.log("Dynamodb response \n", cliente)
 
     return {
         'statusCode': 200,
-        'body': client
+        'body': JSON.stringify(cliente)
     }
 }
 
-exports.query = async(event) => {
+exports.queryByCity = async(event) => {
+    console.log("Event: \n", JSON.stringify(event, null, 2))
     const { cidade } = event.pathParameters;
 
     const params = {
@@ -31,11 +34,12 @@ exports.query = async(event) => {
         }
     }
 
-    const client = docClient.query(params).promise();
+    const cidades = await docClient.query(params).promise();
+    console.log("Dynamodb response \n", cidades)
 
     return {
         'statusCode': 200,
-        'body': client
+        'body': JSON.stringify(cidades.Items)
     }
 
 }
