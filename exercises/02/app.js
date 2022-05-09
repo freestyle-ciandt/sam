@@ -30,7 +30,7 @@ exports.queryByCity = async(event) => {
         IndexName: 'cidade-index',
         KeyConditionExpression: 'cidade = :cidade',
         ExpressionAttributeValues: {
-            ':cidade': cidade
+            ':cidade': decodeURI(cidade)
         }
     }
 
