@@ -124,6 +124,7 @@ Resources:
               KeyType: "HASH"
           Projection: 
             ProjectionType: "ALL"
+  
   LambdaFunction:
     Type: AWS::Serverless::Function
     Properties:
