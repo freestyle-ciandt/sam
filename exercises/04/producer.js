@@ -2,42 +2,17 @@ const { SQS } = require("aws-sdk");
 const { SQS_URL } = process.env;
 const sqsClient = new SQS({ apiVersion: "2012-11-05" });
 
-function verifyData(body) {
-  let validate = true;
-  Object.values(body).forEach((item) => {
-    switch (typeof item) {
-      case "number":
-        if (item === 0 || !item) {
-          validate = false;
-        }
-        break;
-      case "string":
-        if (!item) {
-          validate = false;
-        }
-        break;
-    }
-  });
-  return !validate;
-}
-
 exports.post = async (event) => {
   const { body } = event;
-
   console.log("producer - body:", body);
+  const newBody = JSON.parse(body);
 
-  // console.log(Object.values(body).some((item) => !item)
-  //   ">> TESTE: ",
-  //   Object.values(body).some((item) => !item),
-  //   !body?.id_plano && !body?.id
-  // );
-
-  // if (verifyData(body)) {
-  //   return {
-  //     statusCode: 400,
-  //     body: JSON.stringify({ message: "Invalid Input" }),
-  //   };
-  // }
+  if (Object.values(newBody).some((item) => !item)) {
+    return {
+      statusCode: 400,
+      body: JSON.stringify({ message: "Invalid Input" }),
+    };
+  }
 
   const params = {
     MessageBody: body,
