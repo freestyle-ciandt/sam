@@ -11,7 +11,6 @@ exports.handler = async (event) => {
 
     const params = {
 		TableName : TABLE_NAME,
-		IndexName : 'id_alias',
 		KeyConditionExpression: 'id_alias = :alias',
 		ExpressionAttributeValues: {
 			':alias': alias

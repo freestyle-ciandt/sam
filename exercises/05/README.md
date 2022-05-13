@@ -253,3 +253,8 @@ No final desta implementação você deverá possuir um domínio customizado par
 - Fizemos a requisição pelo painel AWS (API Gateway) e obtivemos o erro abaixo:
 
 "errorMessage":"User: arn:aws:sts::193490403882:assumed-role/mando-agatha-ex5-GetAliasFunctionRole-1L388DA1GVRYG/mando-agatha-ex5-GetAliasFunction-eVLOt7mHxD1Y is not authorized to perform: dynamodb:Query on resource: arn:aws:dynamodb:us-east-1:193490403882:table/mando-agatha-ex5-aliases/index/id_alias"
+
+13/05
+-----
+- Aprendemos: para fazer query do indice primario não precisa colocar o 'indexName' no 'params'
+- Desabilitar cognito para a lambda getAlias
