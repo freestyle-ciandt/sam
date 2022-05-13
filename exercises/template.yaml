@@ -4,250 +4,203 @@ Transform: "AWS::Serverless-2016-10-31"
 Description: Template dojo dupla Romulo e Henrique
 
 Resources:
-  ExercisesApi:
+  # ExercisesApi:
+  #   Type: AWS::Serverless::Api
+  #   Properties:
+  #     StageName: Prod
+  #     Auth:
+  #       ApiKeyRequired: true # sets for all methods
+  #       UsagePlan:
+  #         CreateUsagePlan: PER_API
+  #         Description: Usage plan for the Serverless Api
+  #         Quota:
+  #           Limit: 5000
+  #           Period: MONTH
+  #         Tags:
+  #           - Key: Name
+  #             Value: Exercise01ApiUsagePlan
+  #     Models:
+  #       ClienteModel:
+  #         type: object
+  #         required:
+  #           - id
+  #           - nome
+  #           - documento
+  #           - cidade
+  #           - estado
+  #           - pais
+  #           - id_plano
+  #         properties:
+  #           id:
+  #             type: integer
+  #           nome:
+  #             type: string
+  #           documento:
+  #             type: string
+  #           cidade:
+  #             type: string
+  #           estado:
+  #             type: string
+  #           pais:
+  #             type: string
+  #           id_plano:
+  #             type: integer
+  #     GatewayResponses:
+  #       BAD_REQUEST_BODY:
+  #         StatusCode: 400
+  #         ResponseTemplates:
+  #           "application/json": '{"message": "Invalid Input"}'
+
+  # Exercise01Function:
+  #   Type: AWS::Serverless::Function
+  #   Properties:
+  #     FunctionName: Exercise-01-function
+  #     CodeUri: ./01
+  #     Handler: app.lambdaHandler
+  #     Runtime: nodejs12.x
+  #     Events:
+  #       Exercise01Api:
+  #         Type: Api
+  #         Properties:
+  #           RestApiId: !Ref ExercisesApi
+  #           Path: /exercise-01
+  #           Method: GET
+  #           Auth:
+  #             ApiKeyRequired: true
+
+  # Exercise02Table:
+  #   Type: AWS::DynamoDB::Table
+  #   Properties:
+  #     AttributeDefinitions:
+  #       - AttributeName: "id"
+  #         AttributeType: "N"
+  #       - AttributeName: "cidade"
+  #         AttributeType: "S"
+  #     KeySchema:
+  #       - AttributeName: "id"
+  #         KeyType: "HASH"
+  #     ProvisionedThroughput:
+  #       ReadCapacityUnits: "3"
+  #       WriteCapacityUnits: "3"
+  #     TableName: !Sub "${AWS::StackName}-clientes"
+  #     GlobalSecondaryIndexes:
+  #       - 
+  #         IndexName: "cidade-index"
+  #         KeySchema:
+  #           -
+  #             AttributeName: "cidade"
+  #             KeyType: "HASH"
+  #         Projection:
+  #           ProjectionType: "ALL"
+  #         ProvisionedThroughput:
+  #           ReadCapacityUnits: "3"
+  #           WriteCapacityUnits: "3"
+
+  BitlyUserPool:
+    Type: AWS::Cognito::UserPool
+    Properties:
+      UserPoolName: !Sub '${AWS::StackName}-userPool'
+      AdminCreateUserConfig:
+        AllowAdminCreateUserOnly: false
+      AutoVerifiedAttributes:
+        - email
+      EmailConfiguration:
+        EmailSendingAccount: COGNITO_DEFAULT
+      UsernameConfiguration:
+        CaseSensitive: false
+      AccountRecoverySetting:
+        RecoveryMechanisms:
+          - Name: verified_email
+            Priority: 1
+      Policies:
+        PasswordPolicy:
+          MinimumLength: 12
+          RequireLowercase: true
+          RequireNumbers: true
+          RequireSymbols: true
+          RequireUppercase: true
+          TemporaryPasswordValidityDays: 1
+      Schema:
+        - Name: name
+          AttributeDataType: String
+          Mutable: true
+          Required: true
+        - Name: 'family_name'
+          AttributeDataType: String
+          Mutable: true
+          Required: true
+        - Name: 'birthdate'
+          AttributeDataType: String
+          Required: true
+          Mutable: true
+        - Name: email
+          AttributeDataType: String
+          Mutable: false
+          Required: true
+
+  BitlyFreeUserGroup:
+    Type: AWS::Cognito::UserPoolGroup
+    Properties:
+      GroupName: free_account
+      Precedence: 1
+      UserPoolId: !Ref BitlyUserPool
+
+  BitlyPremiumUserGroup:
+    Type: AWS::Cognito::UserPoolGroup
+    Properties:
+      GroupName: premium_account
+      Precedence: 2
+      UserPoolId: !Ref BitlyUserPool
+
+  BitlyUserPoolClient:
+    Type: AWS::Cognito::UserPoolClient
+    Properties:
+      ClientName: !Sub '${AWS::StackName}-userPoolClient'
+      GenerateSecret: false
+      UserPoolId: !Ref BitlyUserPool
+      AllowedOAuthFlowsUserPoolClient: true
+      CallbackURLs: [http://localhost:3000]
+      AllowedOAuthFlows: [implicit, code]
+      AllowedOAuthScopes: [email, openid]
+      SupportedIdentityProviders: [COGNITO]
+
+  BitlyUserPoolDomain:
+    Type: AWS::Cognito::UserPoolDomain
+    Properties:
+      UserPoolId: !Ref BitlyUserPool
+      Domain: !Ref AWS::StackName
+
+  BitlyApi:
     Type: AWS::Serverless::Api
     Properties:
-      StageName: Prod
+      StageName: prod
       Auth:
-        ApiKeyRequired: true # sets for all methods
-        UsagePlan:
-          CreateUsagePlan: PER_API
-          Description: Usage plan for the Serverless Api
-          Quota:
-            Limit: 5000
-            Period: MONTH
-          Tags:
-            - Key: Name
-              Value: Exercise01ApiUsagePlan
-      Models:
-        ClienteModel:
-          type: object
-          required:
-            - id
-            - nome
-            - documento
-            - cidade
-            - estado
-            - pais
-            - id_plano
-          properties:
-            id:
-              type: integer
-            nome:
-              type: string
-            documento:
-              type: string
-            cidade:
-              type: string
-            estado:
-              type: string
-            pais:
-              type: string
-            id_plano:
-              type: integer
-      GatewayResponses:
-        BAD_REQUEST_BODY:
-          StatusCode: 400
-          ResponseTemplates:
-            "application/json": '{"message": "Invalid Input"}'
+        DefaultAuthorizer: CognitoAuthorizer
+        Authorizers:
+          CognitoAuthorizer:
+            UserPoolArn: !GetAtt BitlyUserPool.Arn  
 
-  Exercise01Function:
+  FunctionBitly:
     Type: AWS::Serverless::Function
     Properties:
-      FunctionName: Exercise-01-function
-      CodeUri: ./01
+      FunctionName: function-bitly
+      CodeUri: ./05
       Handler: app.lambdaHandler
       Runtime: nodejs12.x
       Events:
-        Exercise01Api:
+        BitlyApi:
           Type: Api
           Properties:
-            RestApiId: !Ref ExercisesApi
-            Path: /exercise-01
+            RestApiId: !Ref BitlyApi
+            Path: /exercise-05
             Method: GET
             Auth:
               ApiKeyRequired: true
-
-  Exercise02ClientFunction:
-    Type: AWS::Serverless::Function
-    Properties:
-      FunctionName: Exercise-02-client-function
-      CodeUri: ./02
-      Handler: app.queryById
-      Runtime: nodejs12.x
-      Policies:
-        -
-          DynamoDBReadPolicy:
-            TableName: !Ref Exercise02Table
-      Environment:
-        Variables:
-          TABLE_NAME: !Ref Exercise02Table
-      Events:
-        Exercise01Api:
-          Type: Api
-          Properties:
-            RestApiId: !Ref ExercisesApi
-            Path: /exercise-02/{id}
-            Method: GET
-            Auth:
-              ApiKeyRequired: true
-
-  Exercise02CidadeFunction:
-    Type: AWS::Serverless::Function
-    Properties:
-      FunctionName: Exercise-02-cidade-function
-      CodeUri: ./02
-      Handler: app.queryByCity
-      Runtime: nodejs12.x
-      Policies:
-        - DynamoDBReadPolicy:
-            TableName: !Ref Exercise02Table
-      Environment:
-        Variables:
-          TABLE_NAME: !Ref Exercise02Table
-      Events:
-        Exercise02Api:
-          Type: Api
-          Properties:
-            RestApiId: !Ref ExercisesApi
-            Path: /exercise-02/cidade/{cidade}
-            Method: GET
-            Auth:
-              ApiKeyRequired: true
-
-  Exercise04POST:
-    Type: AWS::Serverless::Function
-    Properties:
-      FunctionName: Exercise-04-producer-function
-      CodeUri: ./04
-      Handler: producer.post
-      Runtime: nodejs12.x
-      Policies:
-        - SQSSendMessagePolicy:
-            QueueName: !GetAtt Exercise04SQSQueue.QueueName
-      Environment:
-        Variables:
-          SQS_URL: !Ref Exercise04SQSQueue
-      Events:
-        Exercise04Api:
-          Type: Api
-          Properties:
-            RestApiId: !Ref ExercisesApi
-            Path: /exercise-04
-            Method: POST
-            Auth:
-              ApiKeyRequired: true
-            RequestModel:
-              Model: ClienteModel
-              Required: true
-              ValidateBody: true
-
-  Exercise04GET:
-    Type: AWS::Serverless::Function
-    Properties:
-      FunctionName: Exercise-04-consumer-function
-      CodeUri: ./04
-      Handler: consumer.get
-      Runtime: nodejs12.x
-      Policies:
-        - DynamoDBWritePolicy:
-            TableName: !Ref Exercise02Table
-      Environment:
-        Variables:
-          TABLE_NAME: !Ref Exercise02Table
-      Events:
-        SQSEvent:
-          Type: SQS
-          Properties:
-            Queue: !GetAtt Exercise04SQSQueue.Arn
-
-  Exercise04SQSQueue:
-    Type: AWS::SQS::Queue
-    Properties:
-      QueueName: !Sub ${AWS::StackName}-Queue
-      DelaySeconds: 60
-
-  Exercise02Table:
-    Type: AWS::DynamoDB::Table
-    Properties:
-      AttributeDefinitions:
-        - AttributeName: "id"
-          AttributeType: "N"
-        - AttributeName: "cidade"
-          AttributeType: "S"
-      KeySchema:
-        - AttributeName: "id"
-          KeyType: "HASH"
-      ProvisionedThroughput:
-        ReadCapacityUnits: "3"
-        WriteCapacityUnits: "3"
-      TableName: !Sub "${AWS::StackName}-clientes"
-      GlobalSecondaryIndexes:
-        - 
-          IndexName: "cidade-index"
-          KeySchema:
-            -
-              AttributeName: "cidade"
-              KeyType: "HASH"
-          Projection:
-            ProjectionType: "ALL"
-          ProvisionedThroughput:
-            ReadCapacityUnits: "3"
-            WriteCapacityUnits: "3"
-  
-  Exercise03ProductFunction:
-    Type: AWS::Serverless::Function
-    Properties:
-      FunctionName: Exercise-03-product-function
-      CodeUri: ./03
-      Handler: app.lambdaHandler
-      Runtime: nodejs12.x
-      Policies:
-        - DynamoDBReadPolicy:
-            TableName: !Ref Exercise03Table
-        - DynamoDBWritePolicy:
-            TableName: !Ref Exercise03Table
-        - S3ReadPolicy:
-            BucketName: !Ref Exercise03Bucket
-      Environment:
-        Variables:
-          TABLE_NAME: !Ref Exercise03Table
-          BUCKET_NAME: !Ref Exercise03Bucket
-      Events:
-        StartScheduleEvent:
-          Type: Schedule
-          Properties:
-            Schedule: cron(0 6 * * ? *)
-
-  Exercise03Bucket:
-    Type: 'AWS::S3::Bucket'
-    Properties:
-      BucketName: !Sub "${AWS::StackName}-produtos"
-
-  Exercise03Table:
-    Type: AWS::DynamoDB::Table
-    Properties:
-      BillingMode: PAY_PER_REQUEST 
-      AttributeDefinitions:
-        - AttributeName: "id"
-          AttributeType: "S"
-      KeySchema:
-        - AttributeName: "id"
-          KeyType: "HASH"
-      TableName: !Sub "${AWS::StackName}-produtos"
 
 Outputs:
-  Exercise01Function:
-    Value: !GetAtt Exercise01Function.Arn
-  Exercise02ClientFunction:
-    Value: !GetAtt Exercise02ClientFunction.Arn
-  Exercise02CidadeFunction:
-    Value: !GetAtt Exercise02CidadeFunction.Arn
-  Exercise02Table:
-    Value: !Ref Exercise02Table
-  BucketName:
-    Value: !Ref Exercise03Bucket
-  LambdaArn:
-    Value: !GetAtt Exercise03ProductFunction.Arn
-  TableName:
-    Value: !Ref Exercise03Table
+  # Exercise01Function:
+  #   Value: !GetAtt Exercise01Function.Arn
+  # Exercise02Table:
+  #   Value: !Ref Exercise02Table
+  BitlyAuthURL:
+    Value: !Sub 'https://${BitlyUserPoolDomain}.auth.${AWS::Region}.amazoncognito.com/login?client_id=${BitlyUserPoolClient}&response_type=token&redirect_uri=http://localhost:3000'
