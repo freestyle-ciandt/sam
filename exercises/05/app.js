@@ -2,7 +2,9 @@ const AWS = require('aws-sdk')
 const jose = require('jose')
 
 const { DynamoDB } = AWS
-const { AliasesTableName } = process.env
+const { 
+    AliasesTableName
+} = process.env
 
 const docClient = new DynamoDB.DocumentClient()
 
@@ -35,7 +37,8 @@ const saveShortUrl = async (url, uuid, groups, maxTries) => {
 
     try {
         console.log('saveShortUrl try')
-        return await docClient.update(params).promise();
+        await docClient.update(params).promise()
+        return id
     } catch (error) {
         console.log('saveShortUrl catch:', error)
         if (error.code === 'ConditionalCheckFailedException') {
@@ -47,13 +50,15 @@ const saveShortUrl = async (url, uuid, groups, maxTries) => {
             }
 
             console.log('Trying to save with other ID!')
-            return await saveShortUrl(url, uuid, groups, maxTries)
+            await saveShortUrl(url, uuid, groups, maxTries)
         }
     }
 }
 
 exports.handler = async event => {
     console.log('createAliasFunction', event)
+
+    const { domainName } = event.requestContext
 
     const { url } = JSON.parse(event.body).data
     const idToken = event.headers.Authorization
@@ -90,8 +95,12 @@ exports.handler = async event => {
     const body = {};
 
     try {
-        await saveShortUrl(url, uuid, cognitoGroups.join(), 2)
+        const shortUrl = await saveShortUrl(url, uuid, cognitoGroups.join(), 2)
+        console.log('shortUrl', shortUrl)
         body.status = 'Success';
+        body.data = {
+            alias: `https://${domainName}/prod/${shortUrl}`
+        };
     } catch(error) {
         console.log('handler: saveShortUrl error', error)
         body.status = 'Error';
@@ -102,3 +111,6 @@ exports.handler = async event => {
         body: JSON.stringify(body)
     }
 }
+
+// sam build
+// sam deploy --stack-name patrick-neviton-2 --no-fail-on-empty-changeset --capabilities CAPABILITY_IAM CAPABILITY_NAMED_IAM --profile freestyle-cit

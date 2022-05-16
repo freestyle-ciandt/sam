@@ -108,6 +108,28 @@ Resources:
         - DynamoDBWritePolicy:
             TableName: !Ref BitlyDynamoDBTable
 
+  getAliasFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      Events:
+        ApiEvent:
+          Type: Api
+          Properties:
+            Path: /{id}
+            Method: GET
+            RestApiId: !Ref BitlyApi
+            Auth:
+              Authorizer: NONE
+      Runtime: nodejs12.x
+      CodeUri: ./05
+      Handler: get-alias-function.handler
+      Environment:
+        Variables:
+          AliasesTableName: !Ref BitlyDynamoDBTable
+      Policies:
+        - DynamoDBReadPolicy:
+            TableName: !Ref BitlyDynamoDBTable
+
   BitlyDynamoDBTable: 
     Type: AWS::DynamoDB::Table
     Properties:
