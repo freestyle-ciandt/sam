@@ -1,0 +1,53 @@
+{
+  resource: '/shorturl',
+  path: '/shorturl',
+  httpMethod: 'POST',
+  headers: null,
+  multiValueHeaders: null,
+  queryStringParameters: null,
+  multiValueQueryStringParameters: null,
+  pathParameters: null,
+  stageVariables: null,
+  requestContext: {
+    resourceId: '4w6oa7',
+    resourcePath: '/shorturl',
+    httpMethod: 'POST',
+    extendedRequestId: 'SOPi5EdoIAMFWqA=',
+    requestTime: '16/May/2022:14:29:00 +0000',
+    path: '/shorturl',
+    accountId: '193490403882',
+    protocol: 'HTTP/1.1',
+    stage: 'test-invoke-stage',
+    domainPrefix: 'testPrefix',
+    requestTimeEpoch: 1652711340000,
+    requestId: 'f9073448-a6c2-4062-9e97-a1d9dfdf4743',
+    identity: {
+      cognitoIdentityPoolId: null,
+      cognitoIdentityId: null,
+      apiKey: 'test-invoke-api-key',
+      principalOrgId: null,
+      cognitoAuthenticationType: null,
+      userArn: 'arn:aws:sts::193490403882:assumed-role/AWSReservedSSO_AWSDevelopers-Coca-Freestyle_beb1a549674cf950/henriquedc@ciandt.com',
+      apiKeyId: 'test-invoke-api-key-id',
+      userAgent: 'aws-internal/3 aws-sdk-java/1.12.201 Linux/5.4.181-109.354.amzn2int.x86_64 OpenJDK_64-Bit_Server_VM/25.322-b06 java/1.8.0_322 vendor/Oracle_Corporation cfg/retry-mode/standard',
+      accountId: '193490403882',
+      caller: 'AROAS2DHNIIVAKNGDJONR:henriquedc@ciandt.com',
+      sourceIp: 'test-invoke-source-ip',
+      accessKey: 'ASIAS2DHNIIVIV4F3TTD',
+      cognitoAuthenticationProvider: null,
+      user: 'AROAS2DHNIIVAKNGDJONR:henriquedc@ciandt.com'
+    },
+    domainName: 'testPrefix.testDomainName',
+    apiId: 'fus0njm8r5'
+  },
+  body: '{\n    "a": 1\n}',
+  isBase64Encoded: false
+}
+
+
+
+curl -X POST -H "Authorization: Bearer eyJraWQiOiJyeGZHU0QwaGtcL3g0Q01FUnZGYlpvbUttWGF2MzluMU5SRnE2T2hneXRHaz0iLCJhbGciOiJSUzI1NiJ9.eyJhdF9oYXNoIjoidlE2enQ2SlJSejRJS2RERjV0MlVBdyIsInN1YiI6ImQwMmEyMGExLTlkYTUtNGVlNi05NWMxLTdiMmYwZmM3ODVjMCIsImNvZ25pdG86Z3JvdXBzIjpbInByZW1pdW1fYWNjb3VudCJdLCJlbWFpbF92ZXJpZmllZCI6dHJ1ZSwiaXNzIjoiaHR0cHM6XC9cL2NvZ25pdG8taWRwLnVzLWVhc3QtMS5hbWF6b25hd3MuY29tXC91cy1lYXN0LTFfQmEwOTNGRjc1IiwiY29nbml0bzp1c2VybmFtZSI6ImhlbnJpcXVlZGMiLCJhdWQiOiI1M2E1dTJlbWllZDZtajNjdjk0YXAwOThzMCIsInRva2VuX3VzZSI6ImlkIiwiYXV0aF90aW1lIjoxNjUzMzE1MDU2LCJleHAiOjE2NTMzMTg2NTYsImlhdCI6MTY1MzMxNTA1NiwianRpIjoiMzFlNzVlOWQtMTM2NC00OWFjLTgyZGYtNTlkYzZmYjc2MmNlIiwiZW1haWwiOiJoZW5yaXF1ZWRjQGNpYW5kdC5jb20ifQ.hdfODFbM173HSGptfQnkWfhCDRWsaCjnEcTqoZTuQsUb0gTqdZtKXQ2DgMCrRbcxu6bhL_5_LHpHYLbzh5alW8gFNeVuobhZPAJ-fkvouO7ExhL9dZxpTmGmEysNs99HL69WgwD8LS0SmDPQZRIWSZjcO7Av8yL4r1FbzkTuKROpDe7NxlJfWDp019YjNQapjm1f32K2xwk80s43mWHtoQLGY12AKi_DCdoDjB4YQKzLhJejmnr6hfRQKWtLJCdvjwWOycbziYm8BWXrVzIBzGZWx69saUptWUNx5t7fCGaU4_Qee498ce-SBngX7s0lWRVkIE6gDuOShBRenxPfiw" https://fus0njm8r5.execute-api.us-east-1.amazonaws.com/Stage/shorturl --data-raw '{"data": {"url": "http://abc.com.br"}}'
+
+curl --location --request POST 'https://fus0njm8r5.execute-api.us-east-1.amazonaws.com/Stage/shorturl' --header 'Authorization: Bearer eyJraWQiOiJyeGZHU0QwaGtcL3g0Q01FUnZGYlpvbUttWGF2MzluMU5SRnE2T2hneXRHaz0iLCJhbGciOiJSUzI1NiJ9.eyJhdF9oYXNoIjoidlE2enQ2SlJSejRJS2RERjV0MlVBdyIsInN1YiI6ImQwMmEyMGExLTlkYTUtNGVlNi05NWMxLTdiMmYwZmM3ODVjMCIsImNvZ25pdG86Z3JvdXBzIjpbInByZW1pdW1fYWNjb3VudCJdLCJlbWFpbF92ZXJpZmllZCI6dHJ1ZSwiaXNzIjoiaHR0cHM6XC9cL2NvZ25pdG8taWRwLnVzLWVhc3QtMS5hbWF6b25hd3MuY29tXC91cy1lYXN0LTFfQmEwOTNGRjc1IiwiY29nbml0bzp1c2VybmFtZSI6ImhlbnJpcXVlZGMiLCJhdWQiOiI1M2E1dTJlbWllZDZtajNjdjk0YXAwOThzMCIsInRva2VuX3VzZSI6ImlkIiwiYXV0aF90aW1lIjoxNjUzMzE1MDU2LCJleHAiOjE2NTMzMTg2NTYsImlhdCI6MTY1MzMxNTA1NiwianRpIjoiMzFlNzVlOWQtMTM2NC00OWFjLTgyZGYtNTlkYzZmYjc2MmNlIiwiZW1haWwiOiJoZW5yaXF1ZWRjQGNpYW5kdC5jb20ifQ.hdfODFbM173HSGptfQnkWfhCDRWsaCjnEcTqoZTuQsUb0gTqdZtKXQ2DgMCrRbcxu6bhL_5_LHpHYLbzh5alW8gFNeVuobhZPAJ-fkvouO7ExhL9dZxpTmGmEysNs99HL69WgwD8LS0SmDPQZRIWSZjcO7Av8yL4r1FbzkTuKROpDe7NxlJfWDp019YjNQapjm1f32K2xwk80s43mWHtoQLGY12AKi_DCdoDjB4YQKzLhJejmnr6hfRQKWtLJCdvjwWOycbziYm8BWXrVzIBzGZWx69saUptWUNx5t7fCGaU4_Qee498ce-SBngX7s0lWRVkIE6gDuOShBRenxPfiw' --header 'Content-Type: application/json' --data-raw '{"data": {"url": "http://abc.com.br"}}'
+
+http://localhost:3000/#id_token=eyJraWQiOiJyeGZHU0QwaGtcL3g0Q01FUnZGYlpvbUttWGF2MzluMU5SRnE2T2hneXRHaz0iLCJhbGciOiJSUzI1NiJ9.eyJhdF9oYXNoIjoidlE2enQ2SlJSejRJS2RERjV0MlVBdyIsInN1YiI6ImQwMmEyMGExLTlkYTUtNGVlNi05NWMxLTdiMmYwZmM3ODVjMCIsImNvZ25pdG86Z3JvdXBzIjpbInByZW1pdW1fYWNjb3VudCJdLCJlbWFpbF92ZXJpZmllZCI6dHJ1ZSwiaXNzIjoiaHR0cHM6XC9cL2NvZ25pdG8taWRwLnVzLWVhc3QtMS5hbWF6b25hd3MuY29tXC91cy1lYXN0LTFfQmEwOTNGRjc1IiwiY29nbml0bzp1c2VybmFtZSI6ImhlbnJpcXVlZGMiLCJhdWQiOiI1M2E1dTJlbWllZDZtajNjdjk0YXAwOThzMCIsInRva2VuX3VzZSI6ImlkIiwiYXV0aF90aW1lIjoxNjUzMzE1MDU2LCJleHAiOjE2NTMzMTg2NTYsImlhdCI6MTY1MzMxNTA1NiwianRpIjoiMzFlNzVlOWQtMTM2NC00OWFjLTgyZGYtNTlkYzZmYjc2MmNlIiwiZW1haWwiOiJoZW5yaXF1ZWRjQGNpYW5kdC5jb20ifQ.hdfODFbM173HSGptfQnkWfhCDRWsaCjnEcTqoZTuQsUb0gTqdZtKXQ2DgMCrRbcxu6bhL_5_LHpHYLbzh5alW8gFNeVuobhZPAJ-fkvouO7ExhL9dZxpTmGmEysNs99HL69WgwD8LS0SmDPQZRIWSZjcO7Av8yL4r1FbzkTuKROpDe7NxlJfWDp019YjNQapjm1f32K2xwk80s43mWHtoQLGY12AKi_DCdoDjB4YQKzLhJejmnr6hfRQKWtLJCdvjwWOycbziYm8BWXrVzIBzGZWx69saUptWUNx5t7fCGaU4_Qee498ce-SBngX7s0lWRVkIE6gDuOShBRenxPfiw&access_token=eyJraWQiOiJBQ3VwenVOM3Y0ZUNlVmpWZEhKN0dPbXhnT014WTExbzhqbTAwSjJpMkhnPSIsImFsZyI6IlJTMjU2In0.eyJzdWIiOiJkMDJhMjBhMS05ZGE1LTRlZTYtOTVjMS03YjJmMGZjNzg1YzAiLCJjb2duaXRvOmdyb3VwcyI6WyJwcmVtaXVtX2FjY291bnQiXSwiaXNzIjoiaHR0cHM6XC9cL2NvZ25pdG8taWRwLnVzLWVhc3QtMS5hbWF6b25hd3MuY29tXC91cy1lYXN0LTFfQmEwOTNGRjc1IiwidmVyc2lvbiI6MiwiY2xpZW50X2lkIjoiNTNhNXUyZW1pZWQ2bWozY3Y5NGFwMDk4czAiLCJ0b2tlbl91c2UiOiJhY2Nlc3MiLCJzY29wZSI6Im9wZW5pZCBlbWFpbCIsImF1dGhfdGltZSI6MTY1MzMxNTA1NiwiZXhwIjoxNjUzMzE4NjU2LCJpYXQiOjE2NTMzMTUwNTYsImp0aSI6ImY0MjQ0ZTZmLTAyY2UtNGU4MS1iZmQxLTU2OWRkMmIyZGJmOSIsInVzZXJuYW1lIjoiaGVucmlxdWVkYyJ9.L3PkYlb_uv4_aFrjdueoNa9CZsKvxKMR9Jbo7MIGB_cEUdZW4aohAMaWU4R5g63Phm6tglenndvOdYAHeTQgIzrn971O-WMKqyIk2VA63_jIyjirLfDSCbCtDIXoNRsGTrRBVdUuQ5Ky_2tRus72AM1WCBWVT6SVTqS7dLcMaz-FYTpaPxwLeexPbLxEiV2d4rkyzfZC77Fp-H5hhaNsZO_d8eowrmJJzb3gnrV9x01IJV5QFLu0NFrj0sITfns16HnpMA_pGzlh7rEG3bxaVDcybE0__Kvw4-pR-9vMTajFmp2aGu5LHhZ2ZBhv5QrH4tILUGJtwWbPHT7eFRkZ4Q&expires_in=3600&token_type=Bearer

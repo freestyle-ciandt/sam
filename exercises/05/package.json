@@ -1,0 +1,19 @@
+{
+  "name": "exercise-05",
+  "version": "1.0.0",
+  "description": "exercise05-dojo",
+  "main": "createAliasFunction.js",
+  "directories": {
+    "test": "tests"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "dupla-romulo-henrique",
+  "license": "ISC",
+  "dependencies": {
+    "aws-sdk": "^2.1142.0",
+    "jsonwebtoken": "^8.5.1",
+    "jwk-to-pem": "^2.0.5"
+  }
+}
