@@ -258,3 +258,10 @@ No final desta implementação você deverá possuir um domínio customizado par
 -----
 - Aprendemos: para fazer query do indice primario não precisa colocar o 'indexName' no 'params'
 - Desabilitar cognito para a lambda getAlias
+
+27/05
+----- 
+- Criamos o domínio: dojoagathamandolesi.fs.citko.net no Route53
+- A requisição utilizando o domínio novo não funcionou, por conta do certificado.
+- Requisição: curl -X POST https://dojoagathamandolesi.fs.citko.net/prod/shortenurl -H "Authorization: <id_token>" -d '{"data": {"url": "http://abc.com.br"}}'
+- Criamos o certificado: f41f62cc-0730-4a14-aa10-e3383e247f36 no AWS Certificate Manager e ficamos aguardando ficar pronto, pois demora um tempo...
