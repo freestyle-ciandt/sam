@@ -180,22 +180,54 @@ Resources:
           CognitoAuthorizer:
             UserPoolArn: !GetAtt BitlyUserPool.Arn  
 
-  FunctionBitly:
+  CreateAliasFunction:
     Type: AWS::Serverless::Function
     Properties:
-      FunctionName: function-bitly
+      FunctionName: createAliasFunction
       CodeUri: ./05
-      Handler: app.lambdaHandler
+      Handler: createAliasFunction.lambdaHandler
       Runtime: nodejs12.x
       Events:
-        BitlyApi:
+        createAliasApi:
           Type: Api
           Properties:
             RestApiId: !Ref BitlyApi
-            Path: /exercise-05
-            Method: GET
-            Auth:
-              ApiKeyRequired: true
+            Path: /shorturl
+            Method: POST
+      Policies:
+        - Statement:
+          - Effect: 'Allow'
+            Action:
+              - 'dynamodb:PutItem'
+            Resource:
+              - !GetAtt BitlyTable.Arn
+      Environment:
+        Variables:
+          TABLE_NAME: !Ref BitlyTable
+
+  BitlyTable:
+    Type: AWS::DynamoDB::Table
+    Properties:
+      BillingMode: PAY_PER_REQUEST
+      TableName: !Sub "${AWS::StackName}-aliases"
+      AttributeDefinitions:
+        - AttributeName: "id"
+          AttributeType: "S"
+        - AttributeName: "tipo"
+          AttributeType: "S"
+      KeySchema:
+        - AttributeName: "id"
+          KeyType: "HASH"
+      GlobalSecondaryIndexes:
+        - 
+          IndexName: "tipo-index"
+          KeySchema:
+            -
+              AttributeName: "tipo"
+              KeyType: "HASH"
+          Projection:
+            ProjectionType: "ALL"
+
 
 Outputs:
   # Exercise01Function:
