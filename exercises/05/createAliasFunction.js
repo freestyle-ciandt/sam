@@ -21,7 +21,7 @@ const generateId = (length) => {
 }
 
 exports.lambdaHandler = async (event) => {
-  // const { domainName } = event.requestContext;
+  const { domainName } = event.requestContext;
   const { url } = JSON.parse(event.body).data;
   const idToken = event.headers.Authorization;
 
@@ -72,7 +72,10 @@ exports.lambdaHandler = async (event) => {
   return {
     'statusCode': 200,
     'body': JSON.stringify({
-      message: 'Success'
+      message: 'Success',
+      data: {
+        alias: `https://${domainName}/${shortenedUrlId}`
+      }
     })
   }
 }

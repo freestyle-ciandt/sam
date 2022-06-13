@@ -10,3 +10,4 @@ confirm_changeset = true
 capabilities = "CAPABILITY_IAM"
 disable_rollback = true
 image_repositories = []
+parameter_overrides = "Domain=\"bitly.com\" HostedZoneId=\"XJGYF3453769GVHJGI6\" CertificateArn=\"arn:aws:acm:us-east-1:{AccountId}:certificate/{Id}\""
