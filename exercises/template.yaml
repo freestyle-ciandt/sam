@@ -3,20 +3,6 @@ Transform: "AWS::Serverless-2016-10-31"
 
 Description: Template dojo dupla Romulo e Henrique
 
-Parameters:
-  Domain:
-    Description: "Domain for API Gateway API's"
-    Type: String
-    Default: bitly.com
-  HostedZoneId:
-    Description: "Hosted Zone Id in which we want to add A record"
-    Type: String
-    Default: XJGYF3453769GVHJGI6
-  CertificateArn:
-    Description: "Bitly Certificate ARN"
-    Type: String
-    Default: 'arn:aws:acm:us-east-1:{AccountId}:certificate/{Id}'
-
 Resources:
   BitlyUserPool:
     Type: AWS::Cognito::UserPool
@@ -96,19 +82,30 @@ Resources:
     Type: AWS::Serverless::Api
     Properties:
       StageName: prod
+      Cors:
+        AllowHeaders: "'*'"
+        AllowOrigin: "'*'"
+        AllowMethods: "'GET,OPTIONS,POST'"
       Auth:
         DefaultAuthorizer: CognitoAuthorizer
+        AddDefaultAuthorizerToCorsPreflight: False
         Authorizers:
           CognitoAuthorizer:
             UserPoolArn: !GetAtt BitlyUserPool.Arn
-
-  APIMapping:
-    Type: AWS::ApiGateway::BasePathMapping
+  Deployment:
+    Type: 'AWS::ApiGateway::Deployment'
     Properties:
-      BasePath: product
-      DomainName: !Ref Domain
       RestApiId: !Ref BitlyApi
-      Stage: Prod
+      Description: My deployment
+      StageName: 'prod'
+
+  # APIMapping:
+  #   Type: AWS::ApiGateway::BasePathMapping
+  #   Properties:
+  #     BasePath: product
+  #     DomainName: !Ref BitlyCustomDomain
+  #     RestApiId: !Ref BitlyApi
+  #     Stage: Prod
 
   CreateAliasFunction:
     Type: AWS::Serverless::Function
@@ -185,39 +182,6 @@ Resources:
           Projection:
             ProjectionType: "ALL"
 
-  BitlyCustomDomain:
-    Type: AWS::ApiGateway::DomainName
-    Properties: 
-      DomainName: !Ref Domain
-      CertificateArn: !Ref CertificateArn
-      EndpointConfiguration:
-        Types:
-          - REGIONAL
-      SecurityPolicy: TLS_1_2
-  
-  Route53RecordSetGroup:
-    Type: AWS::Route53::RecordSet
-    Properties:
-      Name: !Ref Domain
-      Type: A
-      HostedZoneId: !Ref HostedZoneId
-      AliasTarget:
-        DNSName: !GetAtt BitlyCustomDomain.DistributionDomainName
-        EvaluateTargetHealth: false
-        HostedZoneId: !GetAtt BitlyCustomDomain.DistributionHostedZoneId
-  
-  BitlyCertificate:
-    Type: AWS::CertificateManager::Certificate
-    Properties:
-      DomainName: !Ref Domain
-      DomainValidationOptions:
-        - DomainName: !Ref Domain
-          HostedZoneId: !Ref HostedZoneId
-      ValidationMethod: 'DNS'
-
 Outputs:
   BitlyAuthURL:
     Value: !Sub 'https://${BitlyUserPoolDomain}.auth.${AWS::Region}.amazoncognito.com/login?client_id=${BitlyUserPoolClient}&response_type=token&redirect_uri=http://localhost:3000'
-  CertificateArn:
-    Description: "Bitly Certificate ARN"
-    Value: !Ref BitlyCertificate

@@ -17,10 +17,11 @@ exports.lambdaHandler = async (event) => {
   }).promise()
   console.log('data', data);
 
+  const { url } = data.Items[0];
   return {
     "statusCode": 301,
     "headers": {
-      "Location": "http://abc.com.br"
+      "Location": url
     }
   }
 }

@@ -25,11 +25,19 @@ exports.lambdaHandler = async (event) => {
   const { url } = JSON.parse(event.body).data;
   const idToken = event.headers.Authorization;
 
+  const defaultHeaders = {
+    'Access-Control-Allow-Origin': '*', // Required for CORS support to work
+    'Access-Control-Allow-Headers': '*', // Review if we need to restrict this later
+    'Access-Control-Allow-Credentials': true, // Required for cookies, authorization headers with HTTPS
+    'Content-Type': 'application/json',
+  };
+
   const pem = jwkToPem(jwk);
   jwt.verify(idToken, pem, { algorithms: ['RS256'] }, function (err) {
     if (err) {
       return {
         'statusCode': 403,
+        'headers': defaultHeaders,
         'body': JSON.stringify({
           message: 'Unauthorized'
         })
@@ -37,10 +45,13 @@ exports.lambdaHandler = async (event) => {
     }
   });
 
-  const { email_verified, 'cognito:groups': cognitoGroups, sub } = jwt.decode(idToken.replace('Bearer ', ''));
+  console.log('token', jwt.decode(idToken.replace('Bearer ', '')))
+
+  const { email, email_verified, 'cognito:groups': cognitoGroups, sub } = jwt.decode(idToken.replace('Bearer ', ''));
   if (!email_verified) {
     return {
       'statusCode': 403,
+      'headers': defaultHeaders,
       'body': JSON.stringify({
         message: 'Email is not verified'
       })
@@ -50,6 +61,7 @@ exports.lambdaHandler = async (event) => {
   if (!cognitoGroups || !cognitoGroups.length) {
     return {
       'statusCode': 403,
+      'headers': defaultHeaders,
       'body': JSON.stringify({
         message: 'User has no group assigned'
       })
@@ -62,15 +74,18 @@ exports.lambdaHandler = async (event) => {
     TableName: TABLE_NAME,
     Item: {
       id: shortenedUrlId,
-      url: url,
+      url,
       uuid: sub,
       tipo: cognitoGroups[0],
+      createAt: Date.now(),
+      email,
     },
     ConditionExpression: 'attribute_not_exists(id)',
   }).promise();
 
   return {
     'statusCode': 200,
+    'headers': defaultHeaders,
     'body': JSON.stringify({
       message: 'Success',
       data: {
