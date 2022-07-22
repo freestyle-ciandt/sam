@@ -265,3 +265,15 @@ No final desta implementação você deverá possuir um domínio customizado par
 - A requisição utilizando o domínio novo não funcionou, por conta do certificado.
 - Requisição: curl -X POST https://dojoagathamandolesi.fs.citko.net/prod/shortenurl -H "Authorization: <id_token>" -d '{"data": {"url": "http://abc.com.br"}}'
 - Criamos o certificado: f41f62cc-0730-4a14-aa10-e3383e247f36 no AWS Certificate Manager e ficamos aguardando ficar pronto, pois demora um tempo...
+
+22/07
+-----
+- Mudamos o domínio para: dojo.am.fs.citko.net
+- Adicionamos um recurso de 'AWS::ApiGateway::Deployment' e as configurações de CORS
+- Fizemos as configurações do certificado com a ajuda do Rômulo e do Henrique
+- Request: curl -X POST https://dojo.am.fs.citko.net/shortenurl -H "Authorization: <id_token>" -d '{"data": {"url": "http://abc.com.br"}}'
+
+Próximos Passos
+---------------
+- Iniciar o desenvolvimento da app frontend
+  - Pensar no fluxo e nas telas

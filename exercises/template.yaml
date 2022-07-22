@@ -105,11 +105,23 @@ Resources:
     Type: AWS::Serverless::Api
     Properties:
       StageName: prod
+      Cors:
+        AllowHeaders: "'*'"
+        AllowOrigin: "'*'"
+        AllowMethods: "'GET,OPTIONS,POST'"      
       Auth:
         DefaultAuthorizer: CognitoAuthorizer
+        AddDefaultAuthorizerToCorsPreflight: False
         Authorizers:
           CognitoAuthorizer:
             UserPoolArn: !GetAtt BitlyUserPool.Arn
+
+  Deployment:
+    Type: 'AWS::ApiGateway::Deployment'
+    Properties:
+      RestApiId: !Ref BitlyApi
+      Description: The deployment
+      StageName: 'prod'
 
   CreateAliasFunction:
     Type: AWS::Serverless::Function
