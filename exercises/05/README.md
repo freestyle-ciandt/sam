@@ -273,7 +273,11 @@ No final desta implementação você deverá possuir um domínio customizado par
 - Fizemos as configurações do certificado com a ajuda do Rômulo e do Henrique
 - Request: curl -X POST https://dojo.am.fs.citko.net/shortenurl -H "Authorization: <id_token>" -d '{"data": {"url": "http://abc.com.br"}}'
 
-Próximos Passos
+29/07
 ---------------
-- Iniciar o desenvolvimento da app frontend
-  - Pensar no fluxo e nas telas
+- Iniciamos o desenvolvimento da app frontend
+
+Próximos passos
+---------------
+- Paramos na parte da requisição
+- Pensar no fluxo e nas telas
