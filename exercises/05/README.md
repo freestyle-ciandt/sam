@@ -277,7 +277,17 @@ No final desta implementação você deverá possuir um domínio customizado par
 ---------------
 - Iniciamos o desenvolvimento da app frontend
 
+05/08
+---------------
+- Fizemos funcionar o CORS no API Gateway
+- https://stackoverflow.com/questions/49636195/can-not-enable-cors-properly-in-apigateway
+- https://stackoverflow.com/questions/40149788/aws-api-gateway-cors-ok-for-options-fail-for-post-
+- https://stackoverflow.com/questions/45820769/fail-to-enable-cors-for-api-gateway-functions
+
 Próximos passos
 ---------------
-- Paramos na parte da requisição
-- Pensar no fluxo e nas telas
+- Investigar como configurar o CORS
+- Fazer o fluxo do get-alias
+- Rever passo 7
+- Corrigir response da getAliasFunction
+- Printar URL com hash
